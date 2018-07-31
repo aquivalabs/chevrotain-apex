@@ -53,50 +53,56 @@ const Finally = createKeywordToken({
 
 const Boolean = createKeywordToken({
   name: "Boolean",
-  pattern: /boolean/,
-  label: "'boolean'"
+  pattern: /Boolean/,
+  label: "'Boolean'"
 });
 
 const Char = createKeywordToken({
   name: "Char",
-  pattern: /char/,
-  label: "'char'"
+  pattern: /Char/,
+  label: "'Char'"
 });
 
 const Byte = createKeywordToken({
   name: "Byte",
-  pattern: /byte/,
-  label: "'byte'"
+  pattern: /Byte/,
+  label: "'Byte'"
 });
 
 const Short = createKeywordToken({
   name: "Short",
-  pattern: /short/,
-  label: "'short'"
+  pattern: /Short/,
+  label: "'Short'"
 });
 
 const Integer = createKeywordToken({
   name: "Integer",
-  pattern: /integer/,
-  label: "'integer'"
+  pattern: /Integer/,
+  label: "'Integer'"
 });
 
 const Long = createKeywordToken({
   name: "Long",
-  pattern: /long/,
-  label: "'long'"
+  pattern: /Long/,
+  label: "'Long'"
 });
 
 const Float = createKeywordToken({
   name: "Float",
-  pattern: /float/,
-  label: "'float'"
+  pattern: /Float/,
+  label: "'Float'"
 });
 
 const Double = createKeywordToken({
   name: "Double",
-  pattern: /double/,
-  label: "'double'"
+  pattern: /Double/,
+  label: "'Double'"
+});
+
+const String = createKeywordToken({
+  name: "String",
+  pattern: /String/,
+  label: "'String'"
 });
 
 const Void = createKeywordToken({
@@ -580,6 +586,7 @@ const allTokens = [
   Long,
   Float,
   Double,
+  String,
   Void,
   Public,
   Protected,
@@ -674,6 +681,7 @@ module.exports = {
     Long,
     Float,
     Double,
+    String,
     Void,
     Public,
     Protected,
