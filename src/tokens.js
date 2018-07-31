@@ -9,10 +9,6 @@ function FRAGMENT(name, def) {
   fragments[name] = xregexp.build(def, fragments);
 }
 
-function MAKE_PATTERN(def, flags) {
-  return xregexp.build(def, fragments, flags);
-}
-
 // The order of fragments definitions is important
 FRAGMENT("Digits", "[0-9]([0-9_]*[0-9])?");
 FRAGMENT("ExponentPart", "[eE][+-]?{{Digits}}");
@@ -31,18 +27,6 @@ function createKeywordToken(options) {
   return createToken(options);
 }
 
-const Package = createKeywordToken({
-  name: "Package",
-  pattern: /package/,
-  label: "'package'"
-});
-
-const Case = createKeywordToken({
-  name: "Case",
-  pattern: /case/,
-  label: "'case'"
-});
-
 const Catch = createKeywordToken({
   name: "Catch",
   pattern: /catch/,
@@ -53,18 +37,6 @@ const Finally = createKeywordToken({
   name: "Finally",
   pattern: /finally/,
   label: "'finally'"
-});
-
-const Default = createKeywordToken({
-  name: "Default",
-  pattern: /default/,
-  label: "'default'"
-});
-
-const Import = createKeywordToken({
-  name: "Import",
-  pattern: /import/,
-  label: "'import'"
 });
 
 const Boolean = createKeywordToken({
@@ -91,10 +63,10 @@ const Short = createKeywordToken({
   label: "'short'"
 });
 
-const Int = createKeywordToken({
-  name: "Int",
-  pattern: /int/,
-  label: "'int'"
+const Integer = createKeywordToken({
+  name: "Integer",
+  pattern: /integer/,
+  label: "'integer'"
 });
 
 const Long = createKeywordToken({
@@ -157,18 +129,6 @@ const Final = createKeywordToken({
   label: "'final'"
 });
 
-const Native = createKeywordToken({
-  name: "Native",
-  pattern: /native/,
-  label: "'native'"
-});
-
-const Synchronized = createKeywordToken({
-  name: "Synchronized",
-  pattern: /synchronized/,
-  label: "'synchronized'"
-});
-
 const Transient = createKeywordToken({
   name: "Transient",
   pattern: /transient/,
@@ -203,12 +163,6 @@ const Super = createKeywordToken({
   name: "Super",
   pattern: /super/,
   label: "'super'"
-});
-
-const Throws = createKeywordToken({
-  name: "Throws",
-  pattern: /throws/,
-  label: "'throws'"
 });
 
 const Throw = createKeywordToken({
@@ -307,18 +261,6 @@ const Instanceof = createKeywordToken({
   label: "'instanceof'"
 });
 
-const Volatile = createKeywordToken({
-  name: "Volatile",
-  pattern: /volatile/,
-  label: "'volatile'"
-});
-
-const Strictfp = createKeywordToken({
-  name: "Strictfp",
-  pattern: /strictfp/,
-  label: "'strictfp'"
-});
-
 const Class = createKeywordToken({
   name: "Class",
   pattern: /class/,
@@ -375,12 +317,6 @@ const RSquare = createToken({
   label: "']'"
 });
 
-const Pointer = createToken({
-  name: "Pointer",
-  pattern: /->/,
-  label: "'->'"
-});
-
 const Less = createToken({
   name: "Less",
   pattern: /</,
@@ -393,18 +329,6 @@ const LessEquals = createToken({
   label: "'<='"
 });
 
-const LessLess = createToken({
-  name: "LessLess",
-  pattern: /<</,
-  label: "'<<'"
-});
-
-const LessLessEquals = createToken({
-  name: "LessLessEquals",
-  pattern: /<<=/,
-  label: "'<<='"
-});
-
 const Greater = createToken({
   name: "Greater",
   pattern: />/,
@@ -415,24 +339,6 @@ const GreaterEquals = createToken({
   name: "GreaterEquals",
   pattern: />=/,
   label: "'>='"
-});
-
-const GreaterGreaterEquals = createToken({
-  name: "GreaterGreaterEquals",
-  pattern: />>=/,
-  label: "'>>='"
-});
-
-const GreaterGreaterGreaterEquals = createToken({
-  name: "GreaterGreaterGreaterEquals",
-  pattern: />>>=/,
-  label: "'>>>='"
-});
-
-const DotDotDot = createToken({
-  name: "DotDotDot",
-  pattern: /\.\.\./,
-  label: "'...'"
 });
 
 const Dot = createToken({
@@ -458,12 +364,6 @@ const SemiColon = createToken({
   name: "SemiColon",
   pattern: /;/,
   label: "';'"
-});
-
-const ColonColon = createToken({
-  name: "ColonColon",
-  pattern: /::/,
-  label: "'::'"
 });
 
 const Colon = createToken({
@@ -544,40 +444,16 @@ const At = createToken({
   label: "'@'"
 });
 
-const Caret = createToken({
-  name: "Caret",
-  pattern: /\^/,
-  label: "'^'"
-});
-
-const CaretEquals = createToken({
-  name: "CaretEquals",
-  pattern: /\^=/,
-  label: "'^='"
-});
-
 const Questionmark = createToken({
   name: "Questionmark",
   pattern: /\?/,
   label: "'?'"
 });
 
-const Exclamationmark = createToken({
-  name: "Exclamationmark",
-  pattern: /!/,
-  label: "'!'"
-});
-
 const ExclamationmarkEquals = createToken({
   name: "ExclamationmarkEquals",
   pattern: /!=/,
   label: "'!='"
-});
-
-const Tilde = createToken({
-  name: "Tilde",
-  pattern: /~/,
-  label: "'~'"
 });
 
 const Or = createToken({
@@ -620,71 +496,6 @@ const DashEquals = createToken({
   name: "DashEquals",
   pattern: /\/=/,
   label: "'/='"
-});
-
-const Percentage = createToken({
-  name: "Percentage",
-  pattern: /%/,
-  label: "'%'"
-});
-
-const PercentageEquals = createToken({
-  name: "PercentageEquals",
-  pattern: /%=/,
-  label: "'%='"
-});
-
-const BinaryLiteral = createToken({
-  name: "BinaryLiteral",
-  pattern: MAKE_PATTERN("0[bB][01]([01_]*[01])?[lL]?"),
-  label: "'BinaryLiteral'"
-});
-
-const OctLiteral = createToken({
-  name: "OctLiteral",
-  pattern: MAKE_PATTERN("0_*[0-7]([0-7_]*[0-7])?[lL]?"),
-  label: "'OctLiteral'"
-});
-
-const HexLiteral = createToken({
-  name: "HexLiteral",
-  pattern: MAKE_PATTERN("0[xX][0-9a-fA-F]([0-9a-fA-F_]*[0-9a-fA-F])?[lL]?"),
-  label: "'HexLiteral'"
-});
-
-const FloatLiteral = createToken({
-  name: "FloatLiteral",
-  pattern: MAKE_PATTERN(
-    "-?({{Digits}}\\.{{Digits}}?|\\.{{Digits}}){{ExponentPart}}?[fFdD]?|{{Digits}}({{ExponentPart}}[fFdD]?|[fFdD])"
-  ),
-  label: "'FloatLiteral'"
-});
-
-const HexFloatLiteral = createToken({
-  name: "HexFloatLiteral",
-  pattern: MAKE_PATTERN(
-    "0[xX]({{HexDigits}}\\.?|{{HexDigits}}?\\.{{HexDigits}})[pP][+-]?{{Digits}}[fFdD]?"
-  ),
-  label: "'HexFloatLiteral'"
-});
-
-const DecimalLiteral = createToken({
-  name: "DecimalLiteral",
-  pattern: MAKE_PATTERN("-?(0|[1-9]({{Digits}}?|_+{{Digits}}))[lL]?"),
-  label: "'DecimalLiteral'"
-});
-
-const CharLiteral = createToken({
-  name: "CharLiteral",
-  pattern: MAKE_PATTERN("'((\\')|[^']|(\\\\)|(\\\\(u[a-zA-Z0-9]{4})?))'"),
-  start_chars_hint: ["'"],
-  label: "'CharLiteral'"
-});
-
-const StringLiteral = createToken({
-  name: "StringLiteral",
-  pattern: MAKE_PATTERN('"[^"\\\\]*(\\\\.[^"\\\\]*)*"'),
-  label: "'StringLiteral'"
 });
 
 const LineComment = createToken({
@@ -753,7 +564,7 @@ const allTokens = [
   Byte,
   Short,
   Interface,
-  Int,
+  Integer,
   Long,
   Float,
   Double,
@@ -766,15 +577,12 @@ const allTokens = [
   Catch,
   Finally,
   Final,
-  Native,
-  Synchronized,
   Transient,
   Extends,
   Implements,
   New,
   This,
   Super,
-  Throws,
   Throw,
   Return,
   Break,
@@ -791,30 +599,14 @@ const allTokens = [
   Null,
   Assert,
   Instanceof,
-  Volatile,
-  Strictfp,
   Class,
   Enum,
-  Import,
-  Package,
-  Default,
-  Case,
-  BinaryLiteral,
-  OctLiteral,
-  HexFloatLiteral,
-  HexLiteral,
-  FloatLiteral,
-  DecimalLiteral,
-  CharLiteral,
-  StringLiteral,
   // The Identifier must appear after the keywords because all keywords are valid identifiers.
   Identifier,
-  DotDotDot,
   Dot,
   Comma,
   SemiColonWithFollowEmptyLine,
   SemiColon,
-  ColonColon,
   Colon,
   EqualsEquals,
   ExclamationmarkEquals,
@@ -822,7 +614,6 @@ const allTokens = [
   PlusPlus,
   PlusEquals,
   Plus,
-  Pointer,
   MinusMinus,
   MinusEquals,
   Minus,
@@ -838,26 +629,16 @@ const allTokens = [
   RCurly,
   LSquare,
   RSquare,
-  LessLessEquals,
-  LessLess,
   LessEquals,
   Less,
-  GreaterGreaterEquals,
-  GreaterGreaterGreaterEquals,
   GreaterEquals,
   Greater,
   At,
-  CaretEquals,
-  Caret,
   StarEquals,
   Star,
   DashEquals,
   Dash,
-  PercentageEquals,
-  Percentage,
-  Questionmark,
-  Exclamationmark,
-  Tilde
+  Questionmark
 ];
 
 module.exports = {
@@ -875,7 +656,7 @@ module.exports = {
     Byte,
     Short,
     Interface,
-    Int,
+    Integer,
     Long,
     Float,
     Double,
@@ -888,15 +669,12 @@ module.exports = {
     Catch,
     Finally,
     Final,
-    Native,
-    Synchronized,
     Transient,
     Extends,
     Implements,
     New,
     This,
     Super,
-    Throws,
     Throw,
     Return,
     Break,
@@ -913,29 +691,13 @@ module.exports = {
     Null,
     Assert,
     Instanceof,
-    Volatile,
-    Strictfp,
     Class,
     Enum,
-    Import,
-    Package,
-    Default,
-    Case,
-    BinaryLiteral,
-    HexFloatLiteral,
-    HexLiteral,
-    OctLiteral,
-    FloatLiteral,
-    DecimalLiteral,
-    CharLiteral,
-    StringLiteral,
     Identifier,
-    DotDotDot,
     Dot,
     Comma,
     SemiColonWithFollowEmptyLine,
     SemiColon,
-    ColonColon,
     Colon,
     EqualsEquals,
     ExclamationmarkEquals,
@@ -943,7 +705,6 @@ module.exports = {
     PlusPlus,
     PlusEquals,
     Plus,
-    Pointer,
     MinusMinus,
     MinusEquals,
     Minus,
@@ -959,25 +720,15 @@ module.exports = {
     RCurly,
     LSquare,
     RSquare,
-    LessLessEquals,
-    LessLess,
     LessEquals,
     Less,
-    GreaterGreaterEquals,
-    GreaterGreaterGreaterEquals,
     GreaterEquals,
     Greater,
     At,
-    CaretEquals,
-    Caret,
     StarEquals,
     Star,
     DashEquals,
     Dash,
-    PercentageEquals,
-    Percentage,
-    Questionmark,
-    Exclamationmark,
-    Tilde
+    Questionmark
   }
 };
