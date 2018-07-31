@@ -27,6 +27,18 @@ function createKeywordToken(options) {
   return createToken(options);
 }
 
+const Get = createKeywordToken({
+  name: "Get",
+  pattern: /get/,
+  label: "'get'"
+});
+
+const Set = createKeywordToken({
+  name: "Set",
+  pattern: /set/,
+  label: "'set'"
+});
+
 const Catch = createKeywordToken({
   name: "Catch",
   pattern: /catch/,
@@ -627,6 +639,8 @@ const allTokens = [
   RBrace,
   LCurly,
   RCurly,
+  Get,
+  Set,
   LSquare,
   RSquare,
   LessEquals,
@@ -718,6 +732,8 @@ module.exports = {
     RBrace,
     LCurly,
     RCurly,
+    Get,
+    Set,
     LSquare,
     RSquare,
     LessEquals,
