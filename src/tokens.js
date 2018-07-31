@@ -105,6 +105,48 @@ const String = createKeywordToken({
   label: "'String'"
 });
 
+const Select = createKeywordToken({
+  name: "SELECT",
+  pattern: /SELECT/,
+  label: "'SELECT'"
+});
+
+const From = createKeywordToken({
+  name: "FROM",
+  pattern: /FROM/,
+  label: "'FROM'"
+});
+
+const Where = createKeywordToken({
+  name: "WHERE",
+  pattern: /WHERE/,
+  label: "'WHERE'"
+});
+
+const Limit = createKeywordToken({
+  name: "LIMIT",
+  pattern: /LIMIT/,
+  label: "'LIMIT'"
+});
+
+const GroupBy = createKeywordToken({
+  name: "GROUP BY",
+  pattern: /GROUP BY/,
+  label: "'GROUP BY'"
+});
+
+const Count = createKeywordToken({
+  name: "COUNT",
+  pattern: /COUNT/,
+  label: "'COUNT'"
+});
+
+const In = createKeywordToken({
+  name: "IN",
+  pattern: /IN/,
+  label: "'IN'"
+});
+
 const Void = createKeywordToken({
   name: "Void",
   pattern: /void/,
@@ -650,6 +692,13 @@ const allTokens = [
   Set,
   LSquare,
   RSquare,
+  Select,
+  From,
+  Where,
+  Limit,
+  GroupBy,
+  Count,
+  In,
   LessEquals,
   Less,
   GreaterEquals,
@@ -744,6 +793,13 @@ module.exports = {
     Set,
     LSquare,
     RSquare,
+    Select,
+    From,
+    Where,
+    Limit,
+    GroupBy,
+    Count,
+    In,
     LessEquals,
     Less,
     GreaterEquals,
