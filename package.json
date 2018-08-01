@@ -1,10 +1,10 @@
 {
-  "name": "chevrotain-java",
-  "version": "0.0.19",
-  "description": "java parser based on chevrotain",
+  "name": "chevrotain-apex",
+  "version": "0.0.1",
+  "description": "Salesforce Apex parser based on chevrotain. Forked from chevrotain-apex by Thorben von Hacht",
   "main": "src/index.js",
   "repository": "url",
-  "author": "Thorben von Hacht",
+  "author": "Nikita Chursin",
   "license": "MIT",
   "dependencies": {
     "chevrotain": "^3.2.0",
