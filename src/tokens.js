@@ -9,6 +9,10 @@ function FRAGMENT(name, def) {
   fragments[name] = xregexp.build(def, fragments);
 }
 
+function MAKE_PATTERN(def, flags) {
+  return xregexp.build(def, fragments, flags);
+}
+
 // The order of fragments definitions is important
 FRAGMENT("Digits", "[0-9]([0-9_]*[0-9])?");
 FRAGMENT("ExponentPart", "[eE][+-]?{{Digits}}");
@@ -26,6 +30,12 @@ function createKeywordToken(options) {
   options.longer_alt = Identifier;
   return createToken(options);
 }
+
+const TriggerNew = createKeywordToken({
+  name: "TriggerNew",
+  pattern: /Trigger\.new/,
+  label: "'Trigger.new'"
+});
 
 const Get = createKeywordToken({
   name: "Get",
@@ -129,10 +139,22 @@ const Limit = createKeywordToken({
   label: "'LIMIT'"
 });
 
-const GroupBy = createKeywordToken({
-  name: "GROUP BY",
-  pattern: /GROUP BY/,
-  label: "'GROUP BY'"
+const Group = createKeywordToken({
+  name: "GROUP",
+  pattern: /GROUP/,
+  label: "'GROUP'"
+});
+
+const Order = createKeywordToken({
+  name: "ORDER",
+  pattern: /ORDER/,
+  label: "'ORDER'"
+});
+
+const By = createKeywordToken({
+  name: "BY",
+  pattern: /BY/,
+  label: "'BY'"
 });
 
 const Count = createKeywordToken({
@@ -474,6 +496,26 @@ const PlusEquals = createToken({
   label: "'+='"
 });
 
+const FloatLiteral = createToken({
+  name: "FloatLiteral",
+  pattern: MAKE_PATTERN(
+    "-?({{Digits}}\\.{{Digits}}?|\\.{{Digits}}){{ExponentPart}}?[fFdD]?|{{Digits}}({{ExponentPart}}[fFdD]?|[fFdD])"
+  ),
+  label: "'FloatLiteral'"
+});
+
+const DecimalLiteral = createToken({
+  name: "DecimalLiteral",
+  pattern: MAKE_PATTERN("-?(0|[1-9]({{Digits}}?|_+{{Digits}}))[lL]?"),
+  label: "'DecimalLiteral'"
+});
+
+const StringLiteral = createToken({
+  name: "StringLiteral",
+  pattern: MAKE_PATTERN('"[^"\\\\]*(\\\\.[^"\\\\]*)*"'),
+  label: "'StringLiteral'"
+});
+
 const PlusPlus = createToken({
   name: "PlusPlus",
   pattern: /\+\+/,
@@ -662,6 +704,21 @@ const allTokens = [
   Instanceof,
   Class,
   Enum,
+  FloatLiteral,
+  DecimalLiteral,
+  StringLiteral,
+  Select,
+  From,
+  Where,
+  Limit,
+  Group,
+  Order,
+  By,
+  Count,
+  In,
+  Get,
+  Set,
+  TriggerNew,
   // The Identifier must appear after the keywords because all keywords are valid identifiers.
   Identifier,
   Dot,
@@ -688,17 +745,8 @@ const allTokens = [
   RBrace,
   LCurly,
   RCurly,
-  Get,
-  Set,
   LSquare,
   RSquare,
-  Select,
-  From,
-  Where,
-  Limit,
-  GroupBy,
-  Count,
-  In,
   LessEquals,
   Less,
   GreaterEquals,
@@ -764,6 +812,21 @@ module.exports = {
     Instanceof,
     Class,
     Enum,
+    FloatLiteral,
+    DecimalLiteral,
+    StringLiteral,
+    Get,
+    Set,
+    Select,
+    From,
+    Where,
+    Limit,
+    Group,
+    Order,
+    By,
+    Count,
+    In,
+    TriggerNew,
     Identifier,
     Dot,
     Comma,
@@ -789,17 +852,8 @@ module.exports = {
     RBrace,
     LCurly,
     RCurly,
-    Get,
-    Set,
     LSquare,
     RSquare,
-    Select,
-    From,
-    Where,
-    Limit,
-    GroupBy,
-    Count,
-    In,
     LessEquals,
     Less,
     GreaterEquals,
