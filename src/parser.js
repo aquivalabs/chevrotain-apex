@@ -28,52 +28,19 @@ class SelectParser extends chevrotain.Parser {
       let foundTypeDeclaration = false;
       $.OPTION(() => {
         $.MANY(() => $.SUBRULE($.annotation));
-        $.OR([
-          { ALT: () => $.SUBRULE($.packageDeclaration) },
-          {
-            ALT: () => {
-              $.MANY2(() => {
-                $.SUBRULE($.typeDeclaration);
-                foundTypeDeclaration = true;
-              });
-            }
-          }
-        ]);
+        $.MANY2(() => {
+          $.SUBRULE($.typeDeclaration);
+          foundTypeDeclaration = true;
+        });
       });
       $.OPTION2({
         GATE: () => !foundTypeDeclaration,
         DEF: () => {
           $.MANY3(() => {
-            $.SUBRULE2($.importDeclaration);
-          });
-          $.MANY4(() => {
             $.SUBRULE2($.typeDeclaration);
           });
         }
       });
-    });
-
-    // packageDeclaration
-    // : annotation* PACKAGE qualifiedName ';'
-    $.RULE("packageDeclaration", () => {
-      $.CONSUME(tokens.Package);
-      $.SUBRULE($.qualifiedName);
-      $.SUBRULE($.semiColon);
-    });
-
-    // importDeclaration
-    // : IMPORT STATIC? qualifiedName ('.' '*')? ';'
-    $.RULE("importDeclaration", () => {
-      $.CONSUME(tokens.Import);
-      $.OPTION(() => {
-        $.CONSUME(tokens.Static);
-      });
-      $.SUBRULE($.qualifiedName);
-      $.OPTION2(() => {
-        $.CONSUME(tokens.Dot);
-        $.CONSUME(tokens.Star);
-      });
-      $.SUBRULE($.semiColon);
     });
 
     // typeDeclaration
@@ -93,17 +60,11 @@ class SelectParser extends chevrotain.Parser {
 
     // modifier
     // : classOrInterfaceModifier
-    // | NATIVE
-    // | SYNCHRONIZED
     // | TRANSIENT
-    // | VOLATILE
     $.RULE("modifier", () => {
       $.OR([
         { ALT: () => $.SUBRULE($.classOrInterfaceModifier) },
-        { ALT: () => $.CONSUME(tokens.Native) },
-        { ALT: () => $.CONSUME(tokens.Synchronized) },
-        { ALT: () => $.CONSUME(tokens.Transient) },
-        { ALT: () => $.CONSUME(tokens.Volatile) }
+        { ALT: () => $.CONSUME(tokens.Transient) }
       ]);
     });
 
@@ -115,7 +76,6 @@ class SelectParser extends chevrotain.Parser {
     // | STATIC
     // | ABSTRACT
     // | FINAL    // FINAL for class only -- does not apply to interfaces
-    // | STRICTFP
     $.RULE("classOrInterfaceModifier", () => {
       $.OR([
         { ALT: () => $.SUBRULE($.annotation) },
@@ -124,8 +84,7 @@ class SelectParser extends chevrotain.Parser {
         { ALT: () => $.CONSUME(tokens.Private) },
         { ALT: () => $.CONSUME(tokens.Static) },
         { ALT: () => $.CONSUME(tokens.Abstract) },
-        { ALT: () => $.CONSUME(tokens.Final) },
-        { ALT: () => $.CONSUME(tokens.Strictfp) }
+        { ALT: () => $.CONSUME(tokens.Final) }
       ]);
     });
 
@@ -212,7 +171,7 @@ class SelectParser extends chevrotain.Parser {
     });
 
     // classDeclaration
-    // : CLASS IDENTIFIER typeParameters?
+    // : CLASS IDENTIFIER
     //   (EXTENDS typeType)?
     //   (IMPLEMENTS typeList)?
     //   classBody
@@ -220,13 +179,10 @@ class SelectParser extends chevrotain.Parser {
       $.CONSUME(tokens.Class);
       $.CONSUME(tokens.Identifier);
       $.OPTION(() => {
-        $.SUBRULE($.typeParameters);
-      });
-      $.OPTION2(() => {
         $.CONSUME(tokens.Extends);
         $.SUBRULE($.typeType);
       });
-      $.OPTION3(() => {
+      $.OPTION2(() => {
         $.CONSUME(tokens.Implements);
         $.SUBRULE($.typeList);
       });
@@ -369,10 +325,6 @@ class SelectParser extends chevrotain.Parser {
                         GATE: () => isConstructorDeclaration,
                         ALT: () => {
                           $.SUBRULE($.formalParameters);
-                          $.OPTION2(() => {
-                            $.CONSUME(tokens.Throws);
-                            $.SUBRULE($.qualifiedNameList);
-                          });
                           $.SUBRULE($.methodBody);
                           isFieldDeclaration = false;
                           isMethodDeclaration = false;
@@ -447,6 +399,9 @@ class SelectParser extends chevrotain.Parser {
                       $.CONSUME(tokens.Comma);
                       $.SUBRULE($.variableDeclarator);
                     });
+                    $.OPTION5(() => {
+                      $.SUBRULE1($.fieldGetSetProperties);
+                    });
                     $.SUBRULE($.semiColon);
                     if (firstType) {
                       firstType.isFieldDeclaration = true;
@@ -460,10 +415,6 @@ class SelectParser extends chevrotain.Parser {
                     $.MANY5(() => {
                       $.CONSUME3(tokens.LSquare);
                       $.CONSUME3(tokens.RSquare);
-                    });
-                    $.OPTION5(() => {
-                      $.CONSUME2(tokens.Throws);
-                      $.SUBRULE2($.qualifiedNameList);
                     });
                     $.SUBRULE2($.methodBody);
                     if (firstType) {
@@ -485,7 +436,6 @@ class SelectParser extends chevrotain.Parser {
 
     // methodDeclaration
     // : typeTypeOrVoid IDENTIFIER formalParameters ('[' ']')*
-    //   (THROWS qualifiedNameList)?
     //   methodBody
     $.RULE("methodDeclaration", () => {
       $.SUBRULE($.typeTypeOrVoid);
@@ -495,22 +445,14 @@ class SelectParser extends chevrotain.Parser {
         $.CONSUME(tokens.LSquare);
         $.CONSUME(tokens.RSquare);
       });
-      $.OPTION(() => {
-        $.CONSUME(tokens.Throws);
-        $.SUBRULE($.qualifiedNameList);
-      });
       $.SUBRULE($.methodBody);
     });
 
     // constructorDeclaration
-    // : IDENTIFIER formalParameters (THROWS qualifiedNameList)? block
+    // : IDENTIFIER formalParameters block
     $.RULE("constructorDeclaration", () => {
       $.CONSUME(tokens.Identifier);
       $.SUBRULE($.formalParameters);
-      $.OPTION(() => {
-        $.CONSUME(tokens.Throws);
-        $.SUBRULE($.qualifiedNameList);
-      });
       $.SUBRULE($.methodBody);
     });
 
@@ -524,12 +466,35 @@ class SelectParser extends chevrotain.Parser {
       ]);
     });
 
+    // fieldGetSetProperties
+    // { get; set; }
+    $.RULE("fieldGetSetProperties", () => {
+      $.CONSUME(tokens.LCurly);
+      $.OPTION(() => {
+        $.CONSUME1(tokens.Get);
+        $.OR([
+          { ALT: () => $.CONSUME2(tokens.SemiColon) },
+          { ALT: () => $.SUBRULE($.block) }
+        ]);
+      });
+      $.OPTION1(() => {
+        $.CONSUME3(tokens.Set);
+        $.OR1([
+          { ALT: () => $.CONSUME4(tokens.SemiColon) },
+          { ALT: () => $.SUBRULE1($.block) }
+        ]);
+      });
+    });
+
     // fieldDeclaration
     // : typeType variableDeclarators ';'
     $.RULE("fieldDeclaration", () => {
       $.SUBRULE($.typeType);
       $.SUBRULE($.variableDeclarators);
       $.SUBRULE($.semiColon);
+      $.OPTION(() => {
+        $.SUBRULE1($.fieldGetSetProperties);
+      });
     });
 
     // methodBody
@@ -714,10 +679,6 @@ class SelectParser extends chevrotain.Parser {
                     $.CONSUME(tokens.LSquare);
                     $.CONSUME(tokens.RSquare);
                   });
-                  $.OPTION3(() => {
-                    $.CONSUME(tokens.Throws);
-                    $.SUBRULE($.qualifiedNameList);
-                  });
                   $.SUBRULE($.methodBody);
                 }
               },
@@ -764,7 +725,6 @@ class SelectParser extends chevrotain.Parser {
     //   (typeParameters annotation*)?
     //   typeTypeOrVoid
     //   IDENTIFIER formalParameters ('[' ']')*
-    //   (THROWS qualifiedNameList)?
     //   methodBody
     $.RULE("interfaceMethodDeclaration", () => {
       $.MANY(() => {
@@ -783,10 +743,6 @@ class SelectParser extends chevrotain.Parser {
         $.CONSUME(tokens.LSquare);
         $.CONSUME(tokens.RSquare);
       });
-      $.OPTION2(() => {
-        $.CONSUME(tokens.Throws);
-        $.SUBRULE($.qualifiedNameList);
-      });
       $.SUBRULE($.methodBody);
     });
 
@@ -795,17 +751,13 @@ class SelectParser extends chevrotain.Parser {
     // : annotation
     // | PUBLIC
     // | ABSTRACT
-    // | DEFAULT
     // | STATIC
-    // | STRICTFP
     $.RULE("interfaceMethodModifier", () => {
       $.OR([
         { ALT: () => $.SUBRULE($.annotation) },
         { ALT: () => $.CONSUME(tokens.Public) },
         { ALT: () => $.CONSUME(tokens.Abstract) },
-        { ALT: () => $.CONSUME(tokens.Default) },
-        { ALT: () => $.CONSUME(tokens.Static) },
-        { ALT: () => $.CONSUME(tokens.Strictfp) }
+        { ALT: () => $.CONSUME(tokens.Static) }
       ]);
     });
 
@@ -976,22 +928,12 @@ class SelectParser extends chevrotain.Parser {
       $.CONSUME(tokens.Identifier);
       $.CONSUME(tokens.LBrace);
       $.CONSUME(tokens.RBrace);
-      $.OPTION(() => {
-        $.SUBRULE($.defaultValue);
-      });
     });
 
     // annotationConstantRest
     // : variableDeclarators
     $.RULE("annotationConstantRest", () => {
       $.SUBRULE($.variableDeclarators);
-    });
-
-    // defaultValue
-    // : DEFAULT elementValue
-    $.RULE("defaultValue", () => {
-      $.CONSUME(tokens.Default);
-      $.SUBRULE($.elementValue);
     });
 
     // typeList
@@ -1212,15 +1154,12 @@ class SelectParser extends chevrotain.Parser {
     });
 
     // formalParameter
-    // : variableModifier* typeType DOTDOTDOT? variableDeclaratorId
+    // : variableModifier* typeType variableDeclaratorId
     $.RULE("formalParameter", () => {
       $.MANY(() => {
         $.SUBRULE($.variableModifier);
       });
       $.SUBRULE($.typeType);
-      $.OPTION(() => {
-        $.CONSUME(tokens.DotDotDot);
-      });
       $.SUBRULE($.variableDeclaratorId);
     });
 
@@ -1327,8 +1266,6 @@ class SelectParser extends chevrotain.Parser {
     // | whileStatement
     // | doWhileStatement
     // | tryStatement
-    // | switchStatement
-    // | synchronizedStatement
     // | returnStatement
     // | throwStatement
     // | breakStatement
@@ -1344,8 +1281,6 @@ class SelectParser extends chevrotain.Parser {
         { ALT: () => $.SUBRULE($.whileStatement) },
         { ALT: () => $.SUBRULE($.doWhileStatement) },
         { ALT: () => $.SUBRULE($.tryStatement) },
-        { ALT: () => $.SUBRULE($.switchStatement) },
-        { ALT: () => $.SUBRULE($.synchronizedStatement) },
         { ALT: () => $.SUBRULE($.returnStatement) },
         { ALT: () => $.SUBRULE($.throwStatement) },
         { ALT: () => $.SUBRULE($.breakStatement) },
@@ -1426,30 +1361,6 @@ class SelectParser extends chevrotain.Parser {
           { ALT: () => $.SUBRULE2($.finallyBlock) }
         ]);
       });
-    });
-
-    // switchStatement
-    // : SWITCH '(' expression ')' '{' switchBlockStatementGroup* switchLabel* '}'
-    $.RULE("switchStatement", () => {
-      $.CONSUME(tokens.Switch);
-      $.CONSUME(tokens.LBrace);
-      $.SUBRULE($.expression);
-      $.CONSUME(tokens.RBrace);
-      $.CONSUME(tokens.LCurly);
-      $.MANY(() => {
-        $.SUBRULE($.switchBlockStatementGroup);
-      });
-      $.CONSUME(tokens.RCurly);
-    });
-
-    // synchronizedStatement
-    // : SYNCHRONIZED '(' expression ')' block
-    $.RULE("synchronizedStatement", () => {
-      $.CONSUME(tokens.Synchronized);
-      $.CONSUME(tokens.LBrace);
-      $.SUBRULE($.expression);
-      $.CONSUME(tokens.RBrace);
-      $.SUBRULE($.block);
     });
 
     // returnStatement
@@ -1577,43 +1488,6 @@ class SelectParser extends chevrotain.Parser {
       $.SUBRULE($.variableDeclaratorId);
       $.CONSUME(tokens.Equals);
       $.SUBRULE($.expression);
-    });
-
-    // switchBlockStatementGroup
-    // : switchLabel+ blockStatement*
-    $.RULE("switchBlockStatementGroup", () => {
-      $.SUBRULE($.switchLabel);
-      $.MANY(() => {
-        $.SUBRULE2($.switchLabel);
-      });
-      $.MANY2(() => {
-        $.SUBRULE2($.blockStatement);
-      });
-    });
-
-    // switchLabel
-    // : switchLabelCase
-    // | switchLabelDefault
-    $.RULE("switchLabel", () => {
-      $.OR([
-        { ALT: () => $.SUBRULE($.switchLabelCase) },
-        { ALT: () => $.SUBRULE($.switchLabelDefault) }
-      ]);
-    });
-
-    // switchLabelCase
-    // : CASE (expression | IDENTIFIER) ':'
-    $.RULE("switchLabelCase", () => {
-      $.CONSUME(tokens.Case);
-      $.SUBRULE($.expression);
-      $.CONSUME(tokens.Colon);
-    });
-
-    // switchLabelDefault
-    // : DEFAULT ':'
-    $.RULE("switchLabelDefault", () => {
-      $.CONSUME(tokens.Default);
-      $.CONSUME(tokens.Colon);
     });
 
     // forStatement
@@ -1813,7 +1687,6 @@ class SelectParser extends chevrotain.Parser {
     //     | ifElseExpressionRest
     //     | qualifiedExpressionRest
     //     | '->' lambdaBody // lambdaExpression
-    //     | methodReferenceRest
     //     | ( operatorExpressionRest )*
     //     )
     // | prefixExpression
@@ -1856,14 +1729,6 @@ class SelectParser extends chevrotain.Parser {
                   ]);
                 }
               },
-              {
-                // lambdaExpression
-                ALT: () => {
-                  $.CONSUME(tokens.Pointer);
-                  $.SUBRULE($.lambdaBody);
-                }
-              },
-              { ALT: () => $.SUBRULE($.methodReferenceRest) },
               {
                 ALT: () => {
                   $.MANY2(() => {
@@ -1980,7 +1845,6 @@ class SelectParser extends chevrotain.Parser {
 
       $.OR2([
         { ALT: () => $.SUBRULE($.qualifiedExpressionRest) },
-        { ALT: () => $.SUBRULE($.methodReferenceRest) },
         {
           ALT: () => {
             // or nothing
@@ -2022,16 +1886,6 @@ class SelectParser extends chevrotain.Parser {
           ALT: () => {
             $.CONSUME(tokens.MinusMinus);
           }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Tilde);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Exclamationmark);
-          }
         }
       ]);
       $.SUBRULE($.expression);
@@ -2050,14 +1904,6 @@ class SelectParser extends chevrotain.Parser {
       //       - LSquare/RSquare
       // -> only one expression
       $.OR([
-        {
-          // empty parameters lambda expression
-          ALT: () => {
-            $.CONSUME(tokens.RBrace);
-            $.CONSUME(tokens.Pointer);
-            $.SUBRULE($.lambdaBody);
-          }
-        },
         {
           ALT: () => {
             let formalParameters = false;
@@ -2095,13 +1941,6 @@ class SelectParser extends chevrotain.Parser {
 
             $.CONSUME2(tokens.RBrace);
             $.OR2([
-              // lambda expression
-              {
-                ALT: () => {
-                  $.CONSUME2(tokens.Pointer);
-                  $.SUBRULE2($.lambdaBody);
-                }
-              },
               {
                 GATE: () => !formalParameters,
                 ALT: () => {
@@ -2185,11 +2024,6 @@ class SelectParser extends chevrotain.Parser {
             $.CONSUME(tokens.Dash);
           }
         },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Percentage);
-          }
-        },
         // ('+'|'-')
         {
           ALT: () => {
@@ -2199,12 +2033,6 @@ class SelectParser extends chevrotain.Parser {
         {
           ALT: () => {
             $.CONSUME(tokens.Minus);
-          }
-        },
-        // ('<<')
-        {
-          ALT: () => {
-            $.CONSUME(tokens.LessLess);
           }
         },
         // ('<=' | '>=' | '>' | '>>' | '>>>' | '<')
@@ -2249,12 +2077,6 @@ class SelectParser extends chevrotain.Parser {
         {
           ALT: () => {
             $.CONSUME(tokens.And);
-          }
-        },
-        // | '^'
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Caret);
           }
         },
         // | '|'
@@ -2310,31 +2132,6 @@ class SelectParser extends chevrotain.Parser {
           ALT: () => {
             $.CONSUME(tokens.OrEquals);
           }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.CaretEquals);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.GreaterGreaterEquals);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.GreaterGreaterGreaterEquals);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.LessLessEquals);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.PercentageEquals);
-          }
         }
       ]);
     });
@@ -2350,35 +2147,6 @@ class SelectParser extends chevrotain.Parser {
           ALT: () => $.SUBRULE($.elementValueArrayInitializer)
         }
       ]);
-    });
-
-    // methodReferenceRest // Java 8
-    // : '::' typeArguments? (IDENTIFIER | NEW)
-    $.RULE("methodReferenceRest", () => {
-      $.CONSUME(tokens.ColonColon);
-      $.OPTION(() => {
-        $.SUBRULE($.typeArguments);
-      });
-      $.OR([
-        {
-          ALT: () => {
-            $.CONSUME(tokens.Identifier);
-          }
-        },
-        {
-          ALT: () => {
-            $.CONSUME(tokens.New);
-          }
-        }
-      ]);
-    });
-
-    // lambdaExpression // Java8
-    // : lambdaParameters '->' lambdaBody
-    $.RULE("lambdaExpression", () => {
-      $.SUBRULE($.lambdaParameters);
-      $.CONSUME(tokens.Pointer);
-      $.SUBRULE($.lambdaBody);
     });
 
     // lambdaParameters // Java8
@@ -2729,7 +2497,6 @@ class SelectParser extends chevrotain.Parser {
       $.OR([
         { ALT: () => $.SUBRULE($.integerLiteral) },
         { ALT: () => $.SUBRULE($.floatLiteral) },
-        { ALT: () => $.CONSUME(tokens.CharLiteral) },
         { ALT: () => $.SUBRULE($.stringLiteral) },
         { ALT: () => $.SUBRULE($.booleanLiteral) },
         { ALT: () => $.CONSUME(tokens.Null) }
@@ -2757,22 +2524,14 @@ class SelectParser extends chevrotain.Parser {
     // | OCT_LITERAL
     // | BINARY_LITERAL
     $.RULE("integerLiteral", () => {
-      $.OR([
-        { ALT: () => $.CONSUME(tokens.DecimalLiteral) },
-        { ALT: () => $.CONSUME(tokens.HexLiteral) },
-        { ALT: () => $.CONSUME(tokens.OctLiteral) },
-        { ALT: () => $.CONSUME(tokens.BinaryLiteral) }
-      ]);
+      $.CONSUME(tokens.DecimalLiteral);
     });
 
     // floatLiteral
     // : FLOAT_LITERAL
     // | HEX_FLOAT_LITERAL
     $.RULE("floatLiteral", () => {
-      $.OR([
-        { ALT: () => $.CONSUME(tokens.FloatLiteral) },
-        { ALT: () => $.CONSUME(tokens.HexFloatLiteral) }
-      ]);
+      $.CONSUME(tokens.FloatLiteral);
     });
 
     // primitiveType
@@ -2780,7 +2539,7 @@ class SelectParser extends chevrotain.Parser {
     // | CHAR
     // | BYTE
     // | SHORT
-    // | INT
+    // | INTEGER
     // | LONG
     // | FLOAT
     // | DOUBLE
@@ -2790,10 +2549,11 @@ class SelectParser extends chevrotain.Parser {
         { ALT: () => $.CONSUME(tokens.Char) },
         { ALT: () => $.CONSUME(tokens.Byte) },
         { ALT: () => $.CONSUME(tokens.Short) },
-        { ALT: () => $.CONSUME(tokens.Int) },
+        { ALT: () => $.CONSUME(tokens.Integer) },
         { ALT: () => $.CONSUME(tokens.Long) },
         { ALT: () => $.CONSUME(tokens.Float) },
-        { ALT: () => $.CONSUME(tokens.Double) }
+        { ALT: () => $.CONSUME(tokens.Double) },
+        { ALT: () => $.CONSUME(tokens.String) }
       ]);
     });
 
