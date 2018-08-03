@@ -1,16 +1,16 @@
 "use strict";
-const SelectLexer = require("./lexer");
-const JavaParser = require("./parser");
+const ApexLexer = require("./lexer");
+const ApexParser = require("./parser");
 const SQLToAstVisitor = require("./visitor");
 
-const parser = new JavaParser([]);
+const parser = new ApexParser([]);
 
 // Our visitor has no state, so a single instance is sufficient.
 const toAstVisitorInstance = new SQLToAstVisitor();
 
 function parse(inputText, entryPoint = parser => parser.compilationUnit()) {
   // Lex
-  const lexResult = SelectLexer.tokenize(inputText);
+  const lexResult = ApexLexer.tokenize(inputText);
   parser.input = lexResult.tokens;
 
   // Automatic CST created when parsing
