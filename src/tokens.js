@@ -31,12 +31,6 @@ function createKeywordToken(options) {
   return createToken(options);
 }
 
-const TriggerNew = createKeywordToken({
-  name: "TriggerNew",
-  pattern: /Trigger\.new/,
-  label: "'Trigger.new'"
-});
-
 const Get = createKeywordToken({
   name: "Get",
   pattern: /get/,
@@ -552,6 +546,12 @@ const Questionmark = createToken({
   label: "'?'"
 });
 
+const Exclamationmark = createToken({
+  name: "Exclamationmark",
+  pattern: /!/,
+  label: "'!'"
+});
+
 const ExclamationmarkEquals = createToken({
   name: "ExclamationmarkEquals",
   pattern: /!=/,
@@ -718,7 +718,6 @@ const allTokens = [
   In,
   Get,
   Set,
-  TriggerNew,
   // The Identifier must appear after the keywords because all keywords are valid identifiers.
   Identifier,
   Dot,
@@ -756,7 +755,8 @@ const allTokens = [
   Star,
   DashEquals,
   Dash,
-  Questionmark
+  Questionmark,
+  Exclamationmark
 ];
 
 module.exports = {
@@ -826,7 +826,6 @@ module.exports = {
     By,
     Count,
     In,
-    TriggerNew,
     Identifier,
     Dot,
     Comma,
@@ -863,6 +862,7 @@ module.exports = {
     Star,
     DashEquals,
     Dash,
-    Questionmark
+    Questionmark,
+    Exclamationmark
   }
 };

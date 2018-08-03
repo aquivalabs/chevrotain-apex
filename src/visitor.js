@@ -1,7 +1,7 @@
 "use strict";
-const JavaParser = require("./parser");
+const ApexParser = require("./parser");
 
-const parser = new JavaParser([]);
+const parser = new ApexParser([]);
 const BaseSQLVisitor = parser.getBaseCstVisitorConstructor();
 
 const MismatchedTokenException = require("chevrotain").MismatchedTokenException;
@@ -663,6 +663,21 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         constructorDeclaration: constructorDeclaration
       };
     }
+  }
+
+  fieldGetSetProperties(ctx) {
+    // const name = this.identifier(ctx.Identifier[0]);
+    // const parameters = this.visit(ctx.formalParameters);
+    // const throws = this.visit(ctx.qualifiedNameList);
+    // const body = this.visit(ctx.methodBody);
+
+    return {
+      // type: "CONSTRUCTOR_DECLARATION",
+      // name: name,
+      // parameters: parameters,
+      // throws: throws,
+      // body: body
+    };
   }
 
   fieldDeclaration(ctx) {
@@ -3635,33 +3650,6 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         value: value
       };
     }
-
-    if (ctx.HexLiteral) {
-      const value = ctx.HexLiteral[0].image;
-
-      return {
-        type: "HEX_LITERAL",
-        value: value
-      };
-    }
-
-    if (ctx.OctLiteral) {
-      const value = ctx.OctLiteral[0].image;
-
-      return {
-        type: "OCT_LITERAL",
-        value: value
-      };
-    }
-
-    if (ctx.BinaryLiteral) {
-      const value = ctx.BinaryLiteral[0].image;
-
-      return {
-        type: "BINARY_LITERAL",
-        value: value
-      };
-    }
   }
 
   floatLiteral(ctx) {
@@ -3673,24 +3661,6 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         value: value
       };
     }
-
-    if (ctx.HexFloatLiteral) {
-      const value = ctx.HexFloatLiteral[0].image;
-
-      return {
-        type: "HEX_FLOAT_LITERAL",
-        value: value
-      };
-    }
-  }
-
-  hexFloatLiteral(ctx) {
-    const value = ctx.HexFloatLiteral[0].image;
-
-    return {
-      type: "HEX_FLOAT_LITERAL",
-      value: value
-    };
   }
 
   primitiveType(ctx) {
@@ -3703,8 +3673,8 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       value = "byte";
     } else if (ctx.Short) {
       value = "short";
-    } else if (ctx.Int) {
-      value = "int";
+    } else if (ctx.Integer) {
+      value = "integer";
     } else if (ctx.Long) {
       value = "long";
     } else if (ctx.Float) {
