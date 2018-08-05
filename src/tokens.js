@@ -19,7 +19,23 @@ FRAGMENT('ExponentPart', '[eE][+-]?{{Digits}}')
 FRAGMENT('HexDigit', '[0-9a-fA-F]')
 FRAGMENT('HexDigits', "{{HexDigit}}(({{HexDigit}}|'_')*{{HexDigit}})?")
 
-const createToken = chevrotain.createToken
+const caseInsensitive = (regex) => {
+  const source = regex.source
+  let flags = regex.flags
+  if (flags) {
+    flags += flags.includes('i') ? '' : 'i'
+  } else {
+    flags = 'i'
+  }
+  return new RegExp(source, flags)
+}
+
+const createToken = (options) => {
+  if (options.pattern instanceof RegExp) {
+    options.pattern = caseInsensitive(options.pattern)
+  }
+  return chevrotain.createToken(options)
+}
 
 const Identifier = createToken({
   name: 'Identifier',
