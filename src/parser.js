@@ -1818,6 +1818,11 @@ class SelectParser extends chevrotain.Parser {
             $.CONSUME(tokens.MinusMinus)
           },
         },
+        {
+          ALT: () => {
+            $.CONSUME(tokens.Exclamationmark)
+          },
+        },
       ])
       $.SUBRULE($.expression)
     })
