@@ -1807,6 +1807,7 @@ class SelectParser extends chevrotain.Parser {
         { ALT: () => $.CONSUME(tokens.Super) },
         { ALT: () => $.SUBRULE($.creatorOptionalNonWildcardInnerCreator) },
         { ALT: () => $.SUBRULE($.explicitGenericInvocation) },
+        { ALT: () => $.CONSUME(tokens.New) },
       ])
 
       $.OR2([
