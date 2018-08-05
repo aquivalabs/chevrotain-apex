@@ -2179,7 +2179,10 @@ class SelectParser extends chevrotain.Parser {
     // identifierNameElement
     // : IDENTIFIER typeArgumentsOrDiamond?
     $.RULE('identifierNameElement', () => {
-      $.CONSUME(tokens.Identifier)
+      $.OR([
+        { ALT: () => $.CONSUME(tokens.Identifier) },
+        { ALT: () => $.CONSUME(tokens.New) }, // KLUDGE to allow Trigger.new
+      ])
       $.OPTION(() => {
         $.SUBRULE($.nonWildcardTypeArgumentsOrDiamond)
       })
