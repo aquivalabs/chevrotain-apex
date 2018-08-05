@@ -381,10 +381,14 @@ class SelectParser extends chevrotain.Parser {
                     $.CONSUME(tokens.Comma)
                     $.SUBRULE($.variableDeclarator)
                   })
-                  $.OPTION5(() => {
-                    $.SUBRULE1($.fieldGetSetProperties)
-                  })
-                  $.SUBRULE($.semiColon)
+                  $.OR6([
+                    {
+                      ALT: () => $.SUBRULE2($.fieldGetSetProperties),
+                    },
+                    {
+                      ALT: () => $.SUBRULE3($.semiColon),
+                    },
+                  ])
                   if (firstType) {
                     firstType.isFieldDeclaration = true
                   }
@@ -459,6 +463,7 @@ class SelectParser extends chevrotain.Parser {
         $.CONSUME3(tokens.Set)
         $.OR1([{ ALT: () => $.CONSUME4(tokens.SemiColon) }, { ALT: () => $.SUBRULE1($.block) }])
       })
+      $.CONSUME(tokens.RCurly)
     })
 
     // fieldDeclaration
@@ -466,10 +471,14 @@ class SelectParser extends chevrotain.Parser {
     $.RULE('fieldDeclaration', () => {
       $.SUBRULE($.typeType)
       $.SUBRULE($.variableDeclarators)
-      $.SUBRULE($.semiColon)
-      $.OPTION(() => {
-        $.SUBRULE1($.fieldGetSetProperties)
-      })
+      $.OR([
+        {
+          ALT: () => $.SUBRULE1($.fieldGetSetProperties),
+        },
+        {
+          ALT: () => $.SUBRULE($.semiColon),
+        },
+      ])
     })
 
     // methodBody
