@@ -1,4 +1,4 @@
-"use strict";
+'use strict'
 
 /**
  * A template for generating syntax diagrams html file.
@@ -10,18 +10,18 @@
  * - open the "generated_diagrams.html" that will be created in this folder using
  *   your favorite browser.
  */
-const path = require("path");
-const fs = require("fs");
-const chevrotain = require("chevrotain");
-const JavaParser = require("./parser");
+const path = require('path')
+const fs = require('fs')
+const chevrotain = require('chevrotain')
+const JavaParser = require('./parser')
 
 // extract the serialized grammar.
-const parserInstance = new JavaParser([]);
-const serializedGrammar = parserInstance.getSerializedGastProductions();
+const parserInstance = new JavaParser([])
+const serializedGrammar = parserInstance.getSerializedGastProductions()
 
 // create the HTML Text
-const htmlText = chevrotain.createSyntaxDiagramsCode(serializedGrammar);
+const htmlText = chevrotain.createSyntaxDiagramsCode(serializedGrammar)
 
 // Write the HTML file to disk
-const outPath = path.resolve(__dirname, "./");
-fs.writeFileSync(outPath + "/../generated_diagrams.html", htmlText);
+const outPath = path.resolve(__dirname, './')
+fs.writeFileSync(outPath + '/../generated_diagrams.html', htmlText)

@@ -1,0 +1,37 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "node": true,
+    "jest": true
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "experimentalObjectRestSpread": true
+    },
+    "sourceType": "module",
+    "ecmaVersion": 8
+  },
+  "plugins": ["prettier"],
+  "extends": ["plugin:prettier/recommended"],
+  "rules": {
+    "prettier/prettier": 1,
+    "no-unused-expressions": 2,
+    "no-unused-vars": [2, { "vars": "all", "args": "none", "ignoreRestSiblings": true }],
+    "no-unused-labels": 2,
+    "arrow-parens": [2, "always"],
+    "arrow-spacing": [1, { "before": true, "after": true }],
+    "no-cond-assign": [2, "except-parens"],
+    "no-console": 0,
+    "prefer-const": 1,
+    "prefer-spread": 1,
+    "no-var": 1,
+    "no-undef": 2,
+    "no-debugger": 1,
+    "no-class-assign": 2,
+    "no-const-assign": 2,
+    "no-this-before-super": 1
+  }
+}

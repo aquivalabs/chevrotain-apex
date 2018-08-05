@@ -1,647 +1,647 @@
-"use strict";
-const chevrotain = require("chevrotain");
-const xregexp = require("xregexp");
+'use strict'
+const chevrotain = require('chevrotain')
+const xregexp = require('xregexp')
 
 // A little mini DSL for easier lexer definition using xRegExp.
-const fragments = {};
+const fragments = {}
 
 function FRAGMENT(name, def) {
-  fragments[name] = xregexp.build(def, fragments);
+  fragments[name] = xregexp.build(def, fragments)
 }
 
 function MAKE_PATTERN(def, flags) {
-  return xregexp.build(def, fragments, flags);
+  return xregexp.build(def, fragments, flags)
 }
 
 // The order of fragments definitions is important
-FRAGMENT("Digits", "[0-9]([0-9_]*[0-9])?");
-FRAGMENT("ExponentPart", "[eE][+-]?{{Digits}}");
-FRAGMENT("HexDigit", "[0-9a-fA-F]");
-FRAGMENT("HexDigits", "{{HexDigit}}(({{HexDigit}}|'_')*{{HexDigit}})?");
+FRAGMENT('Digits', '[0-9]([0-9_]*[0-9])?')
+FRAGMENT('ExponentPart', '[eE][+-]?{{Digits}}')
+FRAGMENT('HexDigit', '[0-9a-fA-F]')
+FRAGMENT('HexDigits', "{{HexDigit}}(({{HexDigit}}|'_')*{{HexDigit}})?")
 
-const createToken = chevrotain.createToken;
+const createToken = chevrotain.createToken
 
 const Identifier = createToken({
-  name: "Identifier",
-  pattern: /[a-zA-Z_\\$][a-zA-Z_\\$0-9]*/
-});
+  name: 'Identifier',
+  pattern: /[a-zA-Z_\\$][a-zA-Z_\\$0-9]*/,
+})
 
 function createKeywordToken(options) {
-  options.longer_alt = Identifier;
-  return createToken(options);
+  options.longer_alt = Identifier
+  return createToken(options)
 }
 
 const Get = createKeywordToken({
-  name: "Get",
+  name: 'Get',
   pattern: /get/,
-  label: "'get'"
-});
+  label: "'get'",
+})
 
 const Set = createKeywordToken({
-  name: "Set",
+  name: 'Set',
   pattern: /set/,
-  label: "'set'"
-});
+  label: "'set'",
+})
 
 const Catch = createKeywordToken({
-  name: "Catch",
+  name: 'Catch',
   pattern: /catch/,
-  label: "'catch'"
-});
+  label: "'catch'",
+})
 
 const Finally = createKeywordToken({
-  name: "Finally",
+  name: 'Finally',
   pattern: /finally/,
-  label: "'finally'"
-});
+  label: "'finally'",
+})
 
 const Boolean = createKeywordToken({
-  name: "Boolean",
+  name: 'Boolean',
   pattern: /Boolean/,
-  label: "'Boolean'"
-});
+  label: "'Boolean'",
+})
 
 const Char = createKeywordToken({
-  name: "Char",
+  name: 'Char',
   pattern: /Char/,
-  label: "'Char'"
-});
+  label: "'Char'",
+})
 
 const Byte = createKeywordToken({
-  name: "Byte",
+  name: 'Byte',
   pattern: /Byte/,
-  label: "'Byte'"
-});
+  label: "'Byte'",
+})
 
 const Short = createKeywordToken({
-  name: "Short",
+  name: 'Short',
   pattern: /Short/,
-  label: "'Short'"
-});
+  label: "'Short'",
+})
 
 const Integer = createKeywordToken({
-  name: "Integer",
+  name: 'Integer',
   pattern: /Integer/,
-  label: "'Integer'"
-});
+  label: "'Integer'",
+})
 
 const Long = createKeywordToken({
-  name: "Long",
+  name: 'Long',
   pattern: /Long/,
-  label: "'Long'"
-});
+  label: "'Long'",
+})
 
 const Float = createKeywordToken({
-  name: "Float",
+  name: 'Float',
   pattern: /Float/,
-  label: "'Float'"
-});
+  label: "'Float'",
+})
 
 const Double = createKeywordToken({
-  name: "Double",
+  name: 'Double',
   pattern: /Double/,
-  label: "'Double'"
-});
+  label: "'Double'",
+})
 
 const String = createKeywordToken({
-  name: "String",
+  name: 'String',
   pattern: /String/,
-  label: "'String'"
-});
+  label: "'String'",
+})
 
 const Select = createKeywordToken({
-  name: "SELECT",
+  name: 'SELECT',
   pattern: /SELECT/,
-  label: "'SELECT'"
-});
+  label: "'SELECT'",
+})
 
 const From = createKeywordToken({
-  name: "FROM",
+  name: 'FROM',
   pattern: /FROM/,
-  label: "'FROM'"
-});
+  label: "'FROM'",
+})
 
 const Where = createKeywordToken({
-  name: "WHERE",
+  name: 'WHERE',
   pattern: /WHERE/,
-  label: "'WHERE'"
-});
+  label: "'WHERE'",
+})
 
 const Limit = createKeywordToken({
-  name: "LIMIT",
+  name: 'LIMIT',
   pattern: /LIMIT/,
-  label: "'LIMIT'"
-});
+  label: "'LIMIT'",
+})
 
 const Group = createKeywordToken({
-  name: "GROUP",
+  name: 'GROUP',
   pattern: /GROUP/,
-  label: "'GROUP'"
-});
+  label: "'GROUP'",
+})
 
 const Order = createKeywordToken({
-  name: "ORDER",
+  name: 'ORDER',
   pattern: /ORDER/,
-  label: "'ORDER'"
-});
+  label: "'ORDER'",
+})
 
 const By = createKeywordToken({
-  name: "BY",
+  name: 'BY',
   pattern: /BY/,
-  label: "'BY'"
-});
+  label: "'BY'",
+})
 
 const Count = createKeywordToken({
-  name: "COUNT",
+  name: 'COUNT',
   pattern: /COUNT/,
-  label: "'COUNT'"
-});
+  label: "'COUNT'",
+})
 
 const In = createKeywordToken({
-  name: "IN",
+  name: 'IN',
   pattern: /IN/,
-  label: "'IN'"
-});
+  label: "'IN'",
+})
 
 const Void = createKeywordToken({
-  name: "Void",
+  name: 'Void',
   pattern: /void/,
-  label: "'void'"
-});
+  label: "'void'",
+})
 
 const Public = createKeywordToken({
-  name: "Public",
+  name: 'Public',
   pattern: /public/,
-  label: "'public'"
-});
+  label: "'public'",
+})
 
 const Protected = createKeywordToken({
-  name: "Protected",
+  name: 'Protected',
   pattern: /protected/,
-  label: "'protected'"
-});
+  label: "'protected'",
+})
 
 const Private = createKeywordToken({
-  name: "Private",
+  name: 'Private',
   pattern: /private/,
-  label: "'private'"
-});
+  label: "'private'",
+})
 
 const Static = createKeywordToken({
-  name: "Static",
+  name: 'Static',
   pattern: /static/,
-  label: "'static'"
-});
+  label: "'static'",
+})
 
 const Abstract = createKeywordToken({
-  name: "Abstract",
+  name: 'Abstract',
   pattern: /abstract/,
-  label: "'abstract'"
-});
+  label: "'abstract'",
+})
 
 const Final = createKeywordToken({
-  name: "Final",
+  name: 'Final',
   pattern: /final/,
-  label: "'final'"
-});
+  label: "'final'",
+})
 
 const Transient = createKeywordToken({
-  name: "Transient",
+  name: 'Transient',
   pattern: /transient/,
-  label: "'transient'"
-});
+  label: "'transient'",
+})
 
 const Extends = createKeywordToken({
-  name: "Extends",
+  name: 'Extends',
   pattern: /extends/,
-  label: "'extends'"
-});
+  label: "'extends'",
+})
 
 const Implements = createKeywordToken({
-  name: "Implements",
+  name: 'Implements',
   pattern: /implements/,
-  label: "'implements'"
-});
+  label: "'implements'",
+})
 
 const New = createKeywordToken({
-  name: "New",
+  name: 'New',
   pattern: /new/,
-  label: "'new'"
-});
+  label: "'new'",
+})
 
 const This = createKeywordToken({
-  name: "This",
+  name: 'This',
   pattern: /this/,
-  label: "'this'"
-});
+  label: "'this'",
+})
 
 const Super = createKeywordToken({
-  name: "Super",
+  name: 'Super',
   pattern: /super/,
-  label: "'super'"
-});
+  label: "'super'",
+})
 
 const Throw = createKeywordToken({
-  name: "Throw",
+  name: 'Throw',
   pattern: /throw/,
-  label: "'throw'"
-});
+  label: "'throw'",
+})
 
 const Return = createKeywordToken({
-  name: "Return",
+  name: 'Return',
   pattern: /return/,
-  label: "'return'"
-});
+  label: "'return'",
+})
 
 const Break = createKeywordToken({
-  name: "Break",
+  name: 'Break',
   pattern: /break/,
-  label: "'break'"
-});
+  label: "'break'",
+})
 
 const Continue = createKeywordToken({
-  name: "Continue",
+  name: 'Continue',
   pattern: /continue/,
-  label: "'continue'"
-});
+  label: "'continue'",
+})
 
 const If = createKeywordToken({
-  name: "If",
+  name: 'If',
   pattern: /if/,
-  label: "'if'"
-});
+  label: "'if'",
+})
 
 const Else = createKeywordToken({
-  name: "Else",
+  name: 'Else',
   pattern: /else/,
-  label: "'else'"
-});
+  label: "'else'",
+})
 
 const While = createKeywordToken({
-  name: "While",
+  name: 'While',
   pattern: /while/,
-  label: "'while'"
-});
+  label: "'while'",
+})
 
 const Do = createKeywordToken({
-  name: "Do",
+  name: 'Do',
   pattern: /do/,
-  label: "'do'"
-});
+  label: "'do'",
+})
 
 const Try = createKeywordToken({
-  name: "Try",
+  name: 'Try',
   pattern: /try/,
-  label: "'try'"
-});
+  label: "'try'",
+})
 
 const Switch = createKeywordToken({
-  name: "Switch",
+  name: 'Switch',
   pattern: /switch/,
-  label: "'switch'"
-});
+  label: "'switch'",
+})
 
 const For = createKeywordToken({
-  name: "For",
+  name: 'For',
   pattern: /for/,
-  label: "'for'"
-});
+  label: "'for'",
+})
 
 const True = createKeywordToken({
-  name: "True",
+  name: 'True',
   pattern: /true/,
-  label: "'true'"
-});
+  label: "'true'",
+})
 
 const False = createKeywordToken({
-  name: "False",
+  name: 'False',
   pattern: /false/,
-  label: "'false'"
-});
+  label: "'false'",
+})
 
 const Null = createKeywordToken({
-  name: "Null",
+  name: 'Null',
   pattern: /null/,
-  label: "'null'"
-});
+  label: "'null'",
+})
 
 const Assert = createKeywordToken({
-  name: "Assert",
+  name: 'Assert',
   pattern: /assert/,
-  label: "'assert'"
-});
+  label: "'assert'",
+})
 
 const Instanceof = createKeywordToken({
-  name: "Instanceof",
+  name: 'Instanceof',
   pattern: /instanceof/,
-  label: "'instanceof'"
-});
+  label: "'instanceof'",
+})
 
 const Class = createKeywordToken({
-  name: "Class",
+  name: 'Class',
   pattern: /class/,
-  label: "'class'"
-});
+  label: "'class'",
+})
 
 const Enum = createKeywordToken({
-  name: "Enum",
+  name: 'Enum',
   pattern: /enum/,
-  label: "'enum'"
-});
+  label: "'enum'",
+})
 
 const Interface = createKeywordToken({
-  name: "Interface",
+  name: 'Interface',
   pattern: /interface/,
-  label: "'interface'"
-});
+  label: "'interface'",
+})
 
 const LBrace = createToken({
-  name: "LBrace",
+  name: 'LBrace',
   pattern: /\(/,
-  label: "'('"
-});
+  label: "'('",
+})
 
 const RBrace = createToken({
-  name: "RBrace",
+  name: 'RBrace',
   pattern: /\)/,
-  label: "')'"
-});
+  label: "')'",
+})
 
 const LCurly = createToken({
-  name: "LCurly",
+  name: 'LCurly',
   // using a string literal to get around a bug in regexp-to-ast
   // so lexer optimizations can be enabled.
-  pattern: "{",
-  label: "'{'"
-});
+  pattern: '{',
+  label: "'{'",
+})
 
 const RCurly = createToken({
-  name: "RCurly",
+  name: 'RCurly',
   pattern: /}/,
-  label: "'}'"
-});
+  label: "'}'",
+})
 
 const LSquare = createToken({
-  name: "LSquare",
+  name: 'LSquare',
   pattern: /\[/,
-  label: "'['"
-});
+  label: "'['",
+})
 
 const RSquare = createToken({
-  name: "RSquare",
+  name: 'RSquare',
   pattern: /]/,
-  label: "']'"
-});
+  label: "']'",
+})
 
 const Less = createToken({
-  name: "Less",
+  name: 'Less',
   pattern: /</,
-  label: "'<'"
-});
+  label: "'<'",
+})
 
 const LessEquals = createToken({
-  name: "LessEquals",
+  name: 'LessEquals',
   pattern: /<=/,
-  label: "'<='"
-});
+  label: "'<='",
+})
 
 const Greater = createToken({
-  name: "Greater",
+  name: 'Greater',
   pattern: />/,
-  label: "'>'"
-});
+  label: "'>'",
+})
 
 const GreaterEquals = createToken({
-  name: "GreaterEquals",
+  name: 'GreaterEquals',
   pattern: />=/,
-  label: "'>='"
-});
+  label: "'>='",
+})
 
 const Dot = createToken({
-  name: "Dot",
+  name: 'Dot',
   pattern: /\./,
-  label: "'.'"
-});
+  label: "'.'",
+})
 
 const Comma = createToken({
-  name: "Comma",
+  name: 'Comma',
   pattern: /,/,
-  label: "','"
-});
+  label: "','",
+})
 
 const SemiColonWithFollowEmptyLine = createToken({
-  name: "SemiColonWithFollowEmptyLine",
+  name: 'SemiColonWithFollowEmptyLine',
   pattern: /;[ \t]*(\r\n|\r[^\n]|\n)[ \t]*(\r\n|\r|\n)/,
   label: "';'",
-  line_breaks: true
-});
+  line_breaks: true,
+})
 
 const SemiColon = createToken({
-  name: "SemiColon",
+  name: 'SemiColon',
   pattern: /;/,
-  label: "';'"
-});
+  label: "';'",
+})
 
 const Colon = createToken({
-  name: "Colon",
+  name: 'Colon',
   pattern: /:/,
-  label: "':'"
-});
+  label: "':'",
+})
 
 const Equals = createToken({
-  name: "Equals",
+  name: 'Equals',
   pattern: /=/,
-  label: "'='"
-});
+  label: "'='",
+})
 
 const EqualsEquals = createToken({
-  name: "EqualsEquals",
+  name: 'EqualsEquals',
   pattern: /==/,
-  label: "'=='"
-});
+  label: "'=='",
+})
 
 const Minus = createToken({
-  name: "Minus",
+  name: 'Minus',
   pattern: /-/,
-  label: "'-'"
-});
+  label: "'-'",
+})
 
 const MinusEquals = createToken({
-  name: "MinusEquals",
+  name: 'MinusEquals',
   pattern: /-=/,
-  label: "'-='"
-});
+  label: "'-='",
+})
 
 const MinusMinus = createToken({
-  name: "MinusMinus",
+  name: 'MinusMinus',
   pattern: /--/,
-  label: "'--'"
-});
+  label: "'--'",
+})
 
 const Plus = createToken({
-  name: "Plus",
+  name: 'Plus',
   pattern: /\+/,
-  label: "'+'"
-});
+  label: "'+'",
+})
 
 const PlusEquals = createToken({
-  name: "PlusEquals",
+  name: 'PlusEquals',
   pattern: /\+=/,
-  label: "'+='"
-});
+  label: "'+='",
+})
 
 const FloatLiteral = createToken({
-  name: "FloatLiteral",
+  name: 'FloatLiteral',
   pattern: MAKE_PATTERN(
-    "-?({{Digits}}\\.{{Digits}}?|\\.{{Digits}}){{ExponentPart}}?[fFdD]?|{{Digits}}({{ExponentPart}}[fFdD]?|[fFdD])"
+    '-?({{Digits}}\\.{{Digits}}?|\\.{{Digits}}){{ExponentPart}}?[fFdD]?|{{Digits}}({{ExponentPart}}[fFdD]?|[fFdD])'
   ),
-  label: "'FloatLiteral'"
-});
+  label: "'FloatLiteral'",
+})
 
 const DecimalLiteral = createToken({
-  name: "DecimalLiteral",
-  pattern: MAKE_PATTERN("-?(0|[1-9]({{Digits}}?|_+{{Digits}}))[lL]?"),
-  label: "'DecimalLiteral'"
-});
+  name: 'DecimalLiteral',
+  pattern: MAKE_PATTERN('-?(0|[1-9]({{Digits}}?|_+{{Digits}}))[lL]?'),
+  label: "'DecimalLiteral'",
+})
 
 const StringLiteral = createToken({
-  name: "StringLiteral",
+  name: 'StringLiteral',
   pattern: MAKE_PATTERN('"[^"\\\\]*(\\\\.[^"\\\\]*)*"'),
-  label: "'StringLiteral'"
-});
+  label: "'StringLiteral'",
+})
 
 const PlusPlus = createToken({
-  name: "PlusPlus",
+  name: 'PlusPlus',
   pattern: /\+\+/,
-  label: "'++'"
-});
+  label: "'++'",
+})
 
 const And = createToken({
-  name: "And",
+  name: 'And',
   pattern: /&/,
-  label: "'&'"
-});
+  label: "'&'",
+})
 
 const AndAnd = createToken({
-  name: "AndAnd",
+  name: 'AndAnd',
   pattern: /&&/,
-  label: "'&&'"
-});
+  label: "'&&'",
+})
 
 const AndEquals = createToken({
-  name: "AndEquals",
+  name: 'AndEquals',
   pattern: /&=/,
-  label: "'&='"
-});
+  label: "'&='",
+})
 
 const At = createToken({
-  name: "At",
+  name: 'At',
   pattern: /@/,
-  label: "'@'"
-});
+  label: "'@'",
+})
 
 const Questionmark = createToken({
-  name: "Questionmark",
+  name: 'Questionmark',
   pattern: /\?/,
-  label: "'?'"
-});
+  label: "'?'",
+})
 
 const Exclamationmark = createToken({
-  name: "Exclamationmark",
+  name: 'Exclamationmark',
   pattern: /!/,
-  label: "'!'"
-});
+  label: "'!'",
+})
 
 const ExclamationmarkEquals = createToken({
-  name: "ExclamationmarkEquals",
+  name: 'ExclamationmarkEquals',
   pattern: /!=/,
-  label: "'!='"
-});
+  label: "'!='",
+})
 
 const Or = createToken({
-  name: "Or",
+  name: 'Or',
   pattern: /\|/,
-  label: "'|'"
-});
+  label: "'|'",
+})
 
 const OrEquals = createToken({
-  name: "OrEquals",
+  name: 'OrEquals',
   pattern: /\|=/,
-  label: "'|='"
-});
+  label: "'|='",
+})
 
 const OrOr = createToken({
-  name: "OrOr",
+  name: 'OrOr',
   pattern: /\|\|/,
-  label: "'||'"
-});
+  label: "'||'",
+})
 
 const Star = createToken({
-  name: "Star",
+  name: 'Star',
   pattern: /\*/,
-  label: "'*'"
-});
+  label: "'*'",
+})
 
 const StarEquals = createToken({
-  name: "StarEquals",
+  name: 'StarEquals',
   pattern: /\*=/,
-  label: "'*='"
-});
+  label: "'*='",
+})
 
 const Dash = createToken({
-  name: "Dash",
+  name: 'Dash',
   pattern: /\//,
-  label: "'/'"
-});
+  label: "'/'",
+})
 
 const DashEquals = createToken({
-  name: "DashEquals",
+  name: 'DashEquals',
   pattern: /\/=/,
-  label: "'/='"
-});
+  label: "'/='",
+})
 
 const LineComment = createToken({
-  name: "LineComment",
-  pattern: /\/\/[^\n\r]*/
-});
+  name: 'LineComment',
+  pattern: /\/\/[^\n\r]*/,
+})
 
 const LineCommentStandalone = createToken({
-  name: "LineCommentStandalone",
+  name: 'LineCommentStandalone',
   // TODO: I think the s* in the end is meant to be \s*
   pattern: /\/\/[^\n\r]*((\n|[\r][^\n]|\r\n)s*){2,}/,
-  line_breaks: true
-});
+  line_breaks: true,
+})
 
 const JavaDocComment = createToken({
-  name: "JavaDocComment",
+  name: 'JavaDocComment',
   pattern: /\/\*\*([^*]|\*(?!\/))*\*\//,
-  line_breaks: true
-});
+  line_breaks: true,
+})
 
 const JavaDocCommentStandalone = createToken({
-  name: "JavaDocCommentStandalone",
+  name: 'JavaDocCommentStandalone',
   pattern: /\/\*\*([^*]|\*(?!\/))*\*\/(((\n)|([\r][^\n])|(\r\n))\s*){2,}/,
-  line_breaks: true
-});
+  line_breaks: true,
+})
 
 const TraditionalComment = createToken({
-  name: "TraditionalComment",
+  name: 'TraditionalComment',
   pattern: /\/\*([^*]|\*(?!\/))*\*\//,
-  line_breaks: true
-});
+  line_breaks: true,
+})
 
 const TraditionalCommentStandalone = createToken({
-  name: "TraditionalCommentStandalone",
+  name: 'TraditionalCommentStandalone',
   pattern: /\/\*([^*]|\*(?!\/))*\*\/(((\n)|([\r][^\n])|(\r\n))\s*){2,}/,
-  line_breaks: true
-});
+  line_breaks: true,
+})
 
 const WhiteSpace = createToken({
-  name: "WhiteSpace",
+  name: 'WhiteSpace',
   pattern: /\s+/,
   group: chevrotain.Lexer.SKIPPED,
-  line_breaks: true
-});
+  line_breaks: true,
+})
 
 // | PUBLIC
 // | PROTECTED
@@ -756,8 +756,8 @@ const allTokens = [
   DashEquals,
   Dash,
   Questionmark,
-  Exclamationmark
-];
+  Exclamationmark,
+]
 
 module.exports = {
   allTokens,
@@ -863,6 +863,6 @@ module.exports = {
     DashEquals,
     Dash,
     Questionmark,
-    Exclamationmark
-  }
-};
+    Exclamationmark,
+  },
+}
