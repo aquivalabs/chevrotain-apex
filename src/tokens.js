@@ -48,12 +48,14 @@ function createKeywordToken(options) {
 }
 
 const Get = createKeywordToken({
+  categories: Identifier,
   name: 'Get',
   pattern: /get/,
   label: "'get'",
 })
 
 const Set = createKeywordToken({
+  categories: Identifier,
   name: 'Set',
   pattern: /set/,
   label: "'set'",
