@@ -13,10 +13,10 @@
 const path = require('path')
 const fs = require('fs')
 const chevrotain = require('chevrotain')
-const JavaParser = require('./parser')
+const ApexParser = require('./parser')
 
 // extract the serialized grammar.
-const parserInstance = new JavaParser([])
+const parserInstance = new ApexParser([])
 const serializedGrammar = parserInstance.getSerializedGastProductions()
 
 // create the HTML Text
