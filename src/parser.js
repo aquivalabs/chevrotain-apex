@@ -177,32 +177,6 @@ class SelectParser extends chevrotain.Parser {
       $.SUBRULE($.classBody)
     })
 
-    // typeParameters
-    // : '<' typeParameter (',' typeParameter)* '>'
-    $.RULE('typeParameters', () => {
-      $.CONSUME(tokens.Less)
-      $.AT_LEAST_ONE_SEP({
-        SEP: tokens.Comma,
-        DEF: () => {
-          $.SUBRULE($.typeParameter)
-        },
-      })
-      $.CONSUME(tokens.Greater)
-    })
-
-    // typeParameter
-    // : annotation* IDENTIFIER (EXTENDS typeBound)?
-    $.RULE('typeParameter', () => {
-      $.MANY(() => {
-        $.SUBRULE($.annotation)
-      })
-      $.CONSUME(tokens.Identifier)
-      $.OPTION(() => {
-        $.CONSUME(tokens.Extends)
-        $.SUBRULE($.typeBound)
-      })
-    })
-
     // typeBound
     // : typeType ('&' typeType)*
     $.RULE('typeBound', () => {
@@ -443,9 +417,8 @@ class SelectParser extends chevrotain.Parser {
     })
 
     // genericMethodDeclarationOrGenericConstructorDeclaration
-    // : typeParameters methodDeclaration
+    // : methodDeclaration
     $.RULE('genericMethodDeclarationOrGenericConstructorDeclaration', () => {
-      $.SUBRULE($.typeParameters)
       $.OR([
         { ALT: () => $.SUBRULE($.methodDeclaration) },
         { ALT: () => $.SUBRULE($.constructorDeclaration) },
@@ -553,13 +526,10 @@ class SelectParser extends chevrotain.Parser {
     })
 
     // interfaceDeclaration
-    // : INTERFACE IDENTIFIER typeParameters? (EXTENDS typeList)? interfaceBody
+    // : INTERFACE IDENTIFIER (EXTENDS typeList)? interfaceBody
     $.RULE('interfaceDeclaration', () => {
       $.CONSUME(tokens.Interface)
       $.CONSUME(tokens.Identifier)
-      $.OPTION(() => {
-        $.SUBRULE($.typeParameters)
-      })
       $.OPTION2(() => {
         $.CONSUME(tokens.Extends)
         $.SUBRULE($.typeList)
@@ -616,10 +586,6 @@ class SelectParser extends chevrotain.Parser {
             // interfaceMethodDeclaration
             $.MANY(() => {
               $.SUBRULE($.interfaceMethodModifier)
-              isConstantDeclaration = false
-            })
-            $.OPTION(() => {
-              $.SUBRULE($.typeParameters)
               isConstantDeclaration = false
             })
             $.MANY2(() => {
@@ -702,16 +668,13 @@ class SelectParser extends chevrotain.Parser {
     // methodBody from Java8
     // interfaceMethodDeclaration
     // : interfaceMethodModifier*
-    //   (typeParameters annotation*)?
+    //   (annotation*)?
     //   typeTypeOrVoid
     //   IDENTIFIER formalParameters ('[' ']')*
     //   methodBody
     $.RULE('interfaceMethodDeclaration', () => {
       $.MANY(() => {
         $.SUBRULE($.interfaceMethodModifier)
-      })
-      $.OPTION(() => {
-        $.SUBRULE($.typeParameters)
       })
       $.MANY2(() => {
         $.SUBRULE($.annotation)
