@@ -1,6 +1,19 @@
+# node stuff
 node_modules
+
+# dev specific
+/check.js
+/Test.cls
 *.log
-/.vscode
-.DS_Store
+.vim-force.com
 coverage
+
+# IDE specific
 .idea
+.vscode/*
+# exclude recomended extensions and debug launcher example
+!.vscode/launch.example.json
+!.vscode/extensions.json
+
+# MacOS
+.DS_Store
