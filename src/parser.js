@@ -268,9 +268,10 @@ class SelectParser extends chevrotain.Parser {
         {
           ALT: () => $.SUBRULE($.fieldDeclarationOrMethodDeclarationOrConstructorDeclaration),
         },
-        {
-          ALT: () => $.SUBRULE($.genericMethodDeclarationOrGenericConstructorDeclaration),
-        },
+        // {
+        //   ALT: () =>
+        //     $.SUBRULE($.genericMethodDeclarationOrGenericConstructorDeclaration)
+        // },
         { ALT: () => $.SUBRULE($.interfaceDeclaration) },
         { ALT: () => $.SUBRULE($.annotationTypeDeclaration) },
         { ALT: () => $.SUBRULE($.classDeclaration) },
