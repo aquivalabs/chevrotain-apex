@@ -1,24 +1,24 @@
-"use strict";
+'use strict'
 /* eslint-disable import/no-extraneous-dependencies, no-console */
-const Benchmark = require("benchmark");
-const chevrotainJava = require("../src/index");
+const Benchmark = require('benchmark')
+const chevrotainApex = require('../src/index')
 
-const input = require("./samples/small");
-const suite = new Benchmark.Suite();
+const input = require('./samples/small')
+const suite = new Benchmark.Suite()
 
-chevrotainJava.parse(input);
+chevrotainApex.parse(input)
 
 // add tests
 suite
-  .add("Chevrotain Based Parser", () => {
-    chevrotainJava.parse(input);
+  .add('Chevrotain Based Apex Parser', () => {
+    chevrotainApex.parse(input)
   })
   // add listeners
-  .on("cycle", event => {
-    console.log(String(event.target));
+  .on('cycle', (event) => {
+    console.log(String(event.target))
   })
-  .on("complete", function() {
-    console.log("Fastest is " + this.filter("fastest").map("name"));
+  .on('complete', function() {
+    console.log('Fastest is ' + this.filter('fastest').map('name'))
   })
   // run async
-  .run({ async: true });
+  .run({ async: true })
