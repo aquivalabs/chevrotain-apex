@@ -425,11 +425,24 @@ class SelectParser extends chevrotain.Parser {
       ])
     })
 
+    // accessModifierOnly
+    // | PUBLIC
+    // | PROTECTED
+    // | PRIVATE
+    $.RULE('accessModifierOnly', () => {
+      $.OR([
+        { ALT: () => $.CONSUME(tokens.Public) },
+        { ALT: () => $.CONSUME(tokens.Protected) },
+        { ALT: () => $.CONSUME(tokens.Private) },
+      ])
+    })
+
     // fieldGetSetProperties
     // { ( (get|set) (;|{}) )* }
     $.RULE('fieldGetSetProperties', () => {
       $.CONSUME(tokens.LCurly)
       $.AT_LEAST_ONE(() => {
+        $.OPTION(() => $.SUBRULE($.accessModifierOnly))
         $.OR([
           {
             ALT: () => $.CONSUME1(tokens.Get),

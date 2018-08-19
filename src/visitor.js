@@ -637,6 +637,10 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     }
   }
 
+  accessModifierOnly(ctx) {
+    return {}
+  }
+
   fieldGetSetProperties(ctx) {
     // const name = this.identifier(ctx.Identifier[0]);
     // const parameters = this.visit(ctx.formalParameters);

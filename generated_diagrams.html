@@ -1126,6 +1126,53 @@
   },
   {
     "type": "Rule",
+    "name": "accessModifierOnly",
+    "definition": [
+      {
+        "type": "Alternation",
+        "definition": [
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "Public",
+                "label": "'public'",
+                "idx": 0,
+                "pattern": "public"
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "Protected",
+                "label": "'protected'",
+                "idx": 0,
+                "pattern": "protected"
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "Private",
+                "label": "'private'",
+                "idx": 0,
+                "pattern": "private"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
     "name": "fieldGetSetProperties",
     "definition": [
       {
@@ -1136,14 +1183,46 @@
         "pattern": "{"
       },
       {
-        "type": "Option",
+        "type": "RepetitionMandatory",
         "definition": [
           {
-            "type": "Terminal",
-            "name": "Get",
-            "label": "'get'",
-            "idx": 1,
-            "pattern": "get"
+            "type": "Option",
+            "definition": [
+              {
+                "type": "NonTerminal",
+                "name": "accessModifierOnly",
+                "idx": 0
+              }
+            ]
+          },
+          {
+            "type": "Alternation",
+            "definition": [
+              {
+                "type": "Flat",
+                "definition": [
+                  {
+                    "type": "Terminal",
+                    "name": "Get",
+                    "label": "'get'",
+                    "idx": 1,
+                    "pattern": "get"
+                  }
+                ]
+              },
+              {
+                "type": "Flat",
+                "definition": [
+                  {
+                    "type": "Terminal",
+                    "name": "Set",
+                    "label": "'set'",
+                    "idx": 1,
+                    "pattern": "set"
+                  }
+                ]
+              }
+            ]
           },
           {
             "type": "Alternation",
@@ -1167,45 +1246,6 @@
                     "type": "NonTerminal",
                     "name": "block",
                     "idx": 0
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "type": "Option",
-        "definition": [
-          {
-            "type": "Terminal",
-            "name": "Set",
-            "label": "'set'",
-            "idx": 3,
-            "pattern": "set"
-          },
-          {
-            "type": "Alternation",
-            "definition": [
-              {
-                "type": "Flat",
-                "definition": [
-                  {
-                    "type": "Terminal",
-                    "name": "SemiColon",
-                    "label": "';'",
-                    "idx": 4,
-                    "pattern": ";"
-                  }
-                ]
-              },
-              {
-                "type": "Flat",
-                "definition": [
-                  {
-                    "type": "NonTerminal",
-                    "name": "block",
-                    "idx": 1
                   }
                 ]
               }
