@@ -61,18 +61,14 @@ class SelectParser extends chevrotain.Parser {
 
     // classOrInterfaceModifier
     // : annotation
-    // | PUBLIC
-    // | PROTECTED
-    // | PRIVATE
+    // | accessModifier
     // | STATIC
     // | ABSTRACT
     // | FINAL    // FINAL for class only -- does not apply to interfaces
     $.RULE('classOrInterfaceModifier', () => {
       $.OR([
         { ALT: () => $.SUBRULE($.annotation) },
-        { ALT: () => $.CONSUME(tokens.Public) },
-        { ALT: () => $.CONSUME(tokens.Protected) },
-        { ALT: () => $.CONSUME(tokens.Private) },
+        { ALT: () => $.SUBRULE($.accessModifier) },
         { ALT: () => $.CONSUME(tokens.Static) },
         { ALT: () => $.CONSUME(tokens.Abstract) },
         { ALT: () => $.CONSUME(tokens.Final) },
@@ -425,11 +421,11 @@ class SelectParser extends chevrotain.Parser {
       ])
     })
 
-    // accessModifierOnly
+    // accessModifier
     // | PUBLIC
     // | PROTECTED
     // | PRIVATE
-    $.RULE('accessModifierOnly', () => {
+    $.RULE('accessModifier', () => {
       $.OR([
         { ALT: () => $.CONSUME(tokens.Public) },
         { ALT: () => $.CONSUME(tokens.Protected) },
@@ -442,7 +438,7 @@ class SelectParser extends chevrotain.Parser {
     $.RULE('fieldGetSetProperties', () => {
       $.CONSUME(tokens.LCurly)
       $.AT_LEAST_ONE(() => {
-        $.OPTION(() => $.SUBRULE($.accessModifierOnly))
+        $.OPTION(() => $.SUBRULE($.accessModifier))
         $.OR([
           {
             ALT: () => $.CONSUME1(tokens.Get),

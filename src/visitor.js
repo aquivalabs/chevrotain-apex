@@ -637,7 +637,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     }
   }
 
-  accessModifierOnly(ctx) {
+  accessModifier(ctx) {
     return {}
   }
 

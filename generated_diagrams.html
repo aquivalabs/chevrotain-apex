@@ -181,35 +181,9 @@
             "type": "Flat",
             "definition": [
               {
-                "type": "Terminal",
-                "name": "Public",
-                "label": "'public'",
-                "idx": 0,
-                "pattern": "public"
-              }
-            ]
-          },
-          {
-            "type": "Flat",
-            "definition": [
-              {
-                "type": "Terminal",
-                "name": "Protected",
-                "label": "'protected'",
-                "idx": 0,
-                "pattern": "protected"
-              }
-            ]
-          },
-          {
-            "type": "Flat",
-            "definition": [
-              {
-                "type": "Terminal",
-                "name": "Private",
-                "label": "'private'",
-                "idx": 0,
-                "pattern": "private"
+                "type": "NonTerminal",
+                "name": "accessModifier",
+                "idx": 0
               }
             ]
           },
@@ -1126,7 +1100,7 @@
   },
   {
     "type": "Rule",
-    "name": "accessModifierOnly",
+    "name": "accessModifier",
     "definition": [
       {
         "type": "Alternation",
@@ -1190,7 +1164,7 @@
             "definition": [
               {
                 "type": "NonTerminal",
-                "name": "accessModifierOnly",
+                "name": "accessModifier",
                 "idx": 0
               }
             ]
