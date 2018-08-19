@@ -426,16 +426,26 @@ class SelectParser extends chevrotain.Parser {
     })
 
     // fieldGetSetProperties
-    // { get; set; }
+    // { ( (get|set) (;|{}) )* }
     $.RULE('fieldGetSetProperties', () => {
       $.CONSUME(tokens.LCurly)
-      $.OPTION(() => {
-        $.CONSUME1(tokens.Get)
-        $.OR([{ ALT: () => $.CONSUME2(tokens.SemiColon) }, { ALT: () => $.SUBRULE($.block) }])
-      })
-      $.OPTION1(() => {
-        $.CONSUME3(tokens.Set)
-        $.OR1([{ ALT: () => $.CONSUME4(tokens.SemiColon) }, { ALT: () => $.SUBRULE1($.block) }])
+      $.AT_LEAST_ONE(() => {
+        $.OR([
+          {
+            ALT: () => $.CONSUME1(tokens.Get),
+          },
+          {
+            ALT: () => $.CONSUME1(tokens.Set),
+          },
+        ])
+        $.OR1([
+          {
+            ALT: () => $.CONSUME2(tokens.SemiColon),
+          },
+          {
+            ALT: () => $.SUBRULE($.block),
+          },
+        ])
       })
       $.CONSUME(tokens.RCurly)
     })
