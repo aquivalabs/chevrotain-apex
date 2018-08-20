@@ -59,18 +59,28 @@ class SelectParser extends chevrotain.Parser {
       ])
     })
 
+    // abstractOrVirtual
+    // | ABSTRACT
+    // | VIRTUAL
+    $.RULE('abstractOrVirtual', () => {
+      $.OR([
+        { ALT: () => $.CONSUME(tokens.Abstract) },
+        { ALT: () => $.CONSUME(tokens.Virtual) },
+      ])
+    })
+
     // classOrInterfaceModifier
     // : annotation
     // | accessModifier
+    // | abstractOrVirtual
     // | STATIC
-    // | ABSTRACT
     // | FINAL    // FINAL for class only -- does not apply to interfaces
     $.RULE('classOrInterfaceModifier', () => {
       $.OR([
         { ALT: () => $.SUBRULE($.annotation) },
         { ALT: () => $.SUBRULE($.accessModifier) },
+        { ALT: () => $.SUBRULE($.abstractOrVirtual) },
         { ALT: () => $.CONSUME(tokens.Static) },
-        { ALT: () => $.CONSUME(tokens.Abstract) },
         { ALT: () => $.CONSUME(tokens.Final) },
       ])
     })

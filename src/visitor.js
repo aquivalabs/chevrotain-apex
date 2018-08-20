@@ -119,26 +119,35 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     }
   }
 
+  abstractOrVirtual(ctx) {
+    let value
+
+    if (ctx.Abstract) {
+      value = 'abstract'
+    } else if (ctx.Virtual) {
+      value = 'virtual'
+    }
+
+    return {
+      type: 'EXTENSIBLE_MODIFIER',
+      value: value,
+    }
+  }
+
   classOrInterfaceModifier(ctx) {
     if (ctx.annotation) {
       return this.visit(ctx.annotation)
     }
 
     let value = ''
-    if (ctx.Public) {
-      value = 'public'
-    } else if (ctx.Protected) {
-      value = 'protected'
-    } else if (ctx.Private) {
-      value = 'private'
+    if (ctx.accessModifier) {
+      value = this.visit(ctx.accessModifier).value
+    } else if (ctx.abstractOrVirtual) {
+      value = this.visit(ctx.abstractOrVirtual).value
     } else if (ctx.Static) {
       value = 'static'
-    } else if (ctx.Abstract) {
-      value = 'abstract'
     } else if (ctx.Final) {
       value = 'final'
-    } else if (ctx.Strictfp) {
-      value = 'strictfp'
     }
 
     return {
@@ -640,7 +649,18 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   accessModifier(ctx) {
-    return {}
+    let value
+    if (ctx.Public) {
+      value = 'public'
+    } else if (ctx.Private) {
+      value = 'private'
+    } else if (ctx.Protected) {
+      value = 'protected'
+    }
+    return {
+      type: 'ACCESS_MODIFIER',
+      value,
+    }
   }
 
   fieldGetSetProperties(ctx) {

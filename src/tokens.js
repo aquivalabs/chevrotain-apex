@@ -217,6 +217,12 @@ const Abstract = createKeywordToken({
   label: "'abstract'",
 })
 
+const Virtual = createKeywordToken({
+  name: 'Virtual',
+  pattern: /virtual/,
+  label: "'virtual'",
+})
+
 const Final = createKeywordToken({
   name: 'Final',
   pattern: /final/,
@@ -661,14 +667,6 @@ const WhiteSpace = createToken({
   line_breaks: true,
 })
 
-// | PUBLIC
-// | PROTECTED
-// | PRIVATE
-// | STATIC
-// | ABSTRACT
-// | FINAL    // FINAL for class only -- does not apply to interfaces
-// | STRICTFP
-
 // note we are placing WhiteSpace first as it is very common thus it will speed up the lexer.
 const allTokens = [
   WhiteSpace,
@@ -695,6 +693,7 @@ const allTokens = [
   Private,
   Static,
   Abstract,
+  Virtual,
   Catch,
   Finally,
   Final,
@@ -803,6 +802,7 @@ module.exports = {
     Private,
     Static,
     Abstract,
+    Virtual,
     Catch,
     Finally,
     Final,
