@@ -443,26 +443,43 @@ class SelectParser extends chevrotain.Parser {
       ])
     })
 
+    $.RULE('getProperty', () => {
+      $.OPTION(() => $.SUBRULE($.accessModifier))
+      $.CONSUME(tokens.Get)
+      $.OR1([
+        {
+          ALT: () => $.CONSUME2(tokens.SemiColon),
+        },
+        {
+          ALT: () => $.SUBRULE($.block),
+        },
+      ])
+    })
+
+    $.RULE('setProperty', () => {
+      $.OPTION(() => $.SUBRULE($.accessModifier))
+      $.CONSUME(tokens.Set)
+      $.OR1([
+        {
+          ALT: () => $.CONSUME2(tokens.SemiColon),
+        },
+        {
+          ALT: () => $.SUBRULE($.block),
+        },
+      ])
+    })
+
     // fieldGetSetProperties
     // { ( (get|set) (;|{}) )* }
     $.RULE('fieldGetSetProperties', () => {
       $.CONSUME(tokens.LCurly)
       $.AT_LEAST_ONE(() => {
-        $.OPTION(() => $.SUBRULE($.accessModifier))
         $.OR([
           {
-            ALT: () => $.CONSUME1(tokens.Get),
+            ALT: () => $.SUBRULE($.getProperty),
           },
           {
-            ALT: () => $.CONSUME1(tokens.Set),
-          },
-        ])
-        $.OR1([
-          {
-            ALT: () => $.CONSUME2(tokens.SemiColon),
-          },
-          {
-            ALT: () => $.SUBRULE($.block),
+            ALT: () => $.SUBRULE($.setProperty),
           },
         ])
       })

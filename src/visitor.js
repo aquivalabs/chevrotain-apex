@@ -663,6 +663,14 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     }
   }
 
+  getProperty(ctx) {
+    return {}
+  }
+
+  setProperty(ctx) {
+    return {}
+  }
+
   fieldGetSetProperties(ctx) {
     // const name = this.identifier(ctx.Identifier[0]);
     // const parameters = this.visit(ctx.formalParameters);
@@ -670,7 +678,7 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     // const body = this.visit(ctx.methodBody);
 
     return {
-      // type: "CONSTRUCTOR_DECLARATION",
+      // type: "GET_SET_PROPERTIES",
       // name: name,
       // parameters: parameters,
       // throws: throws,
