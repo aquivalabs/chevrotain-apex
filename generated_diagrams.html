@@ -162,6 +162,41 @@
   },
   {
     "type": "Rule",
+    "name": "abstractOrVirtual",
+    "definition": [
+      {
+        "type": "Alternation",
+        "definition": [
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "Abstract",
+                "label": "'abstract'",
+                "idx": 0,
+                "pattern": "abstract"
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "Virtual",
+                "label": "'virtual'",
+                "idx": 0,
+                "pattern": "virtual"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
     "name": "classOrInterfaceModifier",
     "definition": [
       {
@@ -191,11 +226,9 @@
             "type": "Flat",
             "definition": [
               {
-                "type": "Terminal",
-                "name": "Static",
-                "label": "'static'",
-                "idx": 0,
-                "pattern": "static"
+                "type": "NonTerminal",
+                "name": "abstractOrVirtual",
+                "idx": 0
               }
             ]
           },
@@ -204,10 +237,10 @@
             "definition": [
               {
                 "type": "Terminal",
-                "name": "Abstract",
-                "label": "'abstract'",
+                "name": "Static",
+                "label": "'static'",
                 "idx": 0,
-                "pattern": "abstract"
+                "pattern": "static"
               }
             ]
           },
@@ -1147,6 +1180,102 @@
   },
   {
     "type": "Rule",
+    "name": "getProperty",
+    "definition": [
+      {
+        "type": "Option",
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "accessModifier",
+            "idx": 0
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "Get",
+        "label": "'get'",
+        "idx": 0,
+        "pattern": "get"
+      },
+      {
+        "type": "Alternation",
+        "definition": [
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "NonTerminal",
+                "name": "semiColon",
+                "idx": 0
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "NonTerminal",
+                "name": "block",
+                "idx": 0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "setProperty",
+    "definition": [
+      {
+        "type": "Option",
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "accessModifier",
+            "idx": 0
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "Set",
+        "label": "'set'",
+        "idx": 0,
+        "pattern": "set"
+      },
+      {
+        "type": "Alternation",
+        "definition": [
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "NonTerminal",
+                "name": "semiColon",
+                "idx": 0
+              }
+            ]
+          },
+          {
+            "type": "Flat",
+            "definition": [
+              {
+                "type": "NonTerminal",
+                "name": "block",
+                "idx": 0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
     "name": "fieldGetSetProperties",
     "definition": [
       {
@@ -1160,56 +1289,15 @@
         "type": "RepetitionMandatory",
         "definition": [
           {
-            "type": "Option",
-            "definition": [
-              {
-                "type": "NonTerminal",
-                "name": "accessModifier",
-                "idx": 0
-              }
-            ]
-          },
-          {
             "type": "Alternation",
             "definition": [
               {
                 "type": "Flat",
                 "definition": [
                   {
-                    "type": "Terminal",
-                    "name": "Get",
-                    "label": "'get'",
-                    "idx": 1,
-                    "pattern": "get"
-                  }
-                ]
-              },
-              {
-                "type": "Flat",
-                "definition": [
-                  {
-                    "type": "Terminal",
-                    "name": "Set",
-                    "label": "'set'",
-                    "idx": 1,
-                    "pattern": "set"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "Alternation",
-            "definition": [
-              {
-                "type": "Flat",
-                "definition": [
-                  {
-                    "type": "Terminal",
-                    "name": "SemiColon",
-                    "label": "';'",
-                    "idx": 2,
-                    "pattern": ";"
+                    "type": "NonTerminal",
+                    "name": "getProperty",
+                    "idx": 0
                   }
                 ]
               },
@@ -1218,7 +1306,7 @@
                 "definition": [
                   {
                     "type": "NonTerminal",
-                    "name": "block",
+                    "name": "setProperty",
                     "idx": 0
                   }
                 ]
