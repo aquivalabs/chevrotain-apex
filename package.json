@@ -26,7 +26,8 @@
   "scripts": {
     "build": "node src/gen_diagrams.js",
     "lint": "jest -c jest.eslint.config.js",
-    "test": "jest"
+    "test": "jest",
+    "bench": "node benchmark/bench.js"
   },
   "jest": {
     "projects": [
