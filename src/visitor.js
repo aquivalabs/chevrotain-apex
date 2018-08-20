@@ -561,7 +561,9 @@ class SQLToAstVisitor extends BaseSQLVisitor {
           list: declarators,
         }
 
-        const followedEmptyLine = this.visit(ctx.semiColon).followedEmptyLine
+        const followedEmptyLine =
+          Boolean(ctx.semiColon) && this.visit(ctx.semiColon).followedEmptyLine
+
         return {
           type: 'FIELD_DECLARATION',
           typeType: typeType,
