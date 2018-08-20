@@ -570,14 +570,20 @@ class SQLToAstVisitor extends BaseSQLVisitor {
           list: declarators,
         }
 
-        const followedEmptyLine =
-          Boolean(ctx.semiColon) && this.visit(ctx.semiColon).followedEmptyLine
+        let followedEmptyLine, fieldGetSetProperties
+        if (ctx.semiColon) {
+          followedEmptyLine = this.visit(ctx.semiColon).followedEmptyLine
+        } else {
+          followedEmptyLine = false
+          fieldGetSetProperties = this.visit(ctx.fieldGetSetProperties)
+        }
 
         return {
           type: 'FIELD_DECLARATION',
           typeType: typeType,
           variableDeclarators: variableDeclarators,
-          followedEmptyLine: followedEmptyLine,
+          followedEmptyLine,
+          fieldGetSetProperties,
         }
       }
     }
@@ -664,25 +670,39 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 
   getProperty(ctx) {
-    return {}
+    const hasBody = !ctx.semiColon
+    const followedEmptyLine = !hasBody && this.visit(ctx.semiColon).followedEmptyLine
+    const body = hasBody && this.visit(ctx.block)
+
+    return {
+      name: 'getProperty',
+      hasBody,
+      followedEmptyLine,
+      body,
+    }
   }
 
   setProperty(ctx) {
-    return {}
+    const hasBody = !ctx.semiColon
+    const followedEmptyLine = !hasBody && this.visit(ctx.semiColon).followedEmptyLine
+    const body = hasBody && this.visit(ctx.block)
+
+    return {
+      name: 'setProperty',
+      hasBody,
+      followedEmptyLine,
+      body,
+    }
   }
 
   fieldGetSetProperties(ctx) {
-    // const name = this.identifier(ctx.Identifier[0]);
-    // const parameters = this.visit(ctx.formalParameters);
-    // const throws = this.visit(ctx.qualifiedNameList);
-    // const body = this.visit(ctx.methodBody);
+    const getProperty = ctx.getProperty && this.visit(ctx.getProperty)
+    const setProperty = ctx.setProperty && this.visit(ctx.setProperty)
 
     return {
-      // type: "GET_SET_PROPERTIES",
-      // name: name,
-      // parameters: parameters,
-      // throws: throws,
-      // body: body
+      type: 'GET_SET_PROPERTIES',
+      getProperty,
+      setProperty,
     }
   }
 

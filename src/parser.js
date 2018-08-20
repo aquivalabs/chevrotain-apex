@@ -448,7 +448,7 @@ class SelectParser extends chevrotain.Parser {
       $.CONSUME(tokens.Get)
       $.OR1([
         {
-          ALT: () => $.CONSUME2(tokens.SemiColon),
+          ALT: () => $.SUBRULE($.semiColon),
         },
         {
           ALT: () => $.SUBRULE($.block),
@@ -461,7 +461,7 @@ class SelectParser extends chevrotain.Parser {
       $.CONSUME(tokens.Set)
       $.OR1([
         {
-          ALT: () => $.CONSUME2(tokens.SemiColon),
+          ALT: () => $.SUBRULE($.semiColon),
         },
         {
           ALT: () => $.SUBRULE($.block),
