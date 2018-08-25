@@ -1,13 +1,13 @@
 'use strict'
 const chevrotain = require('chevrotain')
-const { allTokens, tokens } = require('./tokens')
+const { allTokens, tokens } = require('../tokens')
 
 const Parser = chevrotain.Parser
 
 const END_OF_FILE = chevrotain.createTokenInstance(chevrotain.EOF, '', NaN, NaN, NaN, NaN, NaN, NaN)
 Object.freeze(END_OF_FILE)
 
-class SelectParser extends chevrotain.Parser {
+class ApexParser extends chevrotain.Parser {
   constructor(input) {
     super(input, allTokens, { outputCst: true })
 
@@ -2708,4 +2708,4 @@ class SelectParser extends chevrotain.Parser {
   }
 }
 
-module.exports = SelectParser
+module.exports = ApexParser
