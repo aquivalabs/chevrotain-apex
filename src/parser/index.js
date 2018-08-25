@@ -2691,20 +2691,22 @@ class ApexParser extends chevrotain.Parser {
 
   isEmptyComment(comment) {
     // TODO fix replace because SLOW
-    return (
-      (chevrotain.tokenMatcher(comment, tokens.LineComment) &&
-        comment.image.replace(/[\s]*/g, '') === '//') ||
-      (chevrotain.tokenMatcher(comment, tokens.JavaDocComment) &&
-        comment.image.replace(/[\s\n\r*]*/g, '') === '//') ||
-      (chevrotain.tokenMatcher(comment, tokens.TraditionalComment) &&
-        comment.image.replace(/[\s\n\r*]*/g, '') === '//') ||
-      (chevrotain.tokenMatcher(comment, tokens.LineCommentStandalone) &&
-        comment.image.replace(/[\s]*/g, '') === '//') ||
-      (chevrotain.tokenMatcher(comment, tokens.JavaDocCommentStandalone) &&
-        comment.image.replace(/[\s\n\r*]*/g, '') === '//') ||
-      (chevrotain.tokenMatcher(comment, tokens.TraditionalCommentStandalone) &&
-        comment.image.replace(/[\s\n\r*]*/g, '') === '//')
-    )
+    const isEmptyNoSpaces = comment.image.replace(/[\s]*/g, '') === '//'
+    const isEmptyNoLineBreaks = comment.image.replace(/[\s\n\r*]*/g, '') === '//'
+
+    const isEmptyLineComment =
+      isEmptyNoSpaces &&
+      (chevrotain.tokenMatcher(comment, tokens.LineComment) ||
+        chevrotain.tokenMatcher(comment, tokens.LineCommentStandalone))
+
+    const isEmptyMultilineComment =
+      isEmptyNoLineBreaks &&
+      (chevrotain.tokenMatcher(comment, tokens.JavaDocComment) ||
+        chevrotain.tokenMatcher(comment, tokens.TraditionalComment) ||
+        chevrotain.tokenMatcher(comment, tokens.JavaDocCommentStandalone) ||
+        chevrotain.tokenMatcher(comment, tokens.TraditionalCommentStandalone))
+
+    return isEmptyLineComment || isEmptyMultilineComment
   }
 }
 
