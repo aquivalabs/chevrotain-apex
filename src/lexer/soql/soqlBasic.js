@@ -1,8 +1,8 @@
-const { createKeywordToken } = require('../_shared')
+const { createKeywordToken, createToken } = require('../_shared')
 const { LEXER_MODE } = require('../../constants')
 
-const Select = createKeywordToken({
-  name: '[SELECT',
+const Select = createToken({
+  name: 'SELECT',
   pattern: /\[\s*SELECT/,
   label: "'[SELECT'",
   push_mode: LEXER_MODE.SOQL,
