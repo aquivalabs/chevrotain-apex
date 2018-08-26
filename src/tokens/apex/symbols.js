@@ -36,6 +36,7 @@ const RSquare = createToken({
   name: 'RSquare',
   pattern: /]/,
   label: "']'",
+  pop_mode: true,
 })
 
 const Less = createToken({
