@@ -1,9 +1,11 @@
-const { createKeywordToken } = require('./_shared')
+const { createKeywordToken } = require('../_shared')
+const { LEXER_MODE } = require('../../constants')
 
 const Select = createKeywordToken({
-  name: 'SELECT',
-  pattern: /SELECT/,
-  label: "'SELECT'",
+  name: '[SELECT',
+  pattern: /\[\s*SELECT/,
+  label: "'[SELECT'",
+  push_mode: LEXER_MODE.SOQL,
 })
 
 const From = createKeywordToken({
@@ -24,12 +26,6 @@ const Limit = createKeywordToken({
   label: "'LIMIT'",
 })
 
-const Group = createKeywordToken({
-  name: 'GROUP',
-  pattern: /GROUP/,
-  label: "'GROUP'",
-})
-
 const Order = createKeywordToken({
   name: 'ORDER',
   pattern: /ORDER/,
@@ -40,12 +36,6 @@ const By = createKeywordToken({
   name: 'BY',
   pattern: /BY/,
   label: "'BY'",
-})
-
-const Count = createKeywordToken({
-  name: 'COUNT',
-  pattern: /COUNT/,
-  label: "'COUNT'",
 })
 
 const In = createKeywordToken({
@@ -59,9 +49,7 @@ module.exports = {
   From,
   Where,
   Limit,
-  Group,
   Order,
   By,
-  Count,
   In,
 }

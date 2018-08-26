@@ -1,5 +1,5 @@
 'use strict'
-const ApexLexer = require('./lexer')
+const { ApexLexer } = require('./lexer')
 const ApexParser = require('./parser')
 const SQLToAstVisitor = require('./visitor')
 

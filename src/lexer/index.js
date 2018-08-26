@@ -1,5 +1,6 @@
 'use strict'
 const { LEXER_MODE } = require('../constants')
+const { Lexer } = require('chevrotain')
 const apex = require('./apex')
 
 const lexerDefinition = {
@@ -10,8 +11,10 @@ const lexerDefinition = {
   defaultMode: LEXER_MODE.APEX,
 }
 
+const ApexLexer = new Lexer(lexerDefinition, { ensureOptimizations: true })
+
 module.exports = {
-  lexerDefinition,
+  ApexLexer,
   tokens: {
     apex,
   },

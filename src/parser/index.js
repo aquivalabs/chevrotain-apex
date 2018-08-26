@@ -1,7 +1,6 @@
 'use strict'
 const chevrotain = require('chevrotain')
-const { tokens } = require('../tokens')
-const ApexLexer = require('../lexer')
+const { ApexLexer, tokens } = require('../lexer')
 
 const Parser = chevrotain.Parser
 
