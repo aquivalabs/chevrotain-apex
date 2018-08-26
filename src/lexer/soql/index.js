@@ -1,4 +1,4 @@
-const { Identifier, WhiteSpace } = require('../shared')
+const { Identifier, WhiteSpace } = require('../_shared')
 
 const soqlBasic = require('./soqlBasic')
 const { sharedSymbols } = require('../_shared')
