@@ -1,4 +1,4 @@
-const { createToken } = require('../_shared')
+const { createToken } = require('./helpers')
 
 const LBrace = createToken({
   name: 'LBrace',
