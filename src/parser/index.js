@@ -1,6 +1,7 @@
 'use strict'
 const chevrotain = require('chevrotain')
-const { allTokens, tokens } = require('../tokens')
+const { tokens } = require('../tokens')
+const ApexLexer = require('../lexer')
 
 const Parser = chevrotain.Parser
 
@@ -9,7 +10,7 @@ Object.freeze(END_OF_FILE)
 
 class ApexParser extends chevrotain.Parser {
   constructor(input) {
-    super(input, allTokens, { outputCst: true })
+    super(input, ApexLexer.lexerDefinition, { outputCst: true })
 
     const $ = this
 
@@ -55,7 +56,7 @@ class ApexParser extends chevrotain.Parser {
     $.RULE('modifier', () => {
       $.OR([
         { ALT: () => $.SUBRULE($.classOrInterfaceModifier) },
-        { ALT: () => $.CONSUME(tokens.Transient) },
+        { ALT: () => $.CONSUME(tokens.apex.Transient) },
       ])
     })
 
@@ -64,8 +65,8 @@ class ApexParser extends chevrotain.Parser {
     // | VIRTUAL
     $.RULE('abstractOrVirtual', () => {
       $.OR([
-        { ALT: () => $.CONSUME(tokens.Abstract) },
-        { ALT: () => $.CONSUME(tokens.Virtual) },
+        { ALT: () => $.CONSUME(tokens.apex.Abstract) },
+        { ALT: () => $.CONSUME(tokens.apex.Virtual) },
       ])
     })
 
@@ -80,8 +81,8 @@ class ApexParser extends chevrotain.Parser {
         { ALT: () => $.SUBRULE($.annotation) },
         { ALT: () => $.SUBRULE($.accessModifier) },
         { ALT: () => $.SUBRULE($.abstractOrVirtual) },
-        { ALT: () => $.CONSUME(tokens.Static) },
-        { ALT: () => $.CONSUME(tokens.Final) },
+        { ALT: () => $.CONSUME(tokens.apex.Static) },
+        { ALT: () => $.CONSUME(tokens.apex.Final) },
       ])
     })
 
@@ -89,16 +90,16 @@ class ApexParser extends chevrotain.Parser {
     // : FINAL
     // | annotation
     $.RULE('variableModifier', () => {
-      $.OR([{ ALT: () => $.SUBRULE($.annotation) }, { ALT: () => $.CONSUME(tokens.Final) }])
+      $.OR([{ ALT: () => $.SUBRULE($.annotation) }, { ALT: () => $.CONSUME(tokens.apex.Final) }])
     })
 
     // annotation
     // : '@' qualifiedName ('(' ( elementValuePairs* | elementValue )? ')')?
     $.RULE('annotation', () => {
-      $.CONSUME(tokens.At)
+      $.CONSUME(tokens.apex.At)
       $.SUBRULE($.qualifiedName)
       $.OPTION(() => {
-        $.CONSUME(tokens.LBrace)
+        $.CONSUME(tokens.apex.LBrace)
         $.OPTION2(() => {
           $.OR([
             {
@@ -109,11 +110,11 @@ class ApexParser extends chevrotain.Parser {
             { ALT: () => $.SUBRULE($.elementValueArrayInitializer) },
           ])
           $.MANY(() => {
-            $.CONSUME(tokens.Comma)
+            $.CONSUME(tokens.apex.Comma)
             $.SUBRULE2($.elementValuePair)
           })
         })
-        $.CONSUME(tokens.RBrace)
+        $.CONSUME(tokens.apex.RBrace)
       })
     })
 
@@ -121,7 +122,7 @@ class ApexParser extends chevrotain.Parser {
     // : elementValuePair (',' elementValuePair)*
     $.RULE('elementValuePairs', () => {
       $.AT_LEAST_ONE_SEP({
-        SEP: tokens.Comma,
+        SEP: tokens.apex.Comma,
         DEF: () => {
           $.SUBRULE($.elementValuePair)
         },
@@ -131,8 +132,8 @@ class ApexParser extends chevrotain.Parser {
     // elementValuePair
     // : IDENTIFIER '=' elementValue
     $.RULE('elementValuePair', () => {
-      $.CONSUME(tokens.Identifier)
-      $.CONSUME(tokens.Equals)
+      $.CONSUME(tokens.apex.Identifier)
+      $.CONSUME(tokens.apex.Equals)
       $.SUBRULE($.elementValue)
     })
 
@@ -150,18 +151,18 @@ class ApexParser extends chevrotain.Parser {
     // elementValueArrayInitializer
     // : '{' (elementValue (',' elementValue)*)? (',')? '}'
     $.RULE('elementValueArrayInitializer', () => {
-      $.CONSUME(tokens.LCurly)
+      $.CONSUME(tokens.apex.LCurly)
       $.OPTION(() => {
         $.SUBRULE($.elementValue)
         $.MANY(() => {
-          $.CONSUME(tokens.Comma)
+          $.CONSUME(tokens.apex.Comma)
           $.SUBRULE2($.elementValue)
         })
       })
       $.OPTION2(() => {
-        $.CONSUME2(tokens.Comma)
+        $.CONSUME2(tokens.apex.Comma)
       })
-      $.CONSUME(tokens.RCurly)
+      $.CONSUME(tokens.apex.RCurly)
     })
 
     // classDeclaration
@@ -170,14 +171,14 @@ class ApexParser extends chevrotain.Parser {
     //   (IMPLEMENTS typeList)?
     //   classBody
     $.RULE('classDeclaration', () => {
-      $.CONSUME(tokens.Class)
-      $.CONSUME(tokens.Identifier)
+      $.CONSUME(tokens.apex.Class)
+      $.CONSUME(tokens.apex.Identifier)
       $.OPTION(() => {
-        $.CONSUME(tokens.Extends)
+        $.CONSUME(tokens.apex.Extends)
         $.SUBRULE($.typeType)
       })
       $.OPTION2(() => {
-        $.CONSUME(tokens.Implements)
+        $.CONSUME(tokens.apex.Implements)
         $.SUBRULE($.typeList)
       })
       $.SUBRULE($.classBody)
@@ -187,7 +188,7 @@ class ApexParser extends chevrotain.Parser {
     // : typeType ('&' typeType)*
     $.RULE('typeBound', () => {
       $.AT_LEAST_ONE_SEP({
-        SEP: tokens.And,
+        SEP: tokens.apex.And,
         DEF: () => {
           $.SUBRULE($.typeType)
         },
@@ -197,11 +198,11 @@ class ApexParser extends chevrotain.Parser {
     // classBody
     // : '{' classBodyDeclaration* '}'
     $.RULE('classBody', () => {
-      $.CONSUME(tokens.LCurly)
+      $.CONSUME(tokens.apex.LCurly)
       $.MANY(() => {
         $.SUBRULE($.classBodyDeclaration)
       })
-      $.CONSUME(tokens.RCurly)
+      $.CONSUME(tokens.apex.RCurly)
     })
 
     // classBodyDeclaration
@@ -210,7 +211,7 @@ class ApexParser extends chevrotain.Parser {
     // | ';'
     $.RULE('classBodyDeclaration', () => {
       $.OPTION(() => {
-        $.CONSUME(tokens.Static)
+        $.CONSUME(tokens.apex.Static)
       })
       $.OR([
         {
@@ -280,7 +281,7 @@ class ApexParser extends chevrotain.Parser {
             $.OR2([
               {
                 ALT: () => {
-                  firstType = $.CONSUME(tokens.Identifier)
+                  firstType = $.CONSUME(tokens.apex.Identifier)
 
                   $.OR3([
                     {
@@ -300,9 +301,9 @@ class ApexParser extends chevrotain.Parser {
                           $.SUBRULE($.typeArguments)
                         })
                         $.MANY({
-                          GATE: () => this.LA(2).tokenType !== tokens.Class,
+                          GATE: () => this.LA(2).tokenType !== tokens.apex.Class,
                           DEF: () => {
-                            $.CONSUME(tokens.Dot)
+                            $.CONSUME(tokens.apex.Dot)
                             $.SUBRULE2($.classOrInterfaceTypeElement)
                           },
                         })
@@ -322,9 +323,9 @@ class ApexParser extends chevrotain.Parser {
             $.MANY2({
               GATE: () => !isConstructorDeclaration,
               DEF: () => {
-                const lSquare = $.CONSUME(tokens.LSquare)
+                const lSquare = $.CONSUME(tokens.apex.LSquare)
                 lSquare.isTypeType = true
-                $.CONSUME(tokens.RSquare)
+                $.CONSUME(tokens.apex.RSquare)
               },
             })
           },
@@ -332,7 +333,7 @@ class ApexParser extends chevrotain.Parser {
         {
           // Void
           ALT: () => {
-            firstType = $.CONSUME(tokens.Void)
+            firstType = $.CONSUME(tokens.apex.Void)
             isConstructorDeclaration = false
             isFieldDeclaration = false
           },
@@ -342,24 +343,24 @@ class ApexParser extends chevrotain.Parser {
         {
           GATE: () => isMethodDeclaration || isFieldDeclaration,
           ALT: () => {
-            $.CONSUME2(tokens.Identifier)
+            $.CONSUME2(tokens.apex.Identifier)
 
             $.OR5([
               {
                 // fieldDeclaration
                 ALT: () => {
                   $.MANY3(() => {
-                    $.CONSUME2(tokens.LSquare, {
+                    $.CONSUME2(tokens.apex.LSquare, {
                       LABEL: 'identifierDimension',
                     })
-                    $.CONSUME2(tokens.RSquare)
+                    $.CONSUME2(tokens.apex.RSquare)
                   })
                   $.OPTION4(() => {
-                    $.CONSUME(tokens.Equals)
+                    $.CONSUME(tokens.apex.Equals)
                     $.SUBRULE($.variableInitializer)
                   })
                   $.MANY4(() => {
-                    $.CONSUME(tokens.Comma)
+                    $.CONSUME(tokens.apex.Comma)
                     $.SUBRULE($.variableDeclarator)
                   })
                   $.OR6([
@@ -380,8 +381,8 @@ class ApexParser extends chevrotain.Parser {
                 ALT: () => {
                   $.SUBRULE2($.formalParameters)
                   $.MANY5(() => {
-                    $.CONSUME3(tokens.LSquare)
-                    $.CONSUME3(tokens.RSquare)
+                    $.CONSUME3(tokens.apex.LSquare)
+                    $.CONSUME3(tokens.apex.RSquare)
                   })
                   $.SUBRULE2($.methodBody)
                   if (firstType) {
@@ -405,11 +406,11 @@ class ApexParser extends chevrotain.Parser {
     //   methodBody
     $.RULE('methodDeclaration', () => {
       $.SUBRULE($.typeTypeOrVoid)
-      $.CONSUME(tokens.Identifier)
+      $.CONSUME(tokens.apex.Identifier)
       $.SUBRULE($.formalParameters)
       $.MANY(() => {
-        $.CONSUME(tokens.LSquare)
-        $.CONSUME(tokens.RSquare)
+        $.CONSUME(tokens.apex.LSquare)
+        $.CONSUME(tokens.apex.RSquare)
       })
       $.SUBRULE($.methodBody)
     })
@@ -417,7 +418,7 @@ class ApexParser extends chevrotain.Parser {
     // constructorDeclaration
     // : IDENTIFIER formalParameters block
     $.RULE('constructorDeclaration', () => {
-      $.CONSUME(tokens.Identifier)
+      $.CONSUME(tokens.apex.Identifier)
       $.SUBRULE($.formalParameters)
       $.SUBRULE($.methodBody)
     })
@@ -437,15 +438,15 @@ class ApexParser extends chevrotain.Parser {
     // | PRIVATE
     $.RULE('accessModifier', () => {
       $.OR([
-        { ALT: () => $.CONSUME(tokens.Public) },
-        { ALT: () => $.CONSUME(tokens.Protected) },
-        { ALT: () => $.CONSUME(tokens.Private) },
+        { ALT: () => $.CONSUME(tokens.apex.Public) },
+        { ALT: () => $.CONSUME(tokens.apex.Protected) },
+        { ALT: () => $.CONSUME(tokens.apex.Private) },
       ])
     })
 
     $.RULE('getProperty', () => {
       $.OPTION(() => $.SUBRULE($.accessModifier))
-      $.CONSUME(tokens.Get)
+      $.CONSUME(tokens.apex.Get)
       $.OR1([
         {
           ALT: () => $.SUBRULE($.semiColon),
@@ -458,7 +459,7 @@ class ApexParser extends chevrotain.Parser {
 
     $.RULE('setProperty', () => {
       $.OPTION(() => $.SUBRULE($.accessModifier))
-      $.CONSUME(tokens.Set)
+      $.CONSUME(tokens.apex.Set)
       $.OR1([
         {
           ALT: () => $.SUBRULE($.semiColon),
@@ -472,7 +473,7 @@ class ApexParser extends chevrotain.Parser {
     // fieldGetSetProperties
     // { ( (get|set) (;|{}) )* }
     $.RULE('fieldGetSetProperties', () => {
-      $.CONSUME(tokens.LCurly)
+      $.CONSUME(tokens.apex.LCurly)
       $.AT_LEAST_ONE(() => {
         $.OR([
           {
@@ -483,7 +484,7 @@ class ApexParser extends chevrotain.Parser {
           },
         ])
       })
-      $.CONSUME(tokens.RCurly)
+      $.CONSUME(tokens.apex.RCurly)
     })
 
     // fieldDeclaration
@@ -511,23 +512,23 @@ class ApexParser extends chevrotain.Parser {
     // enumDeclaration
     // : ENUM IDENTIFIER (IMPLEMENTS typeList)? '{' enumConstants? ','? enumBodyDeclarations? '}'
     $.RULE('enumDeclaration', () => {
-      $.CONSUME(tokens.Enum)
-      $.CONSUME(tokens.Identifier)
+      $.CONSUME(tokens.apex.Enum)
+      $.CONSUME(tokens.apex.Identifier)
       $.OPTION(() => {
-        $.CONSUME(tokens.Implements)
+        $.CONSUME(tokens.apex.Implements)
         $.SUBRULE($.typeList)
       })
-      $.CONSUME(tokens.LCurly)
+      $.CONSUME(tokens.apex.LCurly)
       $.OPTION2(() => {
         $.SUBRULE($.enumConstants)
       })
       $.OPTION3(() => {
-        $.CONSUME(tokens.Comma)
+        $.CONSUME(tokens.apex.Comma)
       })
       $.OPTION4(() => {
         $.SUBRULE($.enumBodyDeclarations)
       })
-      $.CONSUME(tokens.RCurly)
+      $.CONSUME(tokens.apex.RCurly)
     })
 
     // enumConstants
@@ -539,9 +540,9 @@ class ApexParser extends chevrotain.Parser {
         // What should follow is a right curly OR
         // a semi colon for a start of a enumBodyDeclarations
         GATE: () =>
-          this.LA(2).tokenType !== tokens.RCurly && this.LA(2).tokenType !== tokens.SemiColon,
+          this.LA(2).tokenType !== tokens.apex.RCurly && this.LA(2).tokenType !== tokens.apex.SemiColon,
         DEF: () => {
-          $.CONSUME(tokens.Comma)
+          $.CONSUME(tokens.apex.Comma)
           $.SUBRULE2($.enumConstant)
         },
       })
@@ -553,7 +554,7 @@ class ApexParser extends chevrotain.Parser {
       $.MANY(() => {
         $.SUBRULE($.annotation)
       })
-      $.CONSUME(tokens.Identifier)
+      $.CONSUME(tokens.apex.Identifier)
       $.OPTION(() => {
         $.SUBRULE($.arguments)
       })
@@ -574,10 +575,10 @@ class ApexParser extends chevrotain.Parser {
     // interfaceDeclaration
     // : INTERFACE IDENTIFIER (EXTENDS typeList)? interfaceBody
     $.RULE('interfaceDeclaration', () => {
-      $.CONSUME(tokens.Interface)
-      $.CONSUME(tokens.Identifier)
+      $.CONSUME(tokens.apex.Interface)
+      $.CONSUME(tokens.apex.Identifier)
       $.OPTION2(() => {
-        $.CONSUME(tokens.Extends)
+        $.CONSUME(tokens.apex.Extends)
         $.SUBRULE($.typeList)
       })
       $.SUBRULE($.interfaceBody)
@@ -586,11 +587,11 @@ class ApexParser extends chevrotain.Parser {
     // interfaceBody
     // : '{' interfaceBodyDeclaration* '}'
     $.RULE('interfaceBody', () => {
-      $.CONSUME(tokens.LCurly)
+      $.CONSUME(tokens.apex.LCurly)
       $.MANY(() => {
         $.SUBRULE($.interfaceBodyDeclaration)
       })
-      $.CONSUME(tokens.RCurly)
+      $.CONSUME(tokens.apex.RCurly)
     })
 
     // interfaceBodyDeclaration
@@ -647,7 +648,7 @@ class ApexParser extends chevrotain.Parser {
                     GATE: () => isConstantDeclaration,
                     DEF: () => {
                       $.AT_LEAST_ONE_SEP({
-                        SEP: tokens.Comma,
+                        SEP: tokens.apex.Comma,
                         DEF: () => {
                           $.SUBRULE($.constantDeclarator)
                         },
@@ -658,18 +659,18 @@ class ApexParser extends chevrotain.Parser {
                   })
                 },
               },
-              { ALT: () => $.CONSUME(tokens.Void) },
+              { ALT: () => $.CONSUME(tokens.apex.Void) },
             ])
 
             $.OR3([
               {
                 GATE: () => isInterfaceMethodDeclaration,
                 ALT: () => {
-                  $.CONSUME(tokens.Identifier)
+                  $.CONSUME(tokens.apex.Identifier)
                   $.SUBRULE($.formalParameters)
                   $.MANY3(() => {
-                    $.CONSUME(tokens.LSquare)
-                    $.CONSUME(tokens.RSquare)
+                    $.CONSUME(tokens.apex.LSquare)
+                    $.CONSUME(tokens.apex.RSquare)
                   })
                   $.SUBRULE($.methodBody)
                 },
@@ -690,7 +691,7 @@ class ApexParser extends chevrotain.Parser {
     $.RULE('constantDeclaration', () => {
       $.SUBRULE($.typeType)
       $.AT_LEAST_ONE_SEP({
-        SEP: tokens.Comma,
+        SEP: tokens.apex.Comma,
         DEF: () => {
           $.SUBRULE($.constantDeclarator)
         },
@@ -701,12 +702,12 @@ class ApexParser extends chevrotain.Parser {
     // constantDeclarator
     // : IDENTIFIER ('[' ']')* '=' variableInitializer
     $.RULE('constantDeclarator', () => {
-      $.CONSUME(tokens.Identifier)
+      $.CONSUME(tokens.apex.Identifier)
       $.MANY(() => {
-        $.CONSUME(tokens.LSquare)
-        $.CONSUME(tokens.RSquare)
+        $.CONSUME(tokens.apex.LSquare)
+        $.CONSUME(tokens.apex.RSquare)
       })
-      $.CONSUME(tokens.Equals)
+      $.CONSUME(tokens.apex.Equals)
       $.SUBRULE($.variableInitializer)
     })
 
@@ -726,11 +727,11 @@ class ApexParser extends chevrotain.Parser {
         $.SUBRULE($.annotation)
       })
       $.SUBRULE($.typeTypeOrVoid)
-      $.CONSUME(tokens.Identifier)
+      $.CONSUME(tokens.apex.Identifier)
       $.SUBRULE($.formalParameters)
       $.MANY3(() => {
-        $.CONSUME(tokens.LSquare)
-        $.CONSUME(tokens.RSquare)
+        $.CONSUME(tokens.apex.LSquare)
+        $.CONSUME(tokens.apex.RSquare)
       })
       $.SUBRULE($.methodBody)
     })
@@ -744,9 +745,9 @@ class ApexParser extends chevrotain.Parser {
     $.RULE('interfaceMethodModifier', () => {
       $.OR([
         { ALT: () => $.SUBRULE($.annotation) },
-        { ALT: () => $.CONSUME(tokens.Public) },
-        { ALT: () => $.CONSUME(tokens.Abstract) },
-        { ALT: () => $.CONSUME(tokens.Static) },
+        { ALT: () => $.CONSUME(tokens.apex.Public) },
+        { ALT: () => $.CONSUME(tokens.apex.Abstract) },
+        { ALT: () => $.CONSUME(tokens.apex.Static) },
       ])
     })
 
@@ -754,7 +755,7 @@ class ApexParser extends chevrotain.Parser {
     // : variableDeclarator (',' variableDeclarator)*
     $.RULE('variableDeclarators', () => {
       $.AT_LEAST_ONE_SEP({
-        SEP: tokens.Comma,
+        SEP: tokens.apex.Comma,
         DEF: () => {
           $.SUBRULE($.variableDeclarator)
         },
@@ -766,7 +767,7 @@ class ApexParser extends chevrotain.Parser {
     $.RULE('variableDeclarator', () => {
       $.SUBRULE($.variableDeclaratorId)
       $.OPTION(() => {
-        $.CONSUME(tokens.Equals)
+        $.CONSUME(tokens.apex.Equals)
         $.SUBRULE($.variableInitializer)
       })
     })
@@ -774,10 +775,10 @@ class ApexParser extends chevrotain.Parser {
     // variableDeclaratorId
     // : IDENTIFIER ('[' ']')*
     $.RULE('variableDeclaratorId', () => {
-      $.CONSUME(tokens.Identifier)
+      $.CONSUME(tokens.apex.Identifier)
       $.MANY(() => {
-        $.CONSUME(tokens.LSquare)
-        $.CONSUME(tokens.RSquare)
+        $.CONSUME(tokens.apex.LSquare)
+        $.CONSUME(tokens.apex.RSquare)
       })
     })
 
@@ -791,9 +792,9 @@ class ApexParser extends chevrotain.Parser {
           ALT: () => {
             $.SUBRULE($.expression)
             $.OPTION(() => {
-              $.CONSUME(tokens.Questionmark)
+              $.CONSUME(tokens.apex.Questionmark)
               $.SUBRULE2($.expression)
-              $.CONSUME(tokens.Colon)
+              $.CONSUME(tokens.apex.Colon)
               $.SUBRULE3($.expression)
             })
           },
@@ -804,41 +805,41 @@ class ApexParser extends chevrotain.Parser {
     // arrayInitializer
     // : '{' (variableInitializer (',' variableInitializer)* (',')? )? '}'
     $.RULE('arrayInitializer', () => {
-      $.CONSUME(tokens.LCurly)
+      $.CONSUME(tokens.apex.LCurly)
       $.OPTION(() => {
         $.SUBRULE($.variableInitializer)
         $.MANY({
           GATE: () =>
-            this.LA(2).tokenType !== tokens.Comma && this.LA(2).tokenType !== tokens.RCurly,
+            this.LA(2).tokenType !== tokens.apex.Comma && this.LA(2).tokenType !== tokens.apex.RCurly,
           DEF: () => {
-            $.CONSUME(tokens.Comma)
+            $.CONSUME(tokens.apex.Comma)
             $.SUBRULE2($.variableInitializer)
           },
         })
       })
       $.OPTION2(() => {
-        $.CONSUME2(tokens.Comma)
+        $.CONSUME2(tokens.apex.Comma)
       })
-      $.CONSUME(tokens.RCurly)
+      $.CONSUME(tokens.apex.RCurly)
     })
 
     // annotationTypeDeclaration
     // : '@' INTERFACE IDENTIFIER annotationTypeBody
     $.RULE('annotationTypeDeclaration', () => {
-      $.CONSUME(tokens.At)
-      $.CONSUME(tokens.Interface)
-      $.CONSUME(tokens.Identifier)
+      $.CONSUME(tokens.apex.At)
+      $.CONSUME(tokens.apex.Interface)
+      $.CONSUME(tokens.apex.Identifier)
       $.SUBRULE($.annotationTypeBody)
     })
 
     // annotationTypeBody
     // : '{' (annotationTypeElementDeclaration)* '}'
     $.RULE('annotationTypeBody', () => {
-      $.CONSUME(tokens.LCurly)
+      $.CONSUME(tokens.apex.LCurly)
       $.MANY(() => {
         $.SUBRULE($.annotationTypeElementDeclaration)
       })
-      $.CONSUME(tokens.RCurly)
+      $.CONSUME(tokens.apex.RCurly)
     })
 
     // annotationTypeElementDeclaration
@@ -913,9 +914,9 @@ class ApexParser extends chevrotain.Parser {
     // annotationMethodRest
     // : IDENTIFIER '(' ')' defaultValue?
     $.RULE('annotationMethodRest', () => {
-      $.CONSUME(tokens.Identifier)
-      $.CONSUME(tokens.LBrace)
-      $.CONSUME(tokens.RBrace)
+      $.CONSUME(tokens.apex.Identifier)
+      $.CONSUME(tokens.apex.LBrace)
+      $.CONSUME(tokens.apex.RBrace)
     })
 
     // annotationConstantRest
@@ -928,7 +929,7 @@ class ApexParser extends chevrotain.Parser {
     // : typeType (',' typeType)*
     $.RULE('typeList', () => {
       $.AT_LEAST_ONE_SEP({
-        SEP: tokens.Comma,
+        SEP: tokens.apex.Comma,
         DEF: () => {
           $.SUBRULE($.typeType)
         },
@@ -948,8 +949,8 @@ class ApexParser extends chevrotain.Parser {
                 { ALT: () => $.SUBRULE($.primitiveType) },
               ])
               $.MANY(() => {
-                $.CONSUME(tokens.LSquare)
-                $.CONSUME(tokens.RSquare)
+                $.CONSUME(tokens.apex.LSquare)
+                $.CONSUME(tokens.apex.RSquare)
               })
             })
           },
@@ -961,8 +962,8 @@ class ApexParser extends chevrotain.Parser {
               { ALT: () => $.SUBRULE2($.primitiveType) },
             ])
             $.MANY2(() => {
-              $.CONSUME2(tokens.LSquare)
-              $.CONSUME2(tokens.RSquare)
+              $.CONSUME2(tokens.apex.LSquare)
+              $.CONSUME2(tokens.apex.RSquare)
             })
           },
         },
@@ -972,7 +973,7 @@ class ApexParser extends chevrotain.Parser {
     // typeTypeOrVoid
     // : typeType | VOID
     $.RULE('typeTypeOrVoid', () => {
-      $.OR([{ ALT: () => $.SUBRULE($.typeType) }, { ALT: () => $.CONSUME(tokens.Void) }])
+      $.OR([{ ALT: () => $.SUBRULE($.typeType) }, { ALT: () => $.CONSUME(tokens.apex.Void) }])
     })
 
     // classOrInterfaceType
@@ -980,9 +981,9 @@ class ApexParser extends chevrotain.Parser {
     $.RULE('classOrInterfaceType', () => {
       $.SUBRULE($.classOrInterfaceTypeElement)
       $.MANY({
-        GATE: () => this.LA(2).tokenType !== tokens.Class,
+        GATE: () => this.LA(2).tokenType !== tokens.apex.Class,
         DEF: () => {
-          $.CONSUME(tokens.Dot)
+          $.CONSUME(tokens.apex.Dot)
           $.SUBRULE2($.classOrInterfaceTypeElement)
         },
       })
@@ -991,7 +992,7 @@ class ApexParser extends chevrotain.Parser {
     // classOrInterfaceTypeElement
     // : IDENTIFIER typeArguments?
     $.RULE('classOrInterfaceTypeElement', () => {
-      $.CONSUME(tokens.Identifier)
+      $.CONSUME(tokens.apex.Identifier)
       $.OPTION(() => {
         $.SUBRULE($.typeArguments)
       })
@@ -1000,14 +1001,14 @@ class ApexParser extends chevrotain.Parser {
     // typeArguments
     // : '<' typeArgument (',' typeArgument)* '>'
     $.RULE('typeArguments', () => {
-      $.CONSUME(tokens.Less)
+      $.CONSUME(tokens.apex.Less)
       $.AT_LEAST_ONE_SEP({
-        SEP: tokens.Comma,
+        SEP: tokens.apex.Comma,
         DEF: () => {
           $.SUBRULE($.typeArgument)
         },
       })
-      $.CONSUME(tokens.Greater)
+      $.CONSUME(tokens.apex.Greater)
     })
 
     // typeArgumentsOrOperatorExpressionRest
@@ -1020,17 +1021,17 @@ class ApexParser extends chevrotain.Parser {
     //     | '(' expression ')'
     //   )
     $.RULE('typeArgumentsOrOperatorExpressionRest', () => {
-      $.CONSUME(tokens.Less)
+      $.CONSUME(tokens.apex.Less)
       $.OR([
-        { ALT: () => $.CONSUME(tokens.This) },
-        { ALT: () => $.CONSUME(tokens.Super) },
+        { ALT: () => $.CONSUME(tokens.apex.This) },
+        { ALT: () => $.CONSUME(tokens.apex.Super) },
         { ALT: () => $.SUBRULE($.literal) },
         {
           ALT: () => {
             let canBeOperatorExpression = true
             $.SUBRULE($.typeArgument)
             $.MANY(() => {
-              $.CONSUME(tokens.Comma)
+              $.CONSUME(tokens.apex.Comma)
               $.SUBRULE2($.typeArgument)
               canBeOperatorExpression = false
             })
@@ -1039,11 +1040,11 @@ class ApexParser extends chevrotain.Parser {
             $.OPTION3({
               GATE: () => canBeOperatorExpression,
               DEF: () => {
-                $.CONSUME(tokens.LBrace)
+                $.CONSUME(tokens.apex.LBrace)
                 $.OPTION4(() => {
                   $.SUBRULE($.expressionList)
                 })
-                $.CONSUME(tokens.RBrace)
+                $.CONSUME(tokens.apex.RBrace)
                 $.MANY2(() => {
                   $.SUBRULE($.dimension)
                 })
@@ -1053,16 +1054,16 @@ class ApexParser extends chevrotain.Parser {
             $.OPTION5({
               GATE: () => !isOperatorExpression,
               DEF: () => {
-                $.CONSUME(tokens.Greater)
+                $.CONSUME(tokens.apex.Greater)
               },
             })
           },
         },
         {
           ALT: () => {
-            $.CONSUME2(tokens.LBrace)
+            $.CONSUME2(tokens.apex.LBrace)
             $.SUBRULE2($.expression)
-            $.CONSUME2(tokens.RBrace)
+            $.CONSUME2(tokens.apex.RBrace)
           },
         },
       ])
@@ -1072,9 +1073,9 @@ class ApexParser extends chevrotain.Parser {
     // : typeType | '?'
     //   ((EXTENDS | SUPER) typeType)?
     $.RULE('typeArgument', () => {
-      $.OR([{ ALT: () => $.SUBRULE($.typeType) }, { ALT: () => $.CONSUME(tokens.Questionmark) }])
+      $.OR([{ ALT: () => $.SUBRULE($.typeType) }, { ALT: () => $.CONSUME(tokens.apex.Questionmark) }])
       $.OPTION(() => {
-        $.OR2([{ ALT: () => $.CONSUME(tokens.Extends) }, { ALT: () => $.CONSUME(tokens.Super) }])
+        $.OR2([{ ALT: () => $.CONSUME(tokens.apex.Extends) }, { ALT: () => $.CONSUME(tokens.apex.Super) }])
         $.SUBRULE2($.typeType)
       })
     })
@@ -1083,7 +1084,7 @@ class ApexParser extends chevrotain.Parser {
     // : qualifiedName (',' qualifiedName)*
     $.RULE('qualifiedNameList', () => {
       $.AT_LEAST_ONE_SEP({
-        SEP: tokens.Comma,
+        SEP: tokens.apex.Comma,
         DEF: () => {
           $.SUBRULE($.qualifiedName)
         },
@@ -1093,20 +1094,20 @@ class ApexParser extends chevrotain.Parser {
     // identifiers
     // : '(' identifierList? ')'
     $.RULE('identifiers', () => {
-      $.CONSUME(tokens.LBrace)
+      $.CONSUME(tokens.apex.LBrace)
       $.OPTION(() => {
         $.SUBRULE($.identifierList)
       })
-      $.CONSUME(tokens.RBrace)
+      $.CONSUME(tokens.apex.RBrace)
     })
 
     // identifierList
     // : identifier (',' identifier)*
     $.RULE('identifierList', () => {
       $.AT_LEAST_ONE_SEP({
-        SEP: tokens.Comma,
+        SEP: tokens.apex.Comma,
         DEF: () => {
-          $.CONSUME(tokens.Identifier)
+          $.CONSUME(tokens.apex.Identifier)
         },
       })
     })
@@ -1114,18 +1115,18 @@ class ApexParser extends chevrotain.Parser {
     // formalParameters
     // : '(' formalParameterList? ')'
     $.RULE('formalParameters', () => {
-      $.CONSUME(tokens.LBrace)
+      $.CONSUME(tokens.apex.LBrace)
       $.OPTION(() => {
         $.SUBRULE($.formalParameterList)
       })
-      $.CONSUME(tokens.RBrace)
+      $.CONSUME(tokens.apex.RBrace)
     })
 
     // formalParameterList
     // : formalParameter (',' formalParameter)*
     $.RULE('formalParameterList', () => {
       $.AT_LEAST_ONE_SEP({
-        SEP: tokens.Comma,
+        SEP: tokens.apex.Comma,
         DEF: () => {
           $.SUBRULE($.formalParameter)
         },
@@ -1145,11 +1146,11 @@ class ApexParser extends chevrotain.Parser {
     // block
     // : '{' blockStatement* '}'
     $.RULE('block', () => {
-      $.CONSUME(tokens.LCurly)
+      $.CONSUME(tokens.apex.LCurly)
       $.MANY(() => {
         $.SUBRULE($.blockStatement)
       })
-      $.CONSUME(tokens.RCurly)
+      $.CONSUME(tokens.apex.RCurly)
     })
 
     // blockStatement
@@ -1175,7 +1176,7 @@ class ApexParser extends chevrotain.Parser {
                     {
                       // identifierStatement
                       ALT: () => {
-                        $.CONSUME(tokens.Colon)
+                        $.CONSUME(tokens.apex.Colon)
                         $.SUBRULE($.statement)
                       },
                     },
@@ -1192,9 +1193,9 @@ class ApexParser extends chevrotain.Parser {
                           $.SUBRULE($.typeArguments)
                         })
                         $.MANY2({
-                          GATE: () => this.LA(2).tokenType !== tokens.Class,
+                          GATE: () => this.LA(2).tokenType !== tokens.apex.Class,
                           DEF: () => {
-                            $.CONSUME(tokens.Dot)
+                            $.CONSUME(tokens.apex.Dot)
                             $.SUBRULE2($.classOrInterfaceTypeElement)
                           },
                         })
@@ -1209,8 +1210,8 @@ class ApexParser extends chevrotain.Parser {
               DEF: () => {
                 // if not identifier statement
                 $.MANY3(() => {
-                  $.CONSUME(tokens.LSquare)
-                  $.CONSUME(tokens.RSquare)
+                  $.CONSUME(tokens.apex.LSquare)
+                  $.CONSUME(tokens.apex.RSquare)
                 })
                 $.SUBRULE($.variableDeclarators)
                 $.SUBRULE2($.semiColon)
@@ -1271,10 +1272,10 @@ class ApexParser extends chevrotain.Parser {
     // assertStatement
     // : ASSERT expression (':' expression)? ';'
     $.RULE('assertStatement', () => {
-      $.CONSUME(tokens.Assert)
+      $.CONSUME(tokens.apex.Assert)
       $.SUBRULE($.expression)
       $.OPTION(() => {
-        $.CONSUME(tokens.Colon)
+        $.CONSUME(tokens.apex.Colon)
         $.SUBRULE2($.expression)
       })
       $.SUBRULE($.semiColon)
@@ -1283,13 +1284,13 @@ class ApexParser extends chevrotain.Parser {
     // ifStatement
     // : IF '(' expression ')' statement (ELSE statement)?
     $.RULE('ifStatement', () => {
-      $.CONSUME(tokens.If)
-      $.CONSUME(tokens.LBrace)
+      $.CONSUME(tokens.apex.If)
+      $.CONSUME(tokens.apex.LBrace)
       $.SUBRULE($.expression)
-      $.CONSUME(tokens.RBrace)
+      $.CONSUME(tokens.apex.RBrace)
       $.SUBRULE($.statement)
       $.OPTION(() => {
-        $.CONSUME(tokens.Else)
+        $.CONSUME(tokens.apex.Else)
         $.SUBRULE2($.statement)
       })
     })
@@ -1297,29 +1298,29 @@ class ApexParser extends chevrotain.Parser {
     // whileStatement
     // : WHILE '(' expression ')' statement
     $.RULE('whileStatement', () => {
-      $.CONSUME(tokens.While)
-      $.CONSUME(tokens.LBrace)
+      $.CONSUME(tokens.apex.While)
+      $.CONSUME(tokens.apex.LBrace)
       $.SUBRULE($.expression)
-      $.CONSUME(tokens.RBrace)
+      $.CONSUME(tokens.apex.RBrace)
       $.SUBRULE($.statement)
     })
 
     // doWhileStatement
     // : DO statement WHILE '(' expression ')' ';'
     $.RULE('doWhileStatement', () => {
-      $.CONSUME(tokens.Do)
+      $.CONSUME(tokens.apex.Do)
       $.SUBRULE($.statement)
-      $.CONSUME(tokens.While)
-      $.CONSUME(tokens.LBrace)
+      $.CONSUME(tokens.apex.While)
+      $.CONSUME(tokens.apex.LBrace)
       $.SUBRULE($.expression)
-      $.CONSUME(tokens.RBrace)
+      $.CONSUME(tokens.apex.RBrace)
       $.SUBRULE($.semiColon)
     })
 
     // tryStatement
     // : TRY resourceSpecification? block (catchClause+ finallyBlock? | finallyBlock)
     $.RULE('tryStatement', () => {
-      $.CONSUME(tokens.Try)
+      $.CONSUME(tokens.apex.Try)
       $.OPTION(() => {
         $.SUBRULE($.resourceSpecification)
       })
@@ -1345,7 +1346,7 @@ class ApexParser extends chevrotain.Parser {
     // returnStatement
     // : RETURN expression? ';'
     $.RULE('returnStatement', () => {
-      $.CONSUME(tokens.Return)
+      $.CONSUME(tokens.apex.Return)
       $.OPTION(() => {
         $.SUBRULE($.expression)
       })
@@ -1355,7 +1356,7 @@ class ApexParser extends chevrotain.Parser {
     // throwStatement
     // : THROW expression ';'
     $.RULE('throwStatement', () => {
-      $.CONSUME(tokens.Throw)
+      $.CONSUME(tokens.apex.Throw)
       $.SUBRULE($.expression)
       $.SUBRULE($.semiColon)
     })
@@ -1363,9 +1364,9 @@ class ApexParser extends chevrotain.Parser {
     // breakStatement
     // : BREAK IDENTIFIER? ';'
     $.RULE('breakStatement', () => {
-      $.CONSUME(tokens.Break)
+      $.CONSUME(tokens.apex.Break)
       $.OPTION(() => {
-        $.CONSUME(tokens.Identifier)
+        $.CONSUME(tokens.apex.Identifier)
       })
       $.SUBRULE($.semiColon)
     })
@@ -1373,9 +1374,9 @@ class ApexParser extends chevrotain.Parser {
     // continueStatement
     // : CONTINUE IDENTIFIER? ';'
     $.RULE('continueStatement', () => {
-      $.CONSUME(tokens.Continue)
+      $.CONSUME(tokens.apex.Continue)
       $.OPTION(() => {
-        $.CONSUME(tokens.Identifier)
+        $.CONSUME(tokens.apex.Identifier)
       })
       $.SUBRULE($.semiColon)
     })
@@ -1396,22 +1397,22 @@ class ApexParser extends chevrotain.Parser {
     // identifierStatement
     // : IDENTIFIER ':' statement
     $.RULE('identifierStatement', () => {
-      $.CONSUME(tokens.Identifier)
-      $.CONSUME(tokens.Colon)
+      $.CONSUME(tokens.apex.Identifier)
+      $.CONSUME(tokens.apex.Colon)
       $.SUBRULE($.statement)
     })
 
     // catchClause
     // : CATCH '(' variableModifier* catchType IDENTIFIER ')' block
     $.RULE('catchClause', () => {
-      $.CONSUME(tokens.Catch)
-      $.CONSUME(tokens.LBrace)
+      $.CONSUME(tokens.apex.Catch)
+      $.CONSUME(tokens.apex.LBrace)
       $.MANY(() => {
         $.SUBRULE($.variableModifier)
       })
       $.SUBRULE($.catchType)
-      $.CONSUME(tokens.Identifier)
-      $.CONSUME(tokens.RBrace)
+      $.CONSUME(tokens.apex.Identifier)
+      $.CONSUME(tokens.apex.RBrace)
       $.SUBRULE($.block)
     })
 
@@ -1419,7 +1420,7 @@ class ApexParser extends chevrotain.Parser {
     // : qualifiedName ('|' qualifiedName)*
     $.RULE('catchType', () => {
       $.AT_LEAST_ONE_SEP({
-        SEP: tokens.Or,
+        SEP: tokens.apex.Or,
         DEF: () => {
           $.SUBRULE($.qualifiedName)
         },
@@ -1429,19 +1430,19 @@ class ApexParser extends chevrotain.Parser {
     // finallyBlock
     // : FINALLY block
     $.RULE('finallyBlock', () => {
-      $.CONSUME(tokens.Finally)
+      $.CONSUME(tokens.apex.Finally)
       $.SUBRULE($.block)
     })
 
     // resourceSpecification
     // : '(' resources ';'? ')'
     $.RULE('resourceSpecification', () => {
-      $.CONSUME(tokens.LBrace)
+      $.CONSUME(tokens.apex.LBrace)
       $.SUBRULE($.resources)
       $.OPTION(() => {
         $.SUBRULE($.semiColon)
       })
-      $.CONSUME(tokens.RBrace)
+      $.CONSUME(tokens.apex.RBrace)
     })
 
     // resources
@@ -1449,7 +1450,7 @@ class ApexParser extends chevrotain.Parser {
     $.RULE('resources', () => {
       $.SUBRULE($.resource)
       $.MANY({
-        GATE: () => this.LA(2).tokenType !== tokens.RBrace,
+        GATE: () => this.LA(2).tokenType !== tokens.apex.RBrace,
         DEF: () => {
           $.SUBRULE($.semiColon)
           $.SUBRULE2($.resource)
@@ -1465,17 +1466,17 @@ class ApexParser extends chevrotain.Parser {
       })
       $.SUBRULE($.classOrInterfaceType)
       $.SUBRULE($.variableDeclaratorId)
-      $.CONSUME(tokens.Equals)
+      $.CONSUME(tokens.apex.Equals)
       $.SUBRULE($.expression)
     })
 
     // forStatement
     // : FOR '(' forControl ')' statement
     $.RULE('forStatement', () => {
-      $.CONSUME(tokens.For)
-      $.CONSUME(tokens.LBrace)
+      $.CONSUME(tokens.apex.For)
+      $.CONSUME(tokens.apex.LBrace)
       $.SUBRULE($.forControl)
-      $.CONSUME(tokens.RBrace)
+      $.CONSUME(tokens.apex.RBrace)
       $.SUBRULE($.statement)
     })
 
@@ -1500,7 +1501,7 @@ class ApexParser extends chevrotain.Parser {
                 {
                   // enhancedForStatement
                   ALT: () => {
-                    $.CONSUME(tokens.Colon)
+                    $.CONSUME(tokens.apex.Colon)
                     $.SUBRULE2($.expression)
                     enhancedForStatement = true
                   },
@@ -1508,7 +1509,7 @@ class ApexParser extends chevrotain.Parser {
                 {
                   ALT: () => {
                     $.OPTION2(() => {
-                      $.CONSUME(tokens.Equals)
+                      $.CONSUME(tokens.apex.Equals)
                       $.SUBRULE($.variableInitializer)
                     })
                   },
@@ -1518,7 +1519,7 @@ class ApexParser extends chevrotain.Parser {
               $.MANY2({
                 GATE: () => !enhancedForStatement,
                 DEF: () => {
-                  $.CONSUME(tokens.Comma)
+                  $.CONSUME(tokens.apex.Comma)
                   $.SUBRULE($.variableDeclarator)
                 },
               })
@@ -1528,7 +1529,7 @@ class ApexParser extends chevrotain.Parser {
             GATE: !localVariableDeclaration,
             ALT: () => {
               $.MANY3(() => {
-                $.CONSUME2(tokens.Comma)
+                $.CONSUME2(tokens.apex.Comma)
                 $.SUBRULE3($.expression)
               })
             },
@@ -1566,7 +1567,7 @@ class ApexParser extends chevrotain.Parser {
       })
       $.SUBRULE($.typeType)
       $.SUBRULE($.variableDeclaratorId)
-      $.CONSUME(tokens.Colon)
+      $.CONSUME(tokens.apex.Colon)
       $.SUBRULE($.expression)
     })
 
@@ -1580,14 +1581,14 @@ class ApexParser extends chevrotain.Parser {
     // identifierArguments
     // : IDENTIFIER arguments
     $.RULE('identifierArguments', () => {
-      $.CONSUME(tokens.Identifier)
+      $.CONSUME(tokens.apex.Identifier)
       $.SUBRULE($.arguments)
     })
 
     // super
     // : SUPER superSuffix
     $.RULE('super', () => {
-      $.CONSUME(tokens.Super)
+      $.CONSUME(tokens.apex.Super)
       $.SUBRULE($.superSuffix)
     })
 
@@ -1604,18 +1605,18 @@ class ApexParser extends chevrotain.Parser {
     // arguments
     // : '(' expressionList? ')'
     $.RULE('arguments', () => {
-      $.CONSUME(tokens.LBrace)
+      $.CONSUME(tokens.apex.LBrace)
       $.OPTION(() => {
         $.SUBRULE($.expressionList)
       })
-      $.CONSUME(tokens.RBrace)
+      $.CONSUME(tokens.apex.RBrace)
     })
 
     // dotIdentifierArguments
     // : '.' IDENTIFIER arguments?
     $.RULE('dotIdentifierArguments', () => {
-      $.CONSUME(tokens.Dot)
-      $.CONSUME(tokens.Identifier)
+      $.CONSUME(tokens.apex.Dot)
+      $.CONSUME(tokens.apex.Identifier)
       $.OPTION(() => {
         $.SUBRULE($.arguments)
       })
@@ -1624,16 +1625,16 @@ class ApexParser extends chevrotain.Parser {
     // parExpression
     // : '(' expression ')'
     $.RULE('parExpression', () => {
-      $.CONSUME(tokens.LBrace)
+      $.CONSUME(tokens.apex.LBrace)
       $.SUBRULE($.expression)
-      $.CONSUME(tokens.RBrace)
+      $.CONSUME(tokens.apex.RBrace)
     })
 
     // expressionList
     // : expression (',' expression)*
     $.RULE('expressionList', () => {
       $.AT_LEAST_ONE_SEP({
-        SEP: tokens.Comma,
+        SEP: tokens.apex.Comma,
         DEF: () => {
           $.SUBRULE($.expression)
         },
@@ -1643,12 +1644,12 @@ class ApexParser extends chevrotain.Parser {
     // methodInvocation
     // : IDENTIFIER '(' expressionList? ')'
     $.RULE('methodInvocation', () => {
-      $.CONSUME(tokens.Identifier)
-      $.CONSUME(tokens.LBrace)
+      $.CONSUME(tokens.apex.Identifier)
+      $.CONSUME(tokens.apex.LBrace)
       $.OPTION(() => {
         $.SUBRULE($.expressionList)
       })
-      $.CONSUME(tokens.RBrace)
+      $.CONSUME(tokens.apex.RBrace)
       $.MANY(() => {
         $.SUBRULE($.dimension)
       })
@@ -1746,7 +1747,7 @@ class ApexParser extends chevrotain.Parser {
     // instanceofExpressionRest
     // : INSTANCEOF typeType
     $.RULE('instanceofExpressionRest', () => {
-      $.CONSUME(tokens.Instanceof)
+      $.CONSUME(tokens.apex.Instanceof)
       $.SUBRULE($.typeType)
       $.MANY(() => {
         $.SUBRULE($.operatorExpressionRest)
@@ -1756,9 +1757,9 @@ class ApexParser extends chevrotain.Parser {
     // squareExpressionRest
     // : '[' expression ']'
     $.RULE('squareExpressionRest', () => {
-      $.CONSUME(tokens.LSquare)
+      $.CONSUME(tokens.apex.LSquare)
       $.SUBRULE($.expression)
-      $.CONSUME(tokens.RSquare)
+      $.CONSUME(tokens.apex.RSquare)
     })
 
     // postfixExpressionRest
@@ -1767,12 +1768,12 @@ class ApexParser extends chevrotain.Parser {
       $.OR([
         {
           ALT: () => {
-            $.CONSUME(tokens.PlusPlus)
+            $.CONSUME(tokens.apex.PlusPlus)
           },
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.MinusMinus)
+            $.CONSUME(tokens.apex.MinusMinus)
           },
         },
       ])
@@ -1781,9 +1782,9 @@ class ApexParser extends chevrotain.Parser {
     // ifElseExpressionRest
     // : '?' expression ':' expression
     $.RULE('ifElseExpressionRest', () => {
-      $.CONSUME(tokens.Questionmark)
+      $.CONSUME(tokens.apex.Questionmark)
       $.SUBRULE($.expression)
-      $.CONSUME(tokens.Colon)
+      $.CONSUME(tokens.apex.Colon)
       $.SUBRULE2($.expression)
     })
 
@@ -1798,12 +1799,12 @@ class ApexParser extends chevrotain.Parser {
     //     | explicitGenericInvocation
     //   )
     $.RULE('qualifiedExpressionRest', () => {
-      $.CONSUME(tokens.Dot)
+      $.CONSUME(tokens.apex.Dot)
       $.OR([
         { ALT: () => $.SUBRULE($.methodInvocation) },
         {
           ALT: () => {
-            $.CONSUME(tokens.Identifier)
+            $.CONSUME(tokens.apex.Identifier)
             $.OPTION(() => {
               $.SUBRULE($.typeArgumentsOrOperatorExpressionRest)
             })
@@ -1812,12 +1813,12 @@ class ApexParser extends chevrotain.Parser {
             })
           },
         },
-        { ALT: () => $.CONSUME(tokens.Class) },
-        { ALT: () => $.CONSUME(tokens.This) },
-        { ALT: () => $.CONSUME(tokens.Super) },
+        { ALT: () => $.CONSUME(tokens.apex.Class) },
+        { ALT: () => $.CONSUME(tokens.apex.This) },
+        { ALT: () => $.CONSUME(tokens.apex.Super) },
         { ALT: () => $.SUBRULE($.creatorOptionalNonWildcardInnerCreator) },
         { ALT: () => $.SUBRULE($.explicitGenericInvocation) },
-        { ALT: () => $.CONSUME(tokens.New) },
+        { ALT: () => $.CONSUME(tokens.apex.New) },
       ])
 
       $.OR2([
@@ -1833,7 +1834,7 @@ class ApexParser extends chevrotain.Parser {
     // creatorOptionalNonWildcardInnerCreator
     // : NEW nonWildcardTypeArguments? innerCreator
     $.RULE('creatorOptionalNonWildcardInnerCreator', () => {
-      $.CONSUME(tokens.New)
+      $.CONSUME(tokens.apex.New)
       $.OPTION(() => {
         $.SUBRULE($.nonWildcardTypeArguments)
       })
@@ -1846,27 +1847,27 @@ class ApexParser extends chevrotain.Parser {
       $.OR([
         {
           ALT: () => {
-            $.CONSUME(tokens.Plus)
+            $.CONSUME(tokens.apex.Plus)
           },
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.Minus)
+            $.CONSUME(tokens.apex.Minus)
           },
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.PlusPlus)
+            $.CONSUME(tokens.apex.PlusPlus)
           },
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.MinusMinus)
+            $.CONSUME(tokens.apex.MinusMinus)
           },
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.Exclamationmark)
+            $.CONSUME(tokens.apex.Exclamationmark)
           },
         },
       ])
@@ -1878,7 +1879,7 @@ class ApexParser extends chevrotain.Parser {
     // | '(' typeType ')' expression
     // | lambdaExpression // Java8
     $.RULE('parExpressionOrCastExpressionOrLambdaExpression', () => {
-      $.CONSUME(tokens.LBrace)
+      $.CONSUME(tokens.apex.LBrace)
       // if parExpression
       // -> no
       //       - annotations
@@ -1891,7 +1892,7 @@ class ApexParser extends chevrotain.Parser {
             let formalParameters = false
             let i = 0
             $.OPTION(() => {
-              const final = $.CONSUME(tokens.Final)
+              const final = $.CONSUME(tokens.apex.Final)
               final.cnt = i
               formalParameters = true
             })
@@ -1908,10 +1909,10 @@ class ApexParser extends chevrotain.Parser {
             // For potentielle formalParameterList or identifierList
             $.MANY(() => {
               i++
-              $.CONSUME(tokens.Comma)
+              $.CONSUME(tokens.apex.Comma)
               if (formalParameters) {
                 $.OPTION3(() => {
-                  const final = $.CONSUME2(tokens.Final)
+                  const final = $.CONSUME2(tokens.apex.Final)
                   final.cnt = i
                 })
               }
@@ -1921,7 +1922,7 @@ class ApexParser extends chevrotain.Parser {
               }
             })
 
-            $.CONSUME2(tokens.RBrace)
+            $.CONSUME2(tokens.apex.RBrace)
             $.OR2([
               {
                 GATE: () => !formalParameters,
@@ -1995,121 +1996,121 @@ class ApexParser extends chevrotain.Parser {
         // ('*'|'/'|'%')
         {
           ALT: () => {
-            $.CONSUME(tokens.Star)
+            $.CONSUME(tokens.apex.Star)
           },
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.Dash)
+            $.CONSUME(tokens.apex.Dash)
           },
         },
         // ('+'|'-')
         {
           ALT: () => {
-            $.CONSUME(tokens.Plus)
+            $.CONSUME(tokens.apex.Plus)
           },
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.Minus)
+            $.CONSUME(tokens.apex.Minus)
           },
         },
         // ('<=' | '>=' | '>' | '>>' | '>>>' | '<')
         {
           ALT: () => {
-            $.CONSUME(tokens.LessEquals)
+            $.CONSUME(tokens.apex.LessEquals)
           },
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.GreaterEquals)
+            $.CONSUME(tokens.apex.GreaterEquals)
           },
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.Greater)
+            $.CONSUME(tokens.apex.Greater)
             $.OPTION(() => {
-              $.CONSUME2(tokens.Greater)
+              $.CONSUME2(tokens.apex.Greater)
               $.OPTION2(() => {
-                $.CONSUME3(tokens.Greater)
+                $.CONSUME3(tokens.apex.Greater)
               })
             })
           },
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.Less)
+            $.CONSUME(tokens.apex.Less)
           },
         },
         // ('==' | '!=')
         {
           ALT: () => {
-            $.CONSUME(tokens.EqualsEquals)
+            $.CONSUME(tokens.apex.EqualsEquals)
           },
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.ExclamationmarkEquals)
+            $.CONSUME(tokens.apex.ExclamationmarkEquals)
           },
         },
         // '&'
         {
           ALT: () => {
-            $.CONSUME(tokens.And)
+            $.CONSUME(tokens.apex.And)
           },
         },
         // | '|'
         {
           ALT: () => {
-            $.CONSUME(tokens.Or)
+            $.CONSUME(tokens.apex.Or)
           },
         },
         // | '&&'
         {
           ALT: () => {
-            $.CONSUME(tokens.AndAnd)
+            $.CONSUME(tokens.apex.AndAnd)
           },
         },
         // | '||'
         {
           ALT: () => {
-            $.CONSUME(tokens.OrOr)
+            $.CONSUME(tokens.apex.OrOr)
           },
         },
         // ('=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '>>=' | '>>>=' | '<<=' | '%=')
         {
           ALT: () => {
-            $.CONSUME(tokens.Equals)
+            $.CONSUME(tokens.apex.Equals)
           },
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.PlusEquals)
+            $.CONSUME(tokens.apex.PlusEquals)
           },
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.MinusEquals)
+            $.CONSUME(tokens.apex.MinusEquals)
           },
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.StarEquals)
+            $.CONSUME(tokens.apex.StarEquals)
           },
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.DashEquals)
+            $.CONSUME(tokens.apex.DashEquals)
           },
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.AndEquals)
+            $.CONSUME(tokens.apex.AndEquals)
           },
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.OrEquals)
+            $.CONSUME(tokens.apex.OrEquals)
           },
         },
       ])
@@ -2134,25 +2135,25 @@ class ApexParser extends chevrotain.Parser {
     // | identifiers
     $.RULE('lambdaParameters', () => {
       $.OR([
-        { ALT: () => $.CONSUME(tokens.Identifier) },
+        { ALT: () => $.CONSUME(tokens.apex.Identifier) },
         {
           ALT: () => {
-            $.CONSUME(tokens.LBrace)
-            $.CONSUME(tokens.RBrace)
+            $.CONSUME(tokens.apex.LBrace)
+            $.CONSUME(tokens.apex.RBrace)
           },
         },
         {
           ALT: () => {
-            $.CONSUME2(tokens.LBrace)
+            $.CONSUME2(tokens.apex.LBrace)
             $.SUBRULE($.formalParameterList)
-            $.CONSUME2(tokens.RBrace)
+            $.CONSUME2(tokens.apex.RBrace)
           },
         },
         {
           ALT: () => {
-            $.CONSUME3(tokens.LBrace)
+            $.CONSUME3(tokens.apex.LBrace)
             $.SUBRULE($.identifierList)
-            $.CONSUME3(tokens.RBrace)
+            $.CONSUME3(tokens.apex.RBrace)
           },
         },
       ])
@@ -2179,7 +2180,7 @@ class ApexParser extends chevrotain.Parser {
     // : nonWildcardCreator
     // | simpleCreator
     $.RULE('creator', () => {
-      $.CONSUME(tokens.New)
+      $.CONSUME(tokens.apex.New)
       $.OR([
         { ALT: () => $.SUBRULE($.nonWildcardCreator) },
         { ALT: () => $.SUBRULE($.simpleCreator) },
@@ -2215,7 +2216,7 @@ class ApexParser extends chevrotain.Parser {
     // : identifierNameElement ('.' identifierNameElement)*
     $.RULE('identifierName', () => {
       $.AT_LEAST_ONE_SEP({
-        SEP: tokens.Dot,
+        SEP: tokens.apex.Dot,
         DEF: () => {
           $.SUBRULE($.identifierNameElement)
         },
@@ -2226,8 +2227,8 @@ class ApexParser extends chevrotain.Parser {
     // : IDENTIFIER typeArgumentsOrDiamond?
     $.RULE('identifierNameElement', () => {
       $.OR([
-        { ALT: () => $.CONSUME(tokens.Identifier) },
-        { ALT: () => $.CONSUME(tokens.New) }, // KLUDGE to allow Trigger.new
+        { ALT: () => $.CONSUME(tokens.apex.Identifier) },
+        { ALT: () => $.CONSUME(tokens.apex.New) }, // KLUDGE to allow Trigger.new
       ])
       $.OPTION(() => {
         $.SUBRULE($.nonWildcardTypeArgumentsOrDiamond)
@@ -2237,7 +2238,7 @@ class ApexParser extends chevrotain.Parser {
     // innerCreator
     // : IDENTIFIER nonWildcardTypeArgumentsOrDiamond? classCreatorRest
     $.RULE('innerCreator', () => {
-      $.CONSUME(tokens.Identifier)
+      $.CONSUME(tokens.apex.Identifier)
       $.OPTION(() => {
         $.SUBRULE($.nonWildcardTypeArgumentsOrDiamond)
       })
@@ -2247,14 +2248,14 @@ class ApexParser extends chevrotain.Parser {
     // arrayCreatorRest
     // : '[' (']' ('[' ']')* arrayInitializer | expression ']' ('[' expression ']')* ('[' ']')*)
     $.RULE('arrayCreatorRest', () => {
-      $.CONSUME(tokens.LSquare)
+      $.CONSUME(tokens.apex.LSquare)
       $.OR([
         {
           ALT: () => {
-            $.CONSUME(tokens.RSquare)
+            $.CONSUME(tokens.apex.RSquare)
             $.MANY(() => {
-              $.CONSUME2(tokens.LSquare)
-              $.CONSUME2(tokens.RSquare)
+              $.CONSUME2(tokens.apex.LSquare)
+              $.CONSUME2(tokens.apex.RSquare)
             })
             $.SUBRULE($.arrayInitializer)
           },
@@ -2262,15 +2263,15 @@ class ApexParser extends chevrotain.Parser {
         {
           ALT: () => {
             $.SUBRULE($.expression)
-            $.CONSUME3(tokens.RSquare)
+            $.CONSUME3(tokens.apex.RSquare)
             $.MANY2(() => {
-              $.CONSUME4(tokens.LSquare)
+              $.CONSUME4(tokens.apex.LSquare)
               $.SUBRULE2($.expression)
-              $.CONSUME4(tokens.RSquare)
+              $.CONSUME4(tokens.apex.RSquare)
             })
             $.MANY3(() => {
-              $.CONSUME5(tokens.LSquare)
-              $.CONSUME5(tokens.RSquare)
+              $.CONSUME5(tokens.apex.LSquare)
+              $.CONSUME5(tokens.apex.RSquare)
             })
           },
         },
@@ -2313,29 +2314,29 @@ class ApexParser extends chevrotain.Parser {
     // emptyDiamond
     // : '<' '>'
     $.RULE('emptyDiamond', () => {
-      $.CONSUME(tokens.Less)
-      $.CONSUME(tokens.Greater)
+      $.CONSUME(tokens.apex.Less)
+      $.CONSUME(tokens.apex.Greater)
     })
 
     // nonWildcardTypeArguments
     // : '<' typeList '>'
     $.RULE('nonWildcardTypeArguments', () => {
-      $.CONSUME(tokens.Less)
+      $.CONSUME(tokens.apex.Less)
       $.SUBRULE($.typeList)
-      $.CONSUME(tokens.Greater)
+      $.CONSUME(tokens.apex.Greater)
     })
 
     // qualifiedName
     // : IDENTIFIER ('.' IDENTIFIER)*
     $.RULE('qualifiedName', () => {
-      $.CONSUME(tokens.Identifier)
+      $.CONSUME(tokens.apex.Identifier)
       $.MANY({
         // The gate condition is in addition to basic grammar lookahead, so this.LA(1) === dot
         // is always checked
-        GATE: () => this.LA(2).tokenType === tokens.Identifier,
+        GATE: () => this.LA(2).tokenType === tokens.apex.Identifier,
         DEF: () => {
-          $.CONSUME(tokens.Dot)
-          $.CONSUME2(tokens.Identifier)
+          $.CONSUME(tokens.apex.Dot)
+          $.CONSUME2(tokens.apex.Identifier)
         },
       })
     })
@@ -2365,7 +2366,7 @@ class ApexParser extends chevrotain.Parser {
                     $.OR3([
                       {
                         ALT: () => {
-                          $.CONSUME(tokens.Identifier)
+                          $.CONSUME(tokens.apex.Identifier)
                           $.OPTION3(() => {
                             $.SUBRULE($.typeArguments)
                           })
@@ -2374,8 +2375,8 @@ class ApexParser extends chevrotain.Parser {
                       { ALT: () => $.SUBRULE($.primitiveType) },
                     ])
                     $.MANY(() => {
-                      $.CONSUME(tokens.LSquare)
-                      $.CONSUME(tokens.RSquare)
+                      $.CONSUME(tokens.apex.LSquare)
+                      $.CONSUME(tokens.apex.RSquare)
                     })
                   })
                 },
@@ -2398,7 +2399,7 @@ class ApexParser extends chevrotain.Parser {
             ])
           },
         },
-        { ALT: () => $.CONSUME(tokens.Void) },
+        { ALT: () => $.CONSUME(tokens.apex.Void) },
         {
           ALT: () => {
             $.SUBRULE($.nonWildcardTypeArguments)
@@ -2406,7 +2407,7 @@ class ApexParser extends chevrotain.Parser {
               { ALT: () => $.SUBRULE($.explicitGenericInvocationSuffix) },
               {
                 ALT: () => {
-                  $.CONSUME2(tokens.This)
+                  $.CONSUME2(tokens.apex.This)
                   $.SUBRULE2($.arguments)
                 },
               },
@@ -2418,7 +2419,7 @@ class ApexParser extends chevrotain.Parser {
 
     // identifierOrIdentifierWithTypeArgumentsOrOperatorExpression
     $.RULE('identifierOrIdentifierWithTypeArgumentsOrOperatorExpression', () => {
-      $.CONSUME(tokens.Identifier)
+      $.CONSUME(tokens.apex.Identifier)
       $.OPTION(() => {
         $.SUBRULE($.typeArgumentsOrOperatorExpressionRest)
       })
@@ -2427,9 +2428,9 @@ class ApexParser extends chevrotain.Parser {
     // dimension
     // : '[' expression? ']'
     $.RULE('dimension', () => {
-      $.CONSUME(tokens.LSquare)
+      $.CONSUME(tokens.apex.LSquare)
       $.OPTION(() => $.SUBRULE($.expression))
-      $.CONSUME(tokens.RSquare)
+      $.CONSUME(tokens.apex.RSquare)
     })
 
     // thisOrSuper
@@ -2442,12 +2443,12 @@ class ApexParser extends chevrotain.Parser {
       $.OR([
         {
           ALT: () => {
-            $.CONSUME(tokens.This)
+            $.CONSUME(tokens.apex.This)
           },
         },
         {
           ALT: () => {
-            $.CONSUME(tokens.Super)
+            $.CONSUME(tokens.apex.Super)
           },
         },
       ])
@@ -2467,20 +2468,20 @@ class ApexParser extends chevrotain.Parser {
         { ALT: () => $.SUBRULE($.floatLiteral) },
         { ALT: () => $.SUBRULE($.stringLiteral) },
         { ALT: () => $.SUBRULE($.booleanLiteral) },
-        { ALT: () => $.CONSUME(tokens.Null) },
+        { ALT: () => $.CONSUME(tokens.apex.Null) },
       ])
     })
 
     // stringLiteral
     $.RULE('stringLiteral', () => {
-      $.CONSUME(tokens.StringLiteral)
+      $.CONSUME(tokens.apex.StringLiteral)
     })
 
     // booleanLiteral
     // : TRUE
     // | FALSE
     $.RULE('booleanLiteral', () => {
-      $.OR([{ ALT: () => $.CONSUME(tokens.True) }, { ALT: () => $.CONSUME(tokens.False) }])
+      $.OR([{ ALT: () => $.CONSUME(tokens.apex.True) }, { ALT: () => $.CONSUME(tokens.apex.False) }])
     })
 
     // integerLiteral
@@ -2489,14 +2490,14 @@ class ApexParser extends chevrotain.Parser {
     // | OCT_LITERAL
     // | BINARY_LITERAL
     $.RULE('integerLiteral', () => {
-      $.CONSUME(tokens.DecimalLiteral)
+      $.CONSUME(tokens.apex.DecimalLiteral)
     })
 
     // floatLiteral
     // : FLOAT_LITERAL
     // | HEX_FLOAT_LITERAL
     $.RULE('floatLiteral', () => {
-      $.CONSUME(tokens.FloatLiteral)
+      $.CONSUME(tokens.apex.FloatLiteral)
     })
 
     // primitiveType
@@ -2510,15 +2511,15 @@ class ApexParser extends chevrotain.Parser {
     // | DOUBLE
     $.RULE('primitiveType', () => {
       $.OR([
-        { ALT: () => $.CONSUME(tokens.Boolean) },
-        { ALT: () => $.CONSUME(tokens.Char) },
-        { ALT: () => $.CONSUME(tokens.Byte) },
-        { ALT: () => $.CONSUME(tokens.Short) },
-        { ALT: () => $.CONSUME(tokens.Integer) },
-        { ALT: () => $.CONSUME(tokens.Long) },
-        { ALT: () => $.CONSUME(tokens.Float) },
-        { ALT: () => $.CONSUME(tokens.Double) },
-        { ALT: () => $.CONSUME(tokens.String) },
+        { ALT: () => $.CONSUME(tokens.apex.Boolean) },
+        { ALT: () => $.CONSUME(tokens.apex.Char) },
+        { ALT: () => $.CONSUME(tokens.apex.Byte) },
+        { ALT: () => $.CONSUME(tokens.apex.Short) },
+        { ALT: () => $.CONSUME(tokens.apex.Integer) },
+        { ALT: () => $.CONSUME(tokens.apex.Long) },
+        { ALT: () => $.CONSUME(tokens.apex.Float) },
+        { ALT: () => $.CONSUME(tokens.apex.Double) },
+        { ALT: () => $.CONSUME(tokens.apex.String) },
       ])
     })
 
@@ -2527,8 +2528,8 @@ class ApexParser extends chevrotain.Parser {
     // | ( ';' \n \n )
     $.RULE('semiColon', () => {
       $.OR([
-        { ALT: () => $.CONSUME(tokens.SemiColon) },
-        { ALT: () => $.CONSUME(tokens.SemiColonWithFollowEmptyLine) },
+        { ALT: () => $.CONSUME(tokens.apex.SemiColon) },
+        { ALT: () => $.CONSUME(tokens.apex.SemiColonWithFollowEmptyLine) },
       ])
     })
 
@@ -2539,12 +2540,12 @@ class ApexParser extends chevrotain.Parser {
     if (howMuch === 1) {
       let token = super.LA(howMuch)
       while (
-        chevrotain.tokenMatcher(token, tokens.LineComment) ||
-        chevrotain.tokenMatcher(token, tokens.JavaDocComment) ||
-        chevrotain.tokenMatcher(token, tokens.TraditionalComment) ||
-        chevrotain.tokenMatcher(token, tokens.LineCommentStandalone) ||
-        chevrotain.tokenMatcher(token, tokens.JavaDocCommentStandalone) ||
-        chevrotain.tokenMatcher(token, tokens.TraditionalCommentStandalone)
+        chevrotain.tokenMatcher(token, tokens.apex.LineComment) ||
+        chevrotain.tokenMatcher(token, tokens.apex.JavaDocComment) ||
+        chevrotain.tokenMatcher(token, tokens.apex.TraditionalComment) ||
+        chevrotain.tokenMatcher(token, tokens.apex.LineCommentStandalone) ||
+        chevrotain.tokenMatcher(token, tokens.apex.JavaDocCommentStandalone) ||
+        chevrotain.tokenMatcher(token, tokens.apex.TraditionalCommentStandalone)
       ) {
         const comment = token
         super.consumeToken()
@@ -2558,9 +2559,9 @@ class ApexParser extends chevrotain.Parser {
             prevToken.name === 'block'
           ) {
             if (
-              chevrotain.tokenMatcher(comment, tokens.LineCommentStandalone) ||
-              chevrotain.tokenMatcher(comment, tokens.JavaDocCommentStandalone) ||
-              chevrotain.tokenMatcher(comment, tokens.TraditionalCommentStandalone)
+              chevrotain.tokenMatcher(comment, tokens.apex.LineCommentStandalone) ||
+              chevrotain.tokenMatcher(comment, tokens.apex.JavaDocCommentStandalone) ||
+              chevrotain.tokenMatcher(comment, tokens.apex.TraditionalCommentStandalone)
             ) {
               if (prevToken.name === 'classBody') {
                 this.addCommentStandAlone(prevToken, 'classBodyDeclaration', comment)
@@ -2572,10 +2573,10 @@ class ApexParser extends chevrotain.Parser {
             } else if (
               this.lastToken &&
               this.lastToken.startLine !== comment.startLine &&
-              chevrotain.tokenMatcher(token, tokens.RCurly) &&
-              (chevrotain.tokenMatcher(comment, tokens.LineComment) ||
-                chevrotain.tokenMatcher(comment, tokens.JavaDocComment) ||
-                chevrotain.tokenMatcher(comment, tokens.TraditionalComment))
+              chevrotain.tokenMatcher(token, tokens.apex.RCurly) &&
+              (chevrotain.tokenMatcher(comment, tokens.apex.LineComment) ||
+                chevrotain.tokenMatcher(comment, tokens.apex.JavaDocComment) ||
+                chevrotain.tokenMatcher(comment, tokens.apex.TraditionalComment))
             ) {
               // if its the last comment we transform it into a standalone comment
               if (prevToken.name === 'classBody') {
@@ -2628,12 +2629,12 @@ class ApexParser extends chevrotain.Parser {
     let token = this.input[nextSearchIdx]
     while (
       token &&
-      (chevrotain.tokenMatcher(token, tokens.LineComment) ||
-        chevrotain.tokenMatcher(token, tokens.JavaDocComment) ||
-        chevrotain.tokenMatcher(token, tokens.TraditionalComment) ||
-        chevrotain.tokenMatcher(token, tokens.LineCommentStandalone) ||
-        chevrotain.tokenMatcher(token, tokens.JavaDocCommentStandalone) ||
-        chevrotain.tokenMatcher(token, tokens.TraditionalCommentStandalone))
+      (chevrotain.tokenMatcher(token, tokens.apex.LineComment) ||
+        chevrotain.tokenMatcher(token, tokens.apex.JavaDocComment) ||
+        chevrotain.tokenMatcher(token, tokens.apex.TraditionalComment) ||
+        chevrotain.tokenMatcher(token, tokens.apex.LineCommentStandalone) ||
+        chevrotain.tokenMatcher(token, tokens.apex.JavaDocCommentStandalone) ||
+        chevrotain.tokenMatcher(token, tokens.apex.TraditionalCommentStandalone))
     ) {
       nextSearchIdx++
       token = this.input[nextSearchIdx]
@@ -2651,7 +2652,7 @@ class ApexParser extends chevrotain.Parser {
       // We will add all the comment that appeared after it on the same line
       // to the CST (Parse Tree)
       if (
-        chevrotain.tokenMatcher(nextToken, tokens.LineComment) &&
+        chevrotain.tokenMatcher(nextToken, tokens.apex.LineComment) &&
         !nextToken.added &&
         ((lastElement.children.SemiColon &&
           nextToken.startLine === lastElement.children.SemiColon[0].startLine) ||
@@ -2660,7 +2661,7 @@ class ApexParser extends chevrotain.Parser {
       ) {
         nextToken.trailing = true
         nextToken.added = true
-        this.CST_STACK[this.CST_STACK.length - 2].children[tokens.LineComment.tokenName] = [
+        this.CST_STACK[this.CST_STACK.length - 2].children[tokens.apex.LineComment.tokenName] = [
           nextToken,
         ]
       }
@@ -2672,12 +2673,12 @@ class ApexParser extends chevrotain.Parser {
       // We will add all the comment that appeared before it to the CST (Parse Tree)
       while (
         !prevToken.added &&
-        (chevrotain.tokenMatcher(prevToken, tokens.LineComment) ||
-          chevrotain.tokenMatcher(prevToken, tokens.TraditionalComment) ||
-          chevrotain.tokenMatcher(prevToken, tokens.JavaDocComment) ||
-          chevrotain.tokenMatcher(prevToken, tokens.LineCommentStandalone) ||
-          chevrotain.tokenMatcher(prevToken, tokens.TraditionalCommentStandalone) ||
-          chevrotain.tokenMatcher(prevToken, tokens.JavaDocCommentStandalone))
+        (chevrotain.tokenMatcher(prevToken, tokens.apex.LineComment) ||
+          chevrotain.tokenMatcher(prevToken, tokens.apex.TraditionalComment) ||
+          chevrotain.tokenMatcher(prevToken, tokens.apex.JavaDocComment) ||
+          chevrotain.tokenMatcher(prevToken, tokens.apex.LineCommentStandalone) ||
+          chevrotain.tokenMatcher(prevToken, tokens.apex.TraditionalCommentStandalone) ||
+          chevrotain.tokenMatcher(prevToken, tokens.apex.JavaDocCommentStandalone))
       ) {
         // TODO replace with faster method instead of replace
         if (!this.isEmptyComment(prevToken)) {
@@ -2696,15 +2697,15 @@ class ApexParser extends chevrotain.Parser {
 
     const isEmptyLineComment =
       isEmptyNoSpaces &&
-      (chevrotain.tokenMatcher(comment, tokens.LineComment) ||
-        chevrotain.tokenMatcher(comment, tokens.LineCommentStandalone))
+      (chevrotain.tokenMatcher(comment, tokens.apex.LineComment) ||
+        chevrotain.tokenMatcher(comment, tokens.apex.LineCommentStandalone))
 
     const isEmptyMultilineComment =
       isEmptyNoLineBreaks &&
-      (chevrotain.tokenMatcher(comment, tokens.JavaDocComment) ||
-        chevrotain.tokenMatcher(comment, tokens.TraditionalComment) ||
-        chevrotain.tokenMatcher(comment, tokens.JavaDocCommentStandalone) ||
-        chevrotain.tokenMatcher(comment, tokens.TraditionalCommentStandalone))
+      (chevrotain.tokenMatcher(comment, tokens.apex.JavaDocComment) ||
+        chevrotain.tokenMatcher(comment, tokens.apex.TraditionalComment) ||
+        chevrotain.tokenMatcher(comment, tokens.apex.JavaDocCommentStandalone) ||
+        chevrotain.tokenMatcher(comment, tokens.apex.TraditionalCommentStandalone))
 
     return isEmptyLineComment || isEmptyMultilineComment
   }

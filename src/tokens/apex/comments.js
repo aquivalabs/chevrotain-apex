@@ -1,4 +1,4 @@
-const { createToken } = require('./_shared')
+const { createToken } = require('../_shared')
 
 const LineComment = createToken({
   name: 'LineComment',

@@ -1,9 +1,7 @@
 'use strict'
-const chevrotain = require('chevrotain')
-const { allTokens } = require('./tokens')
+const { Lexer } = require('chevrotain')
+const { lexerDefinition } = require('./tokens')
 
-const Lexer = chevrotain.Lexer
-
-const ApexLexer = new Lexer(allTokens, { ensureOptimizations: true })
+const ApexLexer = new Lexer(lexerDefinition, { ensureOptimizations: true })
 
 module.exports = ApexLexer

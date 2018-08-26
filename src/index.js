@@ -18,7 +18,7 @@ function parse(inputText, entryPoint = (parser) => parser.compilationUnit()) {
   if (parser.errors.length > 0) {
     const error = parser.errors[0]
     throw Error(
-      'Sad sad panda, parsing errors detected in line: ' +
+      'Parsing errors detected in line: ' +
         error.token.startLine +
         ', column: ' +
         error.token.startColumn +

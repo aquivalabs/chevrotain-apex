@@ -41,6 +41,13 @@ const Identifier = createToken({
   pattern: /[a-zA-Z_\\$][a-zA-Z_\\$0-9]*/,
 })
 
+const WhiteSpace = createToken({
+  name: 'WhiteSpace',
+  pattern: /\s+/,
+  group: chevrotain.Lexer.SKIPPED,
+  line_breaks: true,
+})
+
 function createKeywordToken(options) {
   options.longer_alt = Identifier
   return createToken(options)
@@ -49,6 +56,7 @@ function createKeywordToken(options) {
 module.exports = {
   createToken,
   Identifier,
+  WhiteSpace,
   createKeywordToken,
   makePattern,
 }

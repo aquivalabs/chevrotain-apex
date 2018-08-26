@@ -1,4 +1,4 @@
-const { createKeywordToken, createToken, makePattern } = require('./_shared')
+const { createKeywordToken, createToken, makePattern } = require('../_shared')
 
 const True = createKeywordToken({
   name: 'True',

@@ -1,4 +1,4 @@
-const { createKeywordToken } = require('./_shared')
+const { createKeywordToken } = require('../_shared')
 
 const Public = createKeywordToken({
   name: 'Public',
