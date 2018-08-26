@@ -7,6 +7,7 @@ const loopsAndConditionTokens = require('./loopsAndConds')
 const exceptionTokens = require('./exceptions')
 const classAndMethodTokens = require('./classAndMethods')
 const constantsTokens = require('./constants')
+const sharedSymbolsTokens = require('../_shared/symbols')
 const symbolsTokens = require('./symbols')
 
 const Get = createKeywordToken({
@@ -45,4 +46,5 @@ module.exports = {
   // The Identifier must appear after the keywords because all keywords are valid identifiers.
   Identifier,
   ...symbolsTokens,
+  ...sharedSymbolsTokens,
 }
