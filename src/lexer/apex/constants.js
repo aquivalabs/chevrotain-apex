@@ -40,7 +40,7 @@ const DecimalLiteral = createToken({
 
 const StringLiteral = createToken({
   name: 'StringLiteral',
-  pattern: makePattern('"[^"\\\\]*(\\\\.[^"\\\\]*)*"'),
+  pattern: makePattern('[\'"][^"\\\\]*(\\\\.[^"\\\\]*)*[\'"]'),
   label: "'StringLiteral'",
 })
 

@@ -2199,6 +2199,7 @@ class ApexParser extends chevrotain.Parser {
     $.RULE('simpleCreator', () => {
       $.SUBRULE($.createdName)
       $.OR([
+        { ALT: () => $.SUBRULE($.arrayInitializer) },
         { ALT: () => $.SUBRULE($.arrayCreatorRest) },
         { ALT: () => $.SUBRULE($.classCreatorRest) },
       ])
