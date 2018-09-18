@@ -1,14 +1,15 @@
 'use strict'
-const ApexParser = require('./parser')
+const ApexParser = require('../parser')
 
 const parser = new ApexParser([])
-const BaseSQLVisitor = parser.getBaseCstVisitorConstructor()
+const BaseCstVisitor = parser.getBaseCstVisitorConstructor()
 
-const MismatchedTokenException = require('chevrotain').MismatchedTokenException
+const { MismatchedTokenException } = require('chevrotain')
 
-class SQLToAstVisitor extends BaseSQLVisitor {
+class ApexVisitor extends BaseCstVisitor {
   constructor() {
     super()
+    soqlVisitor(this)
     this.validateVisitor()
   }
 
@@ -3717,4 +3718,4 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 }
 
-module.exports = SQLToAstVisitor
+module.exports = ApexVisitor
