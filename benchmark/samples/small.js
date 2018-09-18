@@ -3,13 +3,22 @@
 // original source from:
 // https://github.com/jhipster/generator-jhipster/blob/b536b2559e36437983d5d1e412e790dbec9f45f7/generators/server/templates/src/main/java/package/security/jwt/TokenProvider.java.ejs
 module.exports = `
-
 public abstract class AqObj {
   public static final String NAME = 'VALUE';
   public List<sObject> l = Trigger.new.get(0);
   public List<sObject> a = r.dsr.get(0);
   public List<sObject> a = r.dsr.de.set(0);
   public List<sObject> a = r.r.qwe(0);
+  List<sObject> a = nEw List<sObject>();
+  public List<sObject> a = [
+    SELECT Id, Name FROM Account
+  ];
+  public List<sObject> a = [
+    select Id from Account
+  ];
+  // public List<sObject> a = [
+  //   SeLeCt Id, Name fRoM Account
+  // ];
 
   public String abc {
       get;
