@@ -1,5 +1,6 @@
 const chevrotain = require('chevrotain')
 const xregexp = require('xregexp')
+const { LEXER_MODE } = require('../../constants')
 
 // A little mini DSL for easier lexer definition using xRegExp.
 const fragments = {}
@@ -32,6 +33,9 @@ const caseInsensitive = (regex) => {
 const createToken = (options) => {
   if (options.pattern instanceof RegExp) {
     options.pattern = caseInsensitive(options.pattern)
+    if ('From' === options.name) {
+      console.log('options.pattern >>> ', options.pattern)
+    }
   }
   return chevrotain.createToken(options)
 }
@@ -48,6 +52,13 @@ const WhiteSpace = createToken({
   line_breaks: true,
 })
 
+const Select = createToken({
+  name: 'Select',
+  pattern: /\[\s*SELECT/,
+  label: "'[SELECT'",
+  push_mode: LEXER_MODE.SOQL,
+})
+
 function createKeywordToken(options) {
   options.longer_alt = Identifier
   return createToken(options)
@@ -57,6 +68,7 @@ module.exports = {
   createToken,
   Identifier,
   WhiteSpace,
+  Select,
   createKeywordToken,
   makePattern,
 }

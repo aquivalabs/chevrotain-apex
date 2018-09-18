@@ -1737,6 +1737,11 @@ class ApexParser extends chevrotain.Parser {
             $.SUBRULE($.parExpressionOrCastExpressionOrLambdaExpression)
           },
         },
+        {
+          ALT: () => {
+            $.SUBRULE($.baseSoqlQuery)
+          },
+        },
       ])
     })
 

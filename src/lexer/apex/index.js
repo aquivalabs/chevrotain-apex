@@ -39,6 +39,7 @@ module.exports = {
   ...classAndMethodTokens,
   ...loopsAndConditionTokens,
   ...constantsTokens,
+  Select,
   Get,
   Set,
   Assert,

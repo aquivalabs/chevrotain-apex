@@ -1,46 +1,38 @@
-const { createKeywordToken, createToken } = require('../_shared')
-const { LEXER_MODE } = require('../../constants')
-
-const Select = createToken({
-  name: 'Select',
-  pattern: /\[\s*SELECT/,
-  label: "'[SELECT'",
-  push_mode: LEXER_MODE.SOQL,
-})
+const { createKeywordToken, Select } = require('../_shared')
 
 const From = createKeywordToken({
   name: 'From',
-  pattern: /FROM/,
+  pattern: /(FROM|from)/,
   label: "'FROM'",
 })
 
 const Where = createKeywordToken({
   name: 'Where',
-  pattern: /WHERE/,
+  pattern: /(WHERE|where)/,
   label: "'WHERE'",
 })
 
 const Limit = createKeywordToken({
   name: 'Limit',
-  pattern: /LIMIT/,
+  pattern: /(LIMIT|limit)/,
   label: "'LIMIT'",
 })
 
 const Order = createKeywordToken({
   name: 'Order',
-  pattern: /ORDER/,
+  pattern: /(ORDER|order)/,
   label: "'ORDER'",
 })
 
 const By = createKeywordToken({
   name: 'By',
-  pattern: /BY/,
+  pattern: /(BY|by)/,
   label: "'BY'",
 })
 
 const In = createKeywordToken({
   name: 'In',
-  pattern: /IN/,
+  pattern: /(IN|in)/,
   label: "'IN'",
 })
 

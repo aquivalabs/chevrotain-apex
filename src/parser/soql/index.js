@@ -3,15 +3,16 @@ const { tokens } = require('../../lexer')
 function soqlParser($) {
   $.RULE('baseSoqlQuery', () => {
     $.CONSUME(tokens.soql.Select)
-    $.CONSUME1(tokens.soql.Identifier)
+    $.CONSUME(tokens.soql.Identifier)
     $.OPTION(() => {
       $.MANY(() => {
-        $.CONSUME2(tokens.soql.Comma)
-        $.CONSUME3(tokens.soql.Identifier)
+        $.CONSUME(tokens.soql.Comma)
+        $.CONSUME1(tokens.soql.Identifier)
       })
     })
-    $.CONSUME4(tokens.soql.From)
-    $.CONSUME5(tokens.soql.Identifier)
+    $.CONSUME(tokens.soql.From)
+    $.CONSUME2(tokens.soql.Identifier)
+    $.CONSUME(tokens.soql.RSquare)
   })
 }
 
