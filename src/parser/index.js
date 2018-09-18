@@ -1,6 +1,7 @@
 'use strict'
 const chevrotain = require('chevrotain')
 const { ApexLexer, tokens } = require('../lexer')
+const { soqlParser } = require('./soql')
 
 const Parser = chevrotain.Parser
 
@@ -2531,6 +2532,8 @@ class ApexParser extends chevrotain.Parser {
         { ALT: () => $.CONSUME(tokens.apex.SemiColonWithFollowEmptyLine) },
       ])
     })
+
+    soqlParser($)
 
     Parser.performSelfAnalysis(this)
   }

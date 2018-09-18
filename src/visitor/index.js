@@ -6,6 +6,8 @@ const BaseCstVisitor = parser.getBaseCstVisitorConstructor()
 
 const { MismatchedTokenException } = require('chevrotain')
 
+const { soqlVisitor } = require('./soql')
+
 class ApexVisitor extends BaseCstVisitor {
   constructor() {
     super()
