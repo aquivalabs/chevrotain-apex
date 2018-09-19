@@ -33,9 +33,6 @@ const caseInsensitive = (regex) => {
 const createToken = (options) => {
   if (options.pattern instanceof RegExp) {
     options.pattern = caseInsensitive(options.pattern)
-    if ('From' === options.name) {
-      console.log('options.pattern >>> ', options.pattern)
-    }
   }
   return chevrotain.createToken(options)
 }
