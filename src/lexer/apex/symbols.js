@@ -1,4 +1,4 @@
-const { createToken } = require('../_shared')
+const { createToken, sharedSymbols } = require('../_shared')
 
 const LCurly = createToken({
   name: 'LCurly',
@@ -12,18 +12,6 @@ const RCurly = createToken({
   name: 'RCurly',
   pattern: /}/,
   label: "'}'",
-})
-
-const LessEquals = createToken({
-  name: 'LessEquals',
-  pattern: /<=/,
-  label: "'<='",
-})
-
-const GreaterEquals = createToken({
-  name: 'GreaterEquals',
-  pattern: />=/,
-  label: "'>='",
 })
 
 const EqualsEquals = createToken({
@@ -104,12 +92,6 @@ const Exclamationmark = createToken({
   label: "'!'",
 })
 
-const ExclamationmarkEquals = createToken({
-  name: 'ExclamationmarkEquals',
-  pattern: /!=/,
-  label: "'!='",
-})
-
 const Or = createToken({
   name: 'Or',
   pattern: /\|/,
@@ -154,7 +136,6 @@ const DashEquals = createToken({
 
 module.exports = {
   EqualsEquals,
-  ExclamationmarkEquals,
   PlusPlus,
   PlusEquals,
   Plus,
@@ -169,8 +150,7 @@ module.exports = {
   Or,
   LCurly,
   RCurly,
-  LessEquals,
-  GreaterEquals,
+  ...sharedSymbols,
   At,
   StarEquals,
   Star,

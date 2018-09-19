@@ -25,6 +25,24 @@ const RSquare = createToken({
   pop_mode: true,
 })
 
+const ExclamationmarkEquals = createToken({
+  name: 'ExclamationmarkEquals',
+  pattern: /!=/,
+  label: "'!='",
+})
+
+const LessEquals = createToken({
+  name: 'LessEquals',
+  pattern: /<=/,
+  label: "'<='",
+})
+
+const GreaterEquals = createToken({
+  name: 'GreaterEquals',
+  pattern: />=/,
+  label: "'>='",
+})
+
 const Less = createToken({
   name: 'Less',
   pattern: /</,
@@ -84,6 +102,9 @@ module.exports = {
   RBrace,
   LSquare,
   RSquare,
+  ExclamationmarkEquals,
+  LessEquals,
+  GreaterEquals,
   Equals,
   Greater,
   Less,
