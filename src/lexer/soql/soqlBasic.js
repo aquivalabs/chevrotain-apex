@@ -2,37 +2,37 @@ const { createKeywordToken, Select } = require('../_shared')
 
 const From = createKeywordToken({
   name: 'From',
-  pattern: /(FROM|from)/,
+  pattern: /FROM/,
   label: "'FROM'",
 })
 
 const Where = createKeywordToken({
   name: 'Where',
-  pattern: /(WHERE|where)/,
+  pattern: /WHERE/,
   label: "'WHERE'",
 })
 
 const Limit = createKeywordToken({
   name: 'Limit',
-  pattern: /(LIMIT|limit)/,
+  pattern: /LIMIT/,
   label: "'LIMIT'",
 })
 
 const Order = createKeywordToken({
   name: 'Order',
-  pattern: /(ORDER|order)/,
+  pattern: /ORDER/,
   label: "'ORDER'",
 })
 
 const By = createKeywordToken({
   name: 'By',
-  pattern: /(BY|by)/,
+  pattern: /BY/,
   label: "'BY'",
 })
 
 const In = createKeywordToken({
   name: 'In',
-  pattern: /(IN|in)/,
+  pattern: /IN/,
   label: "'IN'",
 })
 
