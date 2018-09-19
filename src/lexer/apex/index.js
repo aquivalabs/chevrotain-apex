@@ -1,5 +1,5 @@
 'use strict'
-const { Identifier, createKeywordToken, WhiteSpace, sharedSymbols } = require('../_shared')
+const { Identifier, createKeywordToken, WhiteSpace, Select } = require('../_shared')
 const commentTokens = require('./comments')
 const typeTokens = require('./types')
 const accessLevelTokens = require('./access')
@@ -45,5 +45,4 @@ module.exports = {
   // The Identifier must appear after the keywords because all keywords are valid identifiers.
   Identifier,
   ...symbolsTokens,
-  ...sharedSymbols,
 }
