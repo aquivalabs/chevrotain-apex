@@ -14,7 +14,7 @@ public abstract class AqObj {
   private static final Map<String, String> definedList = new Map<String, String>{'a' => 'a', 'b' => 'b'};
   List<sObject> a = nEw List<sObject>();
   public List<sObject> a = [
-    SELECT Id, Name FROM Account
+    SELECT Id, Name, Contact.Name FROM Account
   ];
   public List<sObject> a = [
     select Id from Account
