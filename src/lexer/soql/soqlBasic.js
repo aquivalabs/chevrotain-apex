@@ -36,6 +36,12 @@ const In = createKeywordToken({
   label: "'IN'",
 })
 
+const Like = createKeywordToken({
+  name: 'Like',
+  pattern: /LIKE/,
+  label: "'LIKE'",
+})
+
 module.exports = {
   Select,
   From,
@@ -44,4 +50,5 @@ module.exports = {
   Order,
   By,
   In,
+  Like,
 }

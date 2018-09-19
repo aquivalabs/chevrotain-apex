@@ -11,7 +11,7 @@ public abstract class AqObj {
   public List<sObject> a = r.r.qwe(0);
   List<sObject> a = nEw List<sObject>();
   public List<sObject> a = [
-    SELECT Id, Name FROM Account
+    SELECT Id, Name, Contact.Name FROM Account
   ];
   public List<sObject> a = [
     select Id from Account
