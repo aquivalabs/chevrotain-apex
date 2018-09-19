@@ -42,6 +42,18 @@ const Like = createKeywordToken({
   label: "'LIKE'",
 })
 
+const And = createKeywordToken({
+  name: 'And',
+  pattern: /AND/,
+  label: "'AND'",
+})
+
+const Or = createKeywordToken({
+  name: 'Or',
+  pattern: /OR/,
+  label: "'OR'",
+})
+
 module.exports = {
   Select,
   From,
@@ -51,4 +63,6 @@ module.exports = {
   By,
   In,
   Like,
+  And,
+  Or,
 }
