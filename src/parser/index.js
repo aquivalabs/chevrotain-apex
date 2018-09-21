@@ -808,7 +808,7 @@ class ApexParser extends chevrotain.Parser {
       $.OPTION(() => {
         $.SUBRULE($.variableInitializer)
         $.OPTION1(() => {
-          $.CONSUME(tokens.apex.KeyValue)
+          $.CONSUME(tokens.apex.EqualsGreater)
           $.SUBRULE1($.variableInitializer)
         })
         $.MANY({
@@ -818,7 +818,7 @@ class ApexParser extends chevrotain.Parser {
             $.CONSUME(tokens.apex.Comma)
             $.SUBRULE2($.variableInitializer)
             $.OPTION3(() => {
-              $.CONSUME1(tokens.apex.KeyValue)
+              $.CONSUME1(tokens.apex.EqualsGreater)
               $.SUBRULE3($.variableInitializer)
             })
           },
