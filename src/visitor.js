@@ -1082,14 +1082,6 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     }
   }
 
-  mapInitializer(ctx) {
-    const keyValuePairs = []
-    return {
-      type: 'MAP_INITIALIZER',
-      keyValuePairs: keyValuePairs,
-    }
-  }
-
   annotationTypeDeclaration(ctx) {
     const name = this.identifier(ctx.Identifier[0])
     const body = this.visit(ctx.annotationTypeBody)
