@@ -18,7 +18,7 @@ describe("arrayCreatorRest", () => {
           type: "DIMENSION"
         }
       ],
-      arrayInitializer: { type: "ARRAY_INITIALIZER", variableInitializers: [] }
+      arrayOrMapInitializer: { type: "ARRAY_INITIALIZER", variableInitializers: [] }
     });
   });
 
@@ -44,7 +44,7 @@ describe("arrayCreatorRest", () => {
           type: "DIMENSION"
         }
       ],
-      arrayInitializer: undefined
+      arrayOrMapInitializer: undefined
     });
   });
 });
