@@ -52,7 +52,7 @@ describe("simpleCreator", () => {
             type: "DIMENSION"
           }
         ],
-        arrayInitializer: {
+        arrayOrMapInitializer: {
           type: "ARRAY_INITIALIZER",
           variableInitializers: []
         }

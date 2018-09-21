@@ -10,7 +10,7 @@ describe("variableInitializer", () => {
     });
   });
 
-  it("arrayInitializer", () => {
+  it("arrayOrMapInitializer", () => {
     expect(Parser.parse("{}", parser => parser.variableInitializer())).toEqual({
       type: "ARRAY_INITIALIZER",
       variableInitializers: []

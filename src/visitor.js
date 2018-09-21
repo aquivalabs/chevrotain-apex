@@ -1063,12 +1063,12 @@ class SQLToAstVisitor extends BaseSQLVisitor {
       return this.visit(ctx.expression)
     }
 
-    if (ctx.arrayInitializer) {
-      return this.visit(ctx.arrayInitializer)
+    if (ctx.arrayOrMapInitializer) {
+      return this.visit(ctx.arrayOrMapInitializer)
     }
   }
 
-  arrayInitializer(ctx) {
+  arrayOrMapInitializer(ctx) {
     const variableInitializers = []
     if (ctx.variableInitializer) {
       ctx.variableInitializer.map((variableInitializer) =>
@@ -1079,6 +1079,14 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     return {
       type: 'ARRAY_INITIALIZER',
       variableInitializers: variableInitializers,
+    }
+  }
+
+  mapInitializer(ctx) {
+    const keyValuePairs = []
+    return {
+      type: 'MAP_INITIALIZER',
+      keyValuePairs: keyValuePairs,
     }
   }
 
@@ -3280,12 +3288,12 @@ class SQLToAstVisitor extends BaseSQLVisitor {
         type: 'DIMENSION',
       })
     }
-    const arrayInitializer = this.visit(ctx.arrayInitializer)
+    const arrayOrMapInitializer = this.visit(ctx.arrayOrMapInitializer)
 
     return {
       type: 'ARRAY_CREATOR_REST',
       dimensions: dimensions,
-      arrayInitializer: arrayInitializer,
+      arrayOrMapInitializer: arrayOrMapInitializer,
     }
   }
 

@@ -86,6 +86,12 @@ const Colon = createToken({
   label: "':'",
 })
 
+const KeyValue = createToken({
+  name: 'KeyValue',
+  pattern: /=>/,
+  label: "'=>'",
+})
+
 const Equals = createToken({
   name: 'Equals',
   pattern: /=/,
@@ -105,6 +111,7 @@ module.exports = {
   ExclamationmarkEquals,
   LessEquals,
   GreaterEquals,
+  KeyValue,
   Equals,
   Greater,
   Less,

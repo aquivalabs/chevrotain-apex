@@ -782,11 +782,11 @@ class ApexParser extends chevrotain.Parser {
     })
 
     // variableInitializer
-    // : arrayInitializer
+    // : arrayOrMapInitializer
     // | expression
     $.RULE('variableInitializer', () => {
       $.OR([
-        { ALT: () => $.SUBRULE($.arrayInitializer) },
+        { ALT: () => $.SUBRULE($.arrayOrMapInitializer) },
         {
           ALT: () => {
             $.SUBRULE($.expression)
@@ -801,18 +801,26 @@ class ApexParser extends chevrotain.Parser {
       ])
     })
 
-    // arrayInitializer
+    // arrayOrMapInitializer
     // : '{' (variableInitializer (',' variableInitializer)* (',')? )? '}'
-    $.RULE('arrayInitializer', () => {
+    $.RULE('arrayOrMapInitializer', () => {
       $.CONSUME(tokens.apex.LCurly)
       $.OPTION(() => {
         $.SUBRULE($.variableInitializer)
+        $.OPTION1(() => {
+          $.CONSUME(tokens.apex.KeyValue)
+          $.SUBRULE1($.variableInitializer)
+        })
         $.MANY({
           GATE: () =>
             this.LA(2).tokenType !== tokens.apex.Comma && this.LA(2).tokenType !== tokens.apex.RCurly,
           DEF: () => {
             $.CONSUME(tokens.apex.Comma)
             $.SUBRULE2($.variableInitializer)
+            $.OPTION3(() => {
+              $.CONSUME1(tokens.apex.KeyValue)
+              $.SUBRULE3($.variableInitializer)
+            })
           },
         })
       })
@@ -2199,7 +2207,7 @@ class ApexParser extends chevrotain.Parser {
     $.RULE('simpleCreator', () => {
       $.SUBRULE($.createdName)
       $.OR([
-        { ALT: () => $.SUBRULE($.arrayInitializer) },
+        { ALT: () => $.SUBRULE($.arrayOrMapInitializer) },
         { ALT: () => $.SUBRULE($.arrayCreatorRest) },
         { ALT: () => $.SUBRULE($.classCreatorRest) },
       ])
@@ -2246,7 +2254,7 @@ class ApexParser extends chevrotain.Parser {
     })
 
     // arrayCreatorRest
-    // : '[' (']' ('[' ']')* arrayInitializer | expression ']' ('[' expression ']')* ('[' ']')*)
+    // : '[' (']' ('[' ']')* arrayOrMapInitializer | expression ']' ('[' expression ']')* ('[' ']')*)
     $.RULE('arrayCreatorRest', () => {
       $.CONSUME(tokens.apex.LSquare)
       $.OR([
@@ -2257,7 +2265,7 @@ class ApexParser extends chevrotain.Parser {
               $.CONSUME2(tokens.apex.LSquare)
               $.CONSUME2(tokens.apex.RSquare)
             })
-            $.SUBRULE($.arrayInitializer)
+            $.SUBRULE($.arrayOrMapInitializer)
           },
         },
         {

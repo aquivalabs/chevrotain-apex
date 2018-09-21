@@ -10,6 +10,9 @@ public abstract class AqObj {
   public List<sObject> a = r.dsr.get(0);
   public List<sObject> a = r.dsr.de.set(0);
   public List<sObject> a = r.r.qwe(0);
+  public String vah = 'a"b"c';
+  private static final List<String> definedList = new List<String>{'a', 'b'};
+  private static final Map<String, String> definedList = new Map<String, String>{'a' => 'a', 'b' => 'b'};
 
   public String abc {
       get;
