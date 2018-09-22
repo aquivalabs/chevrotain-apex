@@ -19,6 +19,5 @@ addons:
 install:
   - yarn
 script:
-  - yarn run test
-
-
+  # - yarn test
+  - yarn bench
