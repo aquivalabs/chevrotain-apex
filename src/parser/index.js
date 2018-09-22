@@ -1739,7 +1739,7 @@ class ApexParser extends chevrotain.Parser {
         },
         {
           ALT: () => {
-            $.SUBRULE($.baseSoqlQuery)
+            $.SUBRULE($.queryUnit)
           },
         },
       ])
@@ -2472,10 +2472,10 @@ class ApexParser extends chevrotain.Parser {
     // literal
     // : integerLiteral
     // | floatLiteral
-    // | CHAR_LITERAL
-    // | STRING_LITERAL
-    // | BOOL_LITERAL
-    // | NULL_LITERAL
+    // | charLiteral
+    // | stringLiteral
+    // | boolLiteral
+    // | NULL
     $.RULE('literal', () => {
       $.OR([
         { ALT: () => $.SUBRULE($.integerLiteral) },
@@ -2495,7 +2495,10 @@ class ApexParser extends chevrotain.Parser {
     // : TRUE
     // | FALSE
     $.RULE('booleanLiteral', () => {
-      $.OR([{ ALT: () => $.CONSUME(tokens.apex.True) }, { ALT: () => $.CONSUME(tokens.apex.False) }])
+      $.OR([
+        { ALT: () => $.CONSUME(tokens.apex.True) },
+        { ALT: () => $.CONSUME(tokens.apex.False) },
+      ])
     })
 
     // integerLiteral

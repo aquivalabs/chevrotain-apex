@@ -1,9 +1,4 @@
-'use strict'
-
-// original source from:
-// https://github.com/jhipster/generator-jhipster/blob/b536b2559e36437983d5d1e412e790dbec9f45f7/generators/server/templates/src/main/java/package/security/jwt/TokenProvider.java.ejs
-module.exports = `
-public abstract class AqObj {
+module.exports = `public abstract class AqObj {
   public static final String NAME = 'VALUE';
   public List<sObject> l = Trigger.new.get(0);
   public List<sObject> a = r.dsr.get(0);
@@ -18,9 +13,15 @@ public abstract class AqObj {
   ];
   public List<sObject> a = [
     select Id from Account
+    where Id = :sasa
   ];
   // public List<sObject> a = [
+  //   SeLeCt Id, Name FRoM Account
+  //   whErE id = 1
+  // ];
+  // public List<sObject> a = [
   //   SeLeCt Id, Name fRoM Account
+  //   WhErE id like 'qweqw'
   // ];
 
   public String abc {
@@ -287,7 +288,4 @@ public abstract class AqObj {
   protected Boolean isChangedFieldToNonNull(sObject record, sObjectField field) {
       return isChangedField(record, field) && record.get(field) != null;
   }
-}
-
-
-`
+}`
