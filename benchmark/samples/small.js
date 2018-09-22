@@ -15,14 +15,14 @@ module.exports = `public abstract class AqObj {
     select Id from Account
     where Id = :sasa
   ];
-  // public List<sObject> a = [
-  //   SeLeCt Id, Name FRoM Account
-  //   whErE id = 1
-  // ];
-  // public List<sObject> a = [
-  //   SeLeCt Id, Name fRoM Account
-  //   WhErE id like 'qweqw'
-  // ];
+  public List<sObject> a = [
+    SeLeCt Id, Name FRoM Account
+    whErE id = 1
+  ];
+  public List<sObject> a = [
+    SeLeCt Id, Name fRoM Account
+    WhErE id like 'qweqw'
+  ];
 
   public String abc {
       get;

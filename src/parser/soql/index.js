@@ -65,6 +65,7 @@ function soqlParser($) {
     $.SUBRULE($.identifierName)
     $.SUBRULE($.comparisonOperator)
     $.OR([
+      { ALT: () => $.SUBRULE($.literal) },
       { ALT: () => $.SUBRULE($.colonIdentifierName) },
     ])
   })
