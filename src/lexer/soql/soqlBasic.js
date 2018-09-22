@@ -54,6 +54,36 @@ const Or = createKeywordToken({
   label: "'OR'",
 })
 
+const Asc = createKeywordToken({
+  name: 'Asc',
+  pattern: /ASC/,
+  label: "'ASC'",
+})
+
+const Desc = createKeywordToken({
+  name: 'Desc',
+  pattern: /DESC/,
+  label: "'DESC'",
+})
+
+const Nulls = createKeywordToken({
+  name: 'Nulls',
+  pattern: /NULLS/,
+  label: "'NULLS'",
+})
+
+const First = createKeywordToken({
+  name: 'First',
+  pattern: /FIRST/,
+  label: "'FIRST'",
+})
+
+const Last = createKeywordToken({
+  name: 'Last',
+  pattern: /LAST/,
+  label: "'LAST'",
+})
+
 module.exports = {
   Select,
   From,
@@ -65,4 +95,9 @@ module.exports = {
   Like,
   And,
   Or,
+  Asc,
+  Desc,
+  Nulls,
+  First,
+  Last,
 }

@@ -30,6 +30,18 @@ function soqlVisitor($) {
   $.singleWhereCondition = function(ctx) {
     return {}
   }
+
+  $.orderBy = function(ctx) {
+    return {}
+  }
+
+  $.nullsOrder = function(ctx) {
+    return {}
+  }
+
+  $.orderByClause = function(ctx) {
+    return {}
+  }
 }
 
 module.exports = {

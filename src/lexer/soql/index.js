@@ -5,8 +5,8 @@ const { sharedSymbols, constants } = require('../_shared')
 
 module.exports = {
   WhiteSpace,
-  ...constants,
   ...soqlBasic,
+  ...constants,
   Identifier,
   ...sharedSymbols,
 }

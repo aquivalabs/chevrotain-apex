@@ -8,22 +8,43 @@ module.exports = `public abstract class AqObj {
   private static final List<String> definedList = new List<String>{'a', 'b'};
   private static final Map<String, String> definedList = new Map<String, String>{'a' => 'a', 'b' => 'b'};
   List<sObject> a = nEw List<sObject>();
+
   public List<sObject> a = [
     SELECT Id, Name, Contact.Name FROM Account
   ];
+
   public List<sObject> a = [
     select Id from Account
     where Id = :sasa
   ];
+
   public List<sObject> a = [
     SeLeCt Id, Name FRoM Account
     whErE id = 1
   ];
+
   public List<sObject> a = [
     SeLeCt Id, Name fRoM Account
     WhErE id like 'qweqw'
-    and name = 231
-    or dew = true
+      and name = 231
+      or dew = true
+    ORDER by Something
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name fRoM Account
+    WhErE id like 'qweqw'
+      and name = 231
+      or dew = true
+    ORDER by Something asc
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name fRoM Account
+    WhErE id like 'qweqw'
+      and name = 231
+      or dew = true
+    ORDER by Something desc Nulls first
   ];
 
   public String abc {

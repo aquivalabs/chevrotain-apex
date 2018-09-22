@@ -7,6 +7,7 @@ function soqlParser($) {
     $.CONSUME(tokens.soql.Select)
     $.SUBRULE($.baseSoqlQuery)
     $.OPTION(() => $.SUBRULE($.whereClause))
+    $.OPTION1(() => $.SUBRULE($.orderByClause))
     $.CONSUME(tokens.soql.RSquare)
   })
 
@@ -89,6 +90,39 @@ function soqlParser($) {
       { ALT: () => $.SUBRULE($.literal) },
       { ALT: () => $.SUBRULE($.colonIdentifierName) },
     ])
+  })
+
+  // orderBy
+  // : ORDER BY
+  $.RULE('orderBy', () => {
+    $.CONSUME(tokens.soql.Order)
+    $.CONSUME(tokens.soql.By)
+  })
+
+  // nullsOrder
+  // : NULLS (FIRST|LAST)
+  $.RULE('nullsOrder', () => {
+    $.CONSUME(tokens.soql.Nulls)
+    $.OR([
+      { ALT: () => $.CONSUME(tokens.soql.First) },
+      { ALT: () => $.CONSUME(tokens.soql.Last) },
+    ])
+  })
+
+  // orderByClause
+  // : identifierName comparisonOperator (literal|colonIdentifierName)
+  $.RULE('orderByClause', () => {
+    $.SUBRULE($.orderBy)
+    $.SUBRULE($.listOfFields)
+    $.OPTION(() =>
+      $.OR([
+        { ALT: () => $.CONSUME(tokens.soql.Asc) },
+        { ALT: () => $.CONSUME(tokens.soql.Desc) },
+      ])
+    )
+    $.OPTION1(() => {
+      $.SUBRULE($.nullsOrder)
+    })
   })
 }
 
