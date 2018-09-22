@@ -1,12 +1,11 @@
 'use strict'
-const { Identifier, createKeywordToken, WhiteSpace, Select } = require('../_shared')
+const { Identifier, createKeywordToken, WhiteSpace, Select, constants } = require('../_shared')
 const commentTokens = require('./comments')
 const typeTokens = require('./types')
 const accessLevelTokens = require('./access')
 const loopsAndConditionTokens = require('./loopsAndConds')
 const exceptionTokens = require('./exceptions')
 const classAndMethodTokens = require('./classAndMethods')
-const constantsTokens = require('./constants')
 const symbolsTokens = require('./symbols')
 
 const Get = createKeywordToken({
@@ -38,7 +37,7 @@ module.exports = {
   ...exceptionTokens,
   ...classAndMethodTokens,
   ...loopsAndConditionTokens,
-  ...constantsTokens,
+  ...constants,
   Select,
   Get,
   Set,
