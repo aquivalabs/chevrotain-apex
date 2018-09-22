@@ -24,6 +24,12 @@ module.exports = `public abstract class AqObj {
   ];
 
   public List<sObject> a = [
+    sELeCt Id, Name FRoM Account
+    whErE id = 1
+    limit 232
+  ];
+
+  public List<sObject> a = [
     SeLeCt Id, Name fRoM Account
     WhErE id like 'qweqw'
       and name = 231

@@ -8,6 +8,7 @@ function soqlParser($) {
     $.SUBRULE($.baseSoqlQuery)
     $.OPTION(() => $.SUBRULE($.whereClause))
     $.OPTION1(() => $.SUBRULE($.orderByClause))
+    $.OPTION9(() => $.SUBRULE($.limitClause))
     $.CONSUME(tokens.soql.RSquare)
   })
 
@@ -123,6 +124,13 @@ function soqlParser($) {
     $.OPTION1(() => {
       $.SUBRULE($.nullsOrder)
     })
+  })
+
+  // limitClause
+  // : LIMIT comparisonOperator (literal|colonIdentifierName)
+  $.RULE('limitClause', () => {
+    $.CONSUME(tokens.soql.Limit)
+    $.SUBRULE($.integerLiteral)
   })
 }
 

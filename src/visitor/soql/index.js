@@ -42,6 +42,10 @@ function soqlVisitor($) {
   $.orderByClause = function(ctx) {
     return {}
   }
+
+  $.limitClause = function(ctx) {
+    return {}
+  }
 }
 
 module.exports = {
