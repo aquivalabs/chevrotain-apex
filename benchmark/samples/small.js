@@ -22,6 +22,8 @@ module.exports = `public abstract class AqObj {
   public List<sObject> a = [
     SeLeCt Id, Name fRoM Account
     WhErE id like 'qweqw'
+    and name = 231
+    or dew = true
   ];
 
   public String abc {

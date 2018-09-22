@@ -51,6 +51,15 @@ function soqlParser($) {
     ])
   })
 
+  // andOr
+  // : (AND | OR)
+  $.RULE('andOr', () => {
+    $.OR([
+      { ALT: () => $.CONSUME(tokens.soql.And) },
+      { ALT: () => $.CONSUME(tokens.soql.Or) },
+    ])
+  })
+
   // colomIdentifierName
   // : :identifierNameElement ('.' identifierNameElement)*
   $.RULE('colonIdentifierName', () => {
@@ -59,9 +68,21 @@ function soqlParser($) {
   })
 
   // whereClause
-  // : WHERE identifierName comparisonOperator (literal|colonIdentifierName)
+  // : WHERE singleWhereCondition (andOr singleWhereCondition)*
   $.RULE('whereClause', () => {
     $.CONSUME(tokens.soql.Where)
+    $.SUBRULE($.singleWhereCondition)
+    $.OPTION(() =>
+      $.MANY(() => {
+        $.SUBRULE($.andOr)
+        $.SUBRULE1($.singleWhereCondition)
+      })
+    )
+  })
+
+  // singleWhereCondition
+  // : identifierName comparisonOperator (literal|colonIdentifierName)
+  $.RULE('singleWhereCondition', () => {
     $.SUBRULE($.identifierName)
     $.SUBRULE($.comparisonOperator)
     $.OR([

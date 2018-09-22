@@ -15,11 +15,19 @@ function soqlVisitor($) {
     return {}
   }
 
+  $.andOr = function(ctx) {
+    return {}
+  }
+
   $.colonIdentifierName = function(ctx) {
     return {}
   }
 
   $.whereClause = function(ctx) {
+    return {}
+  }
+
+  $.singleWhereCondition = function(ctx) {
     return {}
   }
 }
