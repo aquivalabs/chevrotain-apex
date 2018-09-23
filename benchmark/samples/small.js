@@ -66,6 +66,14 @@ module.exports = `public abstract class AqObj {
     ORDER by Something desc Nulls first
   ];
 
+  public List<sObject> a = [
+    SeLeCt Id, Name, (SELECT Id, sth__c from Contacts) fRoM Account
+    WhErE id like 'qweqw'
+      and name = 231
+      or dew = true
+    ORDER by Something desc Nulls first
+  ];
+
   public String abc {
       get;
       set {

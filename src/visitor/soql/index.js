@@ -3,6 +3,10 @@ function soqlVisitor($) {
     return {}
   }
 
+  $.subquery = function(ctx) {
+    return {}
+  }
+
   $.baseSoqlQuery = function(ctx) {
     return {}
   }

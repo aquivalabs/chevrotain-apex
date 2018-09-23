@@ -13,6 +13,19 @@ function soqlParser($) {
     $.CONSUME(tokens.soql.RSquare)
   })
 
+  // subquery
+  // : (SELECT baseSoqlQuery whereClause?)
+  $.RULE('subquery', () => {
+    $.CONSUME(tokens.soql.LBrace)
+    $.CONSUME(tokens.soql.Select)
+    $.SUBRULE($.baseSoqlQuery)
+    $.OPTION(() => $.SUBRULE($.whereClause))
+    $.OPTION1(() => $.SUBRULE($.orderByClause))
+    $.OPTION8(() => $.SUBRULE($.limitClause))
+    $.OPTION9(() => $.SUBRULE($.offsetClause))
+    $.CONSUME(tokens.soql.RBrace)
+  })
+
   // baseSoqlQuery
   // : listOfFields FROM tokens.Identifier
   $.RULE('baseSoqlQuery', () => {
@@ -27,7 +40,10 @@ function soqlParser($) {
     $.AT_LEAST_ONE_SEP({
       SEP: tokens.apex.Comma,
       DEF: () => {
-        $.SUBRULE($.identifierName)
+        $.OR([
+          { ALT: () => $.SUBRULE($.subquery) },
+          { ALT: () => $.SUBRULE($.identifierName) },
+        ])
       },
     })
   })
