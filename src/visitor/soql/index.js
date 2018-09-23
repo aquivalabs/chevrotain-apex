@@ -46,6 +46,10 @@ function soqlVisitor($) {
   $.limitClause = function(ctx) {
     return {}
   }
+
+  $.offsetClause = function(ctx) {
+    return {}
+  }
 }
 
 module.exports = {

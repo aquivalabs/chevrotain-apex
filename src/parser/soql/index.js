@@ -8,7 +8,8 @@ function soqlParser($) {
     $.SUBRULE($.baseSoqlQuery)
     $.OPTION(() => $.SUBRULE($.whereClause))
     $.OPTION1(() => $.SUBRULE($.orderByClause))
-    $.OPTION9(() => $.SUBRULE($.limitClause))
+    $.OPTION8(() => $.SUBRULE($.limitClause))
+    $.OPTION9(() => $.SUBRULE($.offsetClause))
     $.CONSUME(tokens.soql.RSquare)
   })
 
@@ -130,6 +131,13 @@ function soqlParser($) {
   // : LIMIT comparisonOperator (literal|colonIdentifierName)
   $.RULE('limitClause', () => {
     $.CONSUME(tokens.soql.Limit)
+    $.SUBRULE($.integerLiteral)
+  })
+
+  // offsetClause
+  // : OFFSET comparisonOperator (literal|colonIdentifierName)
+  $.RULE('offsetClause', () => {
+    $.CONSUME(tokens.soql.Offset)
     $.SUBRULE($.integerLiteral)
   })
 }

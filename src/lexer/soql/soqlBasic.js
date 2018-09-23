@@ -18,6 +18,12 @@ const Limit = createKeywordToken({
   label: "'LIMIT'",
 })
 
+const Offset = createKeywordToken({
+  name: 'Offset',
+  pattern: /OFFSET/,
+  label: "'OFFSET'",
+})
+
 const Order = createKeywordToken({
   name: 'Order',
   pattern: /ORDER/,
@@ -89,6 +95,7 @@ module.exports = {
   From,
   Where,
   Limit,
+  Offset,
   Order,
   By,
   In,
