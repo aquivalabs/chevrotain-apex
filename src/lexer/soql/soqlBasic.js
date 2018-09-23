@@ -1,4 +1,4 @@
-const { createKeywordToken, Select } = require('../_shared')
+const { createKeywordToken, LSquareSelect } = require('../_shared')
 
 const From = createKeywordToken({
   name: 'From',
@@ -91,7 +91,7 @@ const Last = createKeywordToken({
 })
 
 module.exports = {
-  Select,
+  LSquareSelect,
   From,
   Where,
   Limit,

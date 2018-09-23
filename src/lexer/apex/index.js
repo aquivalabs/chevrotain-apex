@@ -1,5 +1,5 @@
 'use strict'
-const { Identifier, createKeywordToken, WhiteSpace, Select, constants } = require('../_shared')
+const { Identifier, createKeywordToken, WhiteSpace, LSquareSelect, constants } = require('../_shared')
 const commentTokens = require('./comments')
 const typeTokens = require('./types')
 const accessLevelTokens = require('./access')
@@ -38,7 +38,7 @@ module.exports = {
   ...classAndMethodTokens,
   ...loopsAndConditionTokens,
   ...constants,
-  Select,
+  LSquareSelect,
   Get,
   Set,
   Assert,

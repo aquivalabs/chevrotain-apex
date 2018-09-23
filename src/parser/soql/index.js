@@ -4,7 +4,7 @@ function soqlParser($) {
   // queryUnit
   // : [SELECT baseSoqlQuery whereClause?]
   $.RULE('queryUnit', () => {
-    $.CONSUME(tokens.soql.Select)
+    $.CONSUME(tokens.soql.LSquareSelect)
     $.SUBRULE($.baseSoqlQuery)
     $.OPTION(() => $.SUBRULE($.whereClause))
     $.OPTION1(() => $.SUBRULE($.orderByClause))

@@ -49,8 +49,8 @@ const WhiteSpace = createToken({
   line_breaks: true,
 })
 
-const Select = createToken({
-  name: 'Select',
+const LSquareSelect = createToken({
+  name: 'LSquareSelect',
   pattern: /\[\s*SELECT/,
   label: "'[SELECT'",
   push_mode: LEXER_MODE.SOQL,
@@ -65,7 +65,7 @@ module.exports = {
   createToken,
   Identifier,
   WhiteSpace,
-  Select,
+  LSquareSelect,
   createKeywordToken,
   makePattern,
 }
