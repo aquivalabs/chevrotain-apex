@@ -1,45 +1,40 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("annotationMethodRest", () => {
-  it("identifier", () => {
-    expect(
-      Parser.parse("a()", parser => parser.annotationMethodRest())
-    ).toEqual({
-      type: "ANNOTATION_METHOD_REST",
+describe('annotationMethodRest', () => {
+  it('identifier', () => {
+    expect(Parser.parse('a()', (parser) => parser.annotationMethodRest())).toEqual({
+      type: 'ANNOTATION_METHOD_REST',
       name: {
-        type: "IDENTIFIER",
-        value: "a"
+        type: 'IDENTIFIER',
+        value: 'a',
       },
-      defaultValue: undefined
-    });
-  });
+      defaultValue: undefined,
+    })
+  })
 
-  it("defaultValue", () => {
-    expect(
-      Parser.parse("a() default @Bean", parser => parser.annotationMethodRest())
-    ).toEqual({
-      type: "ANNOTATION_METHOD_REST",
+  it('defaultValue', () => {
+    expect(Parser.parse('a() default @Bean', (parser) => parser.annotationMethodRest())).toEqual({
+      type: 'ANNOTATION_METHOD_REST',
       name: {
-        type: "IDENTIFIER",
-        value: "a"
+        type: 'IDENTIFIER',
+        value: 'a',
       },
       defaultValue: {
-        type: "DEFAULT_VALUE",
+        type: 'DEFAULT_VALUE',
         value: {
-          type: "ANNOTATION",
+          type: 'ANNOTATION',
           name: {
-            type: "QUALIFIED_NAME",
+            type: 'QUALIFIED_NAME',
             name: [
               {
-                type: "IDENTIFIER",
-                value: "Bean"
-              }
-            ]
+                type: 'IDENTIFIER',
+                value: 'Bean',
+              },
+            ],
           },
-          hasBraces: false
-        }
-      }
-    });
-  });
-});
+          hasBraces: false,
+        },
+      },
+    })
+  })
+})

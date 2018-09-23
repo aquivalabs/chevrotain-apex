@@ -1,117 +1,112 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("resource", () => {
-  it("simple", () => {
-    expect(Parser.parse("A.B a = this", parser => parser.resource())).toEqual({
-      type: "RESOURCE",
+describe('resource', () => {
+  it('simple', () => {
+    expect(Parser.parse('A.B a = this', (parser) => parser.resource())).toEqual({
+      type: 'RESOURCE',
       modifiers: [],
       typeType: {
-        type: "CLASS_OR_INTERFACE_TYPE",
+        type: 'CLASS_OR_INTERFACE_TYPE',
         elements: [
           {
-            type: "IDENTIFIER",
-            value: "A"
+            type: 'IDENTIFIER',
+            value: 'A',
           },
           {
-            type: "IDENTIFIER",
-            value: "B"
-          }
-        ]
+            type: 'IDENTIFIER',
+            value: 'B',
+          },
+        ],
       },
       id: {
-        type: "VARIABLE_DECLARATOR_ID",
+        type: 'VARIABLE_DECLARATOR_ID',
         id: {
-          type: "IDENTIFIER",
-          value: "a"
+          type: 'IDENTIFIER',
+          value: 'a',
         },
-        dimensions: []
+        dimensions: [],
       },
       expression: {
-        type: "THIS"
-      }
-    });
-  });
+        type: 'THIS',
+      },
+    })
+  })
 
-  it("one annotation", () => {
-    expect(
-      Parser.parse("final A.B a = this", parser => parser.resource())
-    ).toEqual({
-      type: "RESOURCE",
-      modifiers: [{ type: "MODIFIER", value: "final" }],
+  it('one annotation', () => {
+    expect(Parser.parse('final A.B a = this', (parser) => parser.resource())).toEqual({
+      type: 'RESOURCE',
+      modifiers: [{ type: 'MODIFIER', value: 'final' }],
       typeType: {
-        type: "CLASS_OR_INTERFACE_TYPE",
+        type: 'CLASS_OR_INTERFACE_TYPE',
         elements: [
           {
-            type: "IDENTIFIER",
-            value: "A"
+            type: 'IDENTIFIER',
+            value: 'A',
           },
           {
-            type: "IDENTIFIER",
-            value: "B"
-          }
-        ]
+            type: 'IDENTIFIER',
+            value: 'B',
+          },
+        ],
       },
       id: {
-        type: "VARIABLE_DECLARATOR_ID",
+        type: 'VARIABLE_DECLARATOR_ID',
         id: {
-          type: "IDENTIFIER",
-          value: "a"
+          type: 'IDENTIFIER',
+          value: 'a',
         },
-        dimensions: []
+        dimensions: [],
       },
       expression: {
-        type: "THIS"
-      }
-    });
-  });
+        type: 'THIS',
+      },
+    })
+  })
 
-  it("multiple annotations", () => {
-    expect(
-      Parser.parse("@Bean final A.B a = this", parser => parser.resource())
-    ).toEqual({
-      type: "RESOURCE",
+  it('multiple annotations', () => {
+    expect(Parser.parse('@Bean final A.B a = this', (parser) => parser.resource())).toEqual({
+      type: 'RESOURCE',
       modifiers: [
         {
-          type: "ANNOTATION",
+          type: 'ANNOTATION',
           name: {
-            type: "QUALIFIED_NAME",
+            type: 'QUALIFIED_NAME',
             name: [
               {
-                type: "IDENTIFIER",
-                value: "Bean"
-              }
-            ]
+                type: 'IDENTIFIER',
+                value: 'Bean',
+              },
+            ],
           },
           hasBraces: false,
-          values: undefined
+          values: undefined,
         },
-        { type: "MODIFIER", value: "final" }
+        { type: 'MODIFIER', value: 'final' },
       ],
       typeType: {
-        type: "CLASS_OR_INTERFACE_TYPE",
+        type: 'CLASS_OR_INTERFACE_TYPE',
         elements: [
           {
-            type: "IDENTIFIER",
-            value: "A"
+            type: 'IDENTIFIER',
+            value: 'A',
           },
           {
-            type: "IDENTIFIER",
-            value: "B"
-          }
-        ]
+            type: 'IDENTIFIER',
+            value: 'B',
+          },
+        ],
       },
       id: {
-        type: "VARIABLE_DECLARATOR_ID",
+        type: 'VARIABLE_DECLARATOR_ID',
         id: {
-          type: "IDENTIFIER",
-          value: "a"
+          type: 'IDENTIFIER',
+          value: 'a',
         },
-        dimensions: []
+        dimensions: [],
       },
       expression: {
-        type: "THIS"
-      }
-    });
-  });
-});
+        type: 'THIS',
+      },
+    })
+  })
+})

@@ -1,49 +1,49 @@
-"use strict";
-const Parser = require("../src/index");
+'use strict'
+const Parser = require('../src/index')
 
-describe("atomic", () => {
-  it("primary", () => {
-    expect(Parser.parse("this", parser => parser.atomic())).toEqual({
-      type: "THIS"
-    });
-  });
+describe('atomic', () => {
+  it('primary', () => {
+    expect(Parser.parse('this', (parser) => parser.atomic())).toEqual({
+      type: 'THIS',
+    })
+  })
 
-  it("creator", () => {
-    expect(Parser.parse("new a()", parser => parser.atomic())).toEqual({
-      type: "SIMPLE_CREATOR",
+  it('creator', () => {
+    expect(Parser.parse('new a()', (parser) => parser.atomic())).toEqual({
+      type: 'SIMPLE_CREATOR',
       name: {
-        type: "IDENTIFIER_NAME",
+        type: 'IDENTIFIER_NAME',
         elements: [
           {
-            type: "IDENTIFIER_NAME_ELEMENT",
+            type: 'IDENTIFIER_NAME_ELEMENT',
             id: {
-              type: "IDENTIFIER",
-              value: "a"
+              type: 'IDENTIFIER',
+              value: 'a',
             },
-            typeArguments: undefined
-          }
-        ]
+            typeArguments: undefined,
+          },
+        ],
       },
       rest: {
-        type: "CLASS_CREATOR_REST",
+        type: 'CLASS_CREATOR_REST',
         arguments: {
-          type: "EXPRESSION_LIST",
-          list: []
+          type: 'EXPRESSION_LIST',
+          list: [],
         },
-        body: undefined
-      }
-    });
-  });
+        body: undefined,
+      },
+    })
+  })
 
-  it("methodInvocation", () => {
-    expect(Parser.parse("a()", parser => parser.atomic())).toEqual({
-      type: "METHOD_INVOCATION",
+  it('methodInvocation', () => {
+    expect(Parser.parse('a()', (parser) => parser.atomic())).toEqual({
+      type: 'METHOD_INVOCATION',
       name: {
-        type: "IDENTIFIER",
-        value: "a"
+        type: 'IDENTIFIER',
+        value: 'a',
       },
       parameters: undefined,
-      dimensions: []
-    });
-  });
-});
+      dimensions: [],
+    })
+  })
+})

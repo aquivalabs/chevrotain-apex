@@ -1,138 +1,131 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("interfaceBodyDeclaration", () => {
-  it("simple", () => {
-    expect(
-      Parser.parse("void a() {}", parser => parser.interfaceBodyDeclaration())
-    ).toEqual({
-      type: "INTERFACE_BODY_DECLARATION",
+describe('interfaceBodyDeclaration', () => {
+  it('simple', () => {
+    expect(Parser.parse('void a() {}', (parser) => parser.interfaceBodyDeclaration())).toEqual({
+      type: 'INTERFACE_BODY_DECLARATION',
       modifiers: [],
       declaration: {
-        type: "INTERFACE_METHOD_DECLARATION",
+        type: 'INTERFACE_METHOD_DECLARATION',
         modifiers: [],
         typeParameters: undefined,
         typeType: {
-          type: "VOID"
+          type: 'VOID',
         },
         name: {
-          type: "IDENTIFIER",
-          value: "a"
+          type: 'IDENTIFIER',
+          value: 'a',
         },
         parameters: {
-          type: "FORMAL_PARAMETERS",
-          parameters: []
+          type: 'FORMAL_PARAMETERS',
+          parameters: [],
         },
         dimensions: [],
         throws: undefined,
         body: {
-          type: "BLOCK",
-          statements: []
-        }
+          type: 'BLOCK',
+          statements: [],
+        },
       },
-      followedEmptyLine: false
-    });
-  });
+      followedEmptyLine: false,
+    })
+  })
 
-  it("one modifier", () => {
+  it('one modifier', () => {
     expect(
-      Parser.parse("@Bean void a() {}", parser =>
-        parser.interfaceBodyDeclaration()
-      )
+      Parser.parse('@Bean void a() {}', (parser) => parser.interfaceBodyDeclaration())
     ).toEqual({
-      type: "INTERFACE_BODY_DECLARATION",
+      type: 'INTERFACE_BODY_DECLARATION',
       modifiers: [
         {
-          type: "ANNOTATION",
+          type: 'ANNOTATION',
           name: {
-            type: "QUALIFIED_NAME",
+            type: 'QUALIFIED_NAME',
             name: [
               {
-                type: "IDENTIFIER",
-                value: "Bean"
-              }
-            ]
+                type: 'IDENTIFIER',
+                value: 'Bean',
+              },
+            ],
           },
           hasBraces: false,
-          values: undefined
-        }
+          values: undefined,
+        },
       ],
       declaration: {
-        type: "INTERFACE_METHOD_DECLARATION",
+        type: 'INTERFACE_METHOD_DECLARATION',
         modifiers: [],
         typeParameters: undefined,
         typeType: {
-          type: "VOID"
+          type: 'VOID',
         },
         name: {
-          type: "IDENTIFIER",
-          value: "a"
+          type: 'IDENTIFIER',
+          value: 'a',
         },
         parameters: {
-          type: "FORMAL_PARAMETERS",
-          parameters: []
+          type: 'FORMAL_PARAMETERS',
+          parameters: [],
         },
         dimensions: [],
         throws: undefined,
         body: {
-          type: "BLOCK",
-          statements: []
-        }
+          type: 'BLOCK',
+          statements: [],
+        },
       },
-      followedEmptyLine: false
-    });
-  });
+      followedEmptyLine: false,
+    })
+  })
 
-  it("multiple modifiers", () => {
+  it('multiple modifiers', () => {
     expect(
-      Parser.parse("@Bean public void a() {}", parser =>
-        parser.interfaceBodyDeclaration()
-      )
+      Parser.parse('@Bean public void a() {}', (parser) => parser.interfaceBodyDeclaration())
     ).toEqual({
-      type: "INTERFACE_BODY_DECLARATION",
+      type: 'INTERFACE_BODY_DECLARATION',
       modifiers: [
         {
-          type: "ANNOTATION",
+          type: 'ANNOTATION',
           name: {
-            type: "QUALIFIED_NAME",
+            type: 'QUALIFIED_NAME',
             name: [
               {
-                type: "IDENTIFIER",
-                value: "Bean"
-              }
-            ]
+                type: 'IDENTIFIER',
+                value: 'Bean',
+              },
+            ],
           },
           hasBraces: false,
-          values: undefined
+          values: undefined,
         },
         {
-          type: "MODIFIER",
-          value: "public"
-        }
+          type: 'MODIFIER',
+          value: 'public',
+        },
       ],
       declaration: {
-        type: "INTERFACE_METHOD_DECLARATION",
+        type: 'INTERFACE_METHOD_DECLARATION',
         modifiers: [],
         typeParameters: undefined,
         typeType: {
-          type: "VOID"
+          type: 'VOID',
         },
         name: {
-          type: "IDENTIFIER",
-          value: "a"
+          type: 'IDENTIFIER',
+          value: 'a',
         },
         parameters: {
-          type: "FORMAL_PARAMETERS",
-          parameters: []
+          type: 'FORMAL_PARAMETERS',
+          parameters: [],
         },
         dimensions: [],
         throws: undefined,
         body: {
-          type: "BLOCK",
-          statements: []
-        }
+          type: 'BLOCK',
+          statements: [],
+        },
       },
-      followedEmptyLine: false
-    });
-  });
-});
+      followedEmptyLine: false,
+    })
+  })
+})

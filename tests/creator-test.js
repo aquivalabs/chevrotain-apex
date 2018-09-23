@@ -1,72 +1,70 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("creator", () => {
-  it("nonWildcardCreator", () => {
-    expect(
-      Parser.parse("new <boolean> a()", parser => parser.creator())
-    ).toEqual({
-      type: "NON_WILDCARD_CREATOR",
+describe('creator', () => {
+  // FIXME: unsupported syntax
+  it('nonWildcardCreator', () => {
+    expect(Parser.parse('new <boolean> a()', (parser) => parser.creator())).toEqual({
+      type: 'NON_WILDCARD_CREATOR',
       typeArguments: {
-        type: "TYPE_ARGUMENTS",
+        type: 'TYPE_ARGUMENTS',
         value: {
-          type: "TYPE_LIST",
+          type: 'TYPE_LIST',
           list: [
             {
-              type: "PRIMITIVE_TYPE",
-              value: "boolean"
-            }
-          ]
-        }
+              type: 'PRIMITIVE_TYPE',
+              value: 'boolean',
+            },
+          ],
+        },
       },
       name: {
-        type: "IDENTIFIER_NAME",
+        type: 'IDENTIFIER_NAME',
         elements: [
           {
-            type: "IDENTIFIER_NAME_ELEMENT",
+            type: 'IDENTIFIER_NAME_ELEMENT',
             id: {
-              type: "IDENTIFIER",
-              value: "a"
+              type: 'IDENTIFIER',
+              value: 'a',
             },
-            typeArguments: undefined
-          }
-        ]
+            typeArguments: undefined,
+          },
+        ],
       },
       rest: {
-        type: "CLASS_CREATOR_REST",
+        type: 'CLASS_CREATOR_REST',
         arguments: {
-          type: "EXPRESSION_LIST",
-          list: []
+          type: 'EXPRESSION_LIST',
+          list: [],
         },
-        body: undefined
-      }
-    });
-  });
+        body: undefined,
+      },
+    })
+  })
 
-  it("simpleCreator", () => {
-    expect(Parser.parse("new a()", parser => parser.creator())).toEqual({
-      type: "SIMPLE_CREATOR",
+  it('simpleCreator', () => {
+    expect(Parser.parse('new a()', (parser) => parser.creator())).toEqual({
+      type: 'SIMPLE_CREATOR',
       name: {
-        type: "IDENTIFIER_NAME",
+        type: 'IDENTIFIER_NAME',
         elements: [
           {
-            type: "IDENTIFIER_NAME_ELEMENT",
+            type: 'IDENTIFIER_NAME_ELEMENT',
             id: {
-              type: "IDENTIFIER",
-              value: "a"
+              type: 'IDENTIFIER',
+              value: 'a',
             },
-            typeArguments: undefined
-          }
-        ]
+            typeArguments: undefined,
+          },
+        ],
       },
       rest: {
-        type: "CLASS_CREATOR_REST",
+        type: 'CLASS_CREATOR_REST',
         arguments: {
-          type: "EXPRESSION_LIST",
-          list: []
+          type: 'EXPRESSION_LIST',
+          list: [],
         },
-        body: undefined
-      }
-    });
-  });
-});
+        body: undefined,
+      },
+    })
+  })
+})

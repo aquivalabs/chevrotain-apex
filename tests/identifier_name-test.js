@@ -1,44 +1,43 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("identifierName", () => {
-  it("one element", () => {
-    expect(Parser.parse("a", parser => parser.identifierName())).toEqual({
-      type: "IDENTIFIER_NAME",
+describe('identifierName', () => {
+  it('one element', () => {
+    expect(Parser.parse('a', (parser) => parser.identifierName())).toEqual({
+      type: 'IDENTIFIER_NAME',
       elements: [
         {
-          type: "IDENTIFIER_NAME_ELEMENT",
+          type: 'IDENTIFIER_NAME_ELEMENT',
           id: {
-            type: "IDENTIFIER",
-            value: "a"
+            type: 'IDENTIFIER',
+            value: 'a',
           },
-          typeArguments: undefined
-        }
-      ]
-    });
-  });
+          typeArguments: undefined,
+        },
+      ],
+    })
+  })
 
-  it("two elements", () => {
-    expect(Parser.parse("a.b", parser => parser.identifierName())).toEqual({
-      type: "IDENTIFIER_NAME",
+  it('two elements', () => {
+    expect(Parser.parse('a.b', (parser) => parser.identifierName())).toEqual({
+      type: 'IDENTIFIER_NAME',
       elements: [
         {
-          type: "IDENTIFIER_NAME_ELEMENT",
+          type: 'IDENTIFIER_NAME_ELEMENT',
           id: {
-            type: "IDENTIFIER",
-            value: "a"
+            type: 'IDENTIFIER',
+            value: 'a',
           },
-          typeArguments: undefined
+          typeArguments: undefined,
         },
         {
-          type: "IDENTIFIER_NAME_ELEMENT",
+          type: 'IDENTIFIER_NAME_ELEMENT',
           id: {
-            type: "IDENTIFIER",
-            value: "b"
+            type: 'IDENTIFIER',
+            value: 'b',
           },
-          typeArguments: undefined
-        }
-      ]
-    });
-  });
-});
+          typeArguments: undefined,
+        },
+      ],
+    })
+  })
+})

@@ -1,16 +1,14 @@
-"use strict";
-const Parser = require("../src/index");
+// const Parser = require('../src/index')
 
-describe("switchLabelCase", () => {
-  it("identifier", () => {
-    expect(Parser.parse("case a:", parser => parser.switchLabelCase())).toEqual(
-      {
-        type: "SWITCH_LABEL_CASE",
-        expression: {
-          type: "IDENTIFIER",
-          value: "a"
-        }
-      }
-    );
-  });
-});
+// TODO: add Switch-when support and uncomment this
+// describe('switchLabelCase', () => {
+//   it('identifier', () => {
+//     expect(Parser.parse('case a:', (parser) => parser.switchLabelCase())).toEqual({
+//       type: 'SWITCH_LABEL_CASE',
+//       expression: {
+//         type: 'IDENTIFIER',
+//         value: 'a',
+//       },
+//     })
+//   })
+// })

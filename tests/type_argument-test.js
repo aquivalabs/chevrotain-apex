@@ -1,93 +1,84 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("typeArgument", () => {
-  it("primitiveType", () => {
-    expect(Parser.parse("boolean", parser => parser.typeArgument())).toEqual({
-      type: "TYPE_ARGUMENT",
+describe('typeArgument', () => {
+  it('primitiveType', () => {
+    expect(Parser.parse('boolean', (parser) => parser.typeArgument())).toEqual({
+      type: 'TYPE_ARGUMENT',
       argument: {
-        type: "PRIMITIVE_TYPE",
-        value: "boolean"
+        type: 'PRIMITIVE_TYPE',
+        value: 'boolean',
       },
       super: undefined,
-      extends: undefined
-    });
-  });
+      extends: undefined,
+    })
+  })
 
-  it("questionmark", () => {
-    expect(Parser.parse("?", parser => parser.typeArgument())).toEqual({
-      type: "TYPE_ARGUMENT",
+  it('questionmark', () => {
+    expect(Parser.parse('?', (parser) => parser.typeArgument())).toEqual({
+      type: 'TYPE_ARGUMENT',
       argument: {
-        type: "QUESTIONMARK"
+        type: 'QUESTIONMARK',
       },
       super: undefined,
-      extends: undefined
-    });
-  });
+      extends: undefined,
+    })
+  })
 
-  it("primitiveType extends primitiveType", () => {
-    expect(
-      Parser.parse("boolean extends char", parser => parser.typeArgument())
-    ).toEqual({
-      type: "TYPE_ARGUMENT",
+  it('primitiveType extends primitiveType', () => {
+    expect(Parser.parse('boolean extends char', (parser) => parser.typeArgument())).toEqual({
+      type: 'TYPE_ARGUMENT',
       argument: {
-        type: "PRIMITIVE_TYPE",
-        value: "boolean"
+        type: 'PRIMITIVE_TYPE',
+        value: 'boolean',
       },
       super: undefined,
       extends: {
-        type: "PRIMITIVE_TYPE",
-        value: "char"
-      }
-    });
-  });
+        type: 'PRIMITIVE_TYPE',
+        value: 'char',
+      },
+    })
+  })
 
-  it("primitiveType super primitiveType", () => {
-    expect(
-      Parser.parse("boolean super char", parser => parser.typeArgument())
-    ).toEqual({
-      type: "TYPE_ARGUMENT",
+  it('primitiveType super primitiveType', () => {
+    expect(Parser.parse('boolean super char', (parser) => parser.typeArgument())).toEqual({
+      type: 'TYPE_ARGUMENT',
       argument: {
-        type: "PRIMITIVE_TYPE",
-        value: "boolean"
+        type: 'PRIMITIVE_TYPE',
+        value: 'boolean',
       },
       super: {
-        type: "PRIMITIVE_TYPE",
-        value: "char"
+        type: 'PRIMITIVE_TYPE',
+        value: 'char',
       },
-      extends: undefined
-    });
-  });
+      extends: undefined,
+    })
+  })
 
-  it("questionmark extends primitiveType", () => {
-    expect(
-      Parser.parse("? extends char", parser => parser.typeArgument())
-    ).toEqual({
-      type: "TYPE_ARGUMENT",
+  it('questionmark extends primitiveType', () => {
+    expect(Parser.parse('? extends char', (parser) => parser.typeArgument())).toEqual({
+      type: 'TYPE_ARGUMENT',
       argument: {
-        type: "QUESTIONMARK"
+        type: 'QUESTIONMARK',
       },
       super: undefined,
       extends: {
-        type: "PRIMITIVE_TYPE",
-        value: "char"
-      }
-    });
-  });
+        type: 'PRIMITIVE_TYPE',
+        value: 'char',
+      },
+    })
+  })
 
-  it("questionmark super primitiveType", () => {
-    expect(
-      Parser.parse("? super char", parser => parser.typeArgument())
-    ).toEqual({
-      type: "TYPE_ARGUMENT",
+  it('questionmark super primitiveType', () => {
+    expect(Parser.parse('? super char', (parser) => parser.typeArgument())).toEqual({
+      type: 'TYPE_ARGUMENT',
       argument: {
-        type: "QUESTIONMARK"
+        type: 'QUESTIONMARK',
       },
       super: {
-        type: "PRIMITIVE_TYPE",
-        value: "char"
+        type: 'PRIMITIVE_TYPE',
+        value: 'char',
       },
-      extends: undefined
-    });
-  });
-});
+      extends: undefined,
+    })
+  })
+})

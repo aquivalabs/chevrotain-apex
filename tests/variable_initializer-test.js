@@ -1,38 +1,31 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("variableInitializer", () => {
-  it("expression", () => {
-    expect(
-      Parser.parse("this", parser => parser.variableInitializer())
-    ).toEqual({
-      type: "THIS"
-    });
-  });
+describe('variableInitializer', () => {
+  it('expression', () => {
+    expect(Parser.parse('this', (parser) => parser.variableInitializer())).toEqual({
+      type: 'THIS',
+    })
+  })
 
-  it("arrayOrMapInitializer", () => {
-    expect(Parser.parse("{}", parser => parser.variableInitializer())).toEqual({
-      type: "ARRAY_INITIALIZER",
-      variableInitializers: []
-    });
-  });
+  it('arrayOrMapInitializer', () => {
+    expect(Parser.parse('{}', (parser) => parser.variableInitializer())).toEqual({
+      type: 'ARRAY_INITIALIZER',
+      variableInitializers: [],
+    })
+  })
 
-  it("ifElseExpression", () => {
-    expect(
-      Parser.parse("this ? true : false", parser =>
-        parser.variableInitializer()
-      )
-    ).toEqual({
-      type: "IF_ELSE_EXPRESSION",
-      condition: { type: "THIS" },
+  it('ifElseExpression', () => {
+    expect(Parser.parse('this ? true : false', (parser) => parser.variableInitializer())).toEqual({
+      type: 'IF_ELSE_EXPRESSION',
+      condition: { type: 'THIS' },
       if: {
-        type: "BOOLEAN_LITERAL",
-        value: "true"
+        type: 'BOOLEAN_LITERAL',
+        value: 'true',
       },
       else: {
-        type: "BOOLEAN_LITERAL",
-        value: "false"
-      }
-    });
-  });
-});
+        type: 'BOOLEAN_LITERAL',
+        value: 'false',
+      },
+    })
+  })
+})

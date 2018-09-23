@@ -1,59 +1,54 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("methodInvocation", () => {
-  it("empty parameters", () => {
-    expect(Parser.parse("a()", parser => parser.methodInvocation())).toEqual({
-      type: "METHOD_INVOCATION",
+describe('methodInvocation', () => {
+  it('empty parameters', () => {
+    expect(Parser.parse('a()', (parser) => parser.methodInvocation())).toEqual({
+      type: 'METHOD_INVOCATION',
       name: {
-        type: "IDENTIFIER",
-        value: "a"
+        type: 'IDENTIFIER',
+        value: 'a',
       },
       parameters: undefined,
-      dimensions: []
-    });
-  });
+      dimensions: [],
+    })
+  })
 
-  it("with parameters", () => {
-    expect(
-      Parser.parse("a(this)", parser => parser.methodInvocation())
-    ).toEqual({
-      type: "METHOD_INVOCATION",
+  it('with parameters', () => {
+    expect(Parser.parse('a(this)', (parser) => parser.methodInvocation())).toEqual({
+      type: 'METHOD_INVOCATION',
       name: {
-        type: "IDENTIFIER",
-        value: "a"
+        type: 'IDENTIFIER',
+        value: 'a',
       },
       parameters: {
-        type: "EXPRESSION_LIST",
+        type: 'EXPRESSION_LIST',
         list: [
           {
-            type: "THIS"
-          }
-        ]
+            type: 'THIS',
+          },
+        ],
       },
-      dimensions: []
-    });
-  });
+      dimensions: [],
+    })
+  })
 
-  it("with dimensions", () => {
-    expect(Parser.parse("a()[0]", parser => parser.methodInvocation())).toEqual(
-      {
-        type: "METHOD_INVOCATION",
-        name: {
-          type: "IDENTIFIER",
-          value: "a"
+  it('with dimensions', () => {
+    expect(Parser.parse('a()[0]', (parser) => parser.methodInvocation())).toEqual({
+      type: 'METHOD_INVOCATION',
+      name: {
+        type: 'IDENTIFIER',
+        value: 'a',
+      },
+      parameters: undefined,
+      dimensions: [
+        {
+          type: 'DIMENSION',
+          expression: {
+            type: 'DECIMAL_LITERAL',
+            value: '0',
+          },
         },
-        parameters: undefined,
-        dimensions: [
-          {
-            type: "DIMENSION",
-            expression: {
-              type: "DECIMAL_LITERAL",
-              value: "0"
-            }
-          }
-        ]
-      }
-    );
-  });
-});
+      ],
+    })
+  })
+})

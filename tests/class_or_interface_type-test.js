@@ -1,82 +1,75 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("classOrInterfaceType", () => {
-  it("identifiers", () => {
-    expect(
-      Parser.parse("A.B", parser => parser.classOrInterfaceType())
-    ).toEqual({
-      type: "CLASS_OR_INTERFACE_TYPE",
+describe('classOrInterfaceType', () => {
+  it('identifiers', () => {
+    expect(Parser.parse('A.B', (parser) => parser.classOrInterfaceType())).toEqual({
+      type: 'CLASS_OR_INTERFACE_TYPE',
       elements: [
         {
-          type: "IDENTIFIER",
-          value: "A"
+          type: 'IDENTIFIER',
+          value: 'A',
         },
         {
-          type: "IDENTIFIER",
-          value: "B"
-        }
-      ]
-    });
-  });
+          type: 'IDENTIFIER',
+          value: 'B',
+        },
+      ],
+    })
+  })
 
-  it("typeArguments", () => {
-    expect(
-      Parser.parse("A<boolean>.B<char>", parser =>
-        parser.classOrInterfaceType()
-      )
-    ).toEqual({
-      type: "CLASS_OR_INTERFACE_TYPE",
+  it('typeArguments', () => {
+    expect(Parser.parse('A<boolean>.B<char>', (parser) => parser.classOrInterfaceType())).toEqual({
+      type: 'CLASS_OR_INTERFACE_TYPE',
       elements: [
         {
-          type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+          type: 'CLASS_OR_INTERFACE_TYPE_ELEMENT',
           name: {
-            type: "IDENTIFIER",
-            value: "A"
+            type: 'IDENTIFIER',
+            value: 'A',
           },
           typeArguments: {
-            type: "TYPE_ARGUMENTS",
+            type: 'TYPE_ARGUMENTS',
             value: {
-              type: "TYPE_LIST",
+              type: 'TYPE_LIST',
               list: [
                 {
-                  type: "TYPE_ARGUMENT",
+                  type: 'TYPE_ARGUMENT',
                   argument: {
-                    type: "PRIMITIVE_TYPE",
-                    value: "boolean"
+                    type: 'PRIMITIVE_TYPE',
+                    value: 'boolean',
                   },
                   super: undefined,
-                  extends: undefined
-                }
-              ]
-            }
-          }
+                  extends: undefined,
+                },
+              ],
+            },
+          },
         },
         {
-          type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+          type: 'CLASS_OR_INTERFACE_TYPE_ELEMENT',
           name: {
-            type: "IDENTIFIER",
-            value: "B"
+            type: 'IDENTIFIER',
+            value: 'B',
           },
           typeArguments: {
-            type: "TYPE_ARGUMENTS",
+            type: 'TYPE_ARGUMENTS',
             value: {
-              type: "TYPE_LIST",
+              type: 'TYPE_LIST',
               list: [
                 {
-                  type: "TYPE_ARGUMENT",
+                  type: 'TYPE_ARGUMENT',
                   argument: {
-                    type: "PRIMITIVE_TYPE",
-                    value: "char"
+                    type: 'PRIMITIVE_TYPE',
+                    value: 'char',
                   },
                   super: undefined,
-                  extends: undefined
-                }
-              ]
-            }
-          }
-        }
-      ]
-    });
-  });
-});
+                  extends: undefined,
+                },
+              ],
+            },
+          },
+        },
+      ],
+    })
+  })
+})

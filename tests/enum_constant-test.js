@@ -1,121 +1,118 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("enumConstant", () => {
-  it("identifier", () => {
-    expect(Parser.parse("A", parser => parser.enumConstant())).toEqual({
-      type: "ENUM_CONSTANT",
+describe('enumConstant', () => {
+  it('identifier', () => {
+    expect(Parser.parse('A', (parser) => parser.enumConstant())).toEqual({
+      type: 'ENUM_CONSTANT',
       modifiers: [],
       name: {
-        type: "IDENTIFIER",
-        value: "A"
+        type: 'IDENTIFIER',
+        value: 'A',
       },
       arguments: undefined,
-      body: undefined
-    });
-  });
+      body: undefined,
+    })
+  })
 
-  it("one annotation", () => {
-    expect(Parser.parse("@Bean A", parser => parser.enumConstant())).toEqual({
-      type: "ENUM_CONSTANT",
+  it('one annotation', () => {
+    expect(Parser.parse('@Bean A', (parser) => parser.enumConstant())).toEqual({
+      type: 'ENUM_CONSTANT',
       modifiers: [
         {
-          type: "ANNOTATION",
+          type: 'ANNOTATION',
           name: {
-            type: "QUALIFIED_NAME",
+            type: 'QUALIFIED_NAME',
             name: [
               {
-                type: "IDENTIFIER",
-                value: "Bean"
-              }
-            ]
+                type: 'IDENTIFIER',
+                value: 'Bean',
+              },
+            ],
           },
           hasBraces: false,
-          values: undefined
-        }
+          values: undefined,
+        },
       ],
       name: {
-        type: "IDENTIFIER",
-        value: "A"
+        type: 'IDENTIFIER',
+        value: 'A',
       },
       arguments: undefined,
-      body: undefined
-    });
-  });
+      body: undefined,
+    })
+  })
 
-  it("multiple annotations", () => {
-    expect(
-      Parser.parse("@Bean @Something A", parser => parser.enumConstant())
-    ).toEqual({
-      type: "ENUM_CONSTANT",
+  it('multiple annotations', () => {
+    expect(Parser.parse('@Bean @Something A', (parser) => parser.enumConstant())).toEqual({
+      type: 'ENUM_CONSTANT',
       modifiers: [
         {
-          type: "ANNOTATION",
+          type: 'ANNOTATION',
           name: {
-            type: "QUALIFIED_NAME",
+            type: 'QUALIFIED_NAME',
             name: [
               {
-                type: "IDENTIFIER",
-                value: "Bean"
-              }
-            ]
+                type: 'IDENTIFIER',
+                value: 'Bean',
+              },
+            ],
           },
           hasBraces: false,
-          values: undefined
+          values: undefined,
         },
         {
-          type: "ANNOTATION",
+          type: 'ANNOTATION',
           name: {
-            type: "QUALIFIED_NAME",
+            type: 'QUALIFIED_NAME',
             name: [
               {
-                type: "IDENTIFIER",
-                value: "Something"
-              }
-            ]
+                type: 'IDENTIFIER',
+                value: 'Something',
+              },
+            ],
           },
           hasBraces: false,
-          values: undefined
-        }
+          values: undefined,
+        },
       ],
       name: {
-        type: "IDENTIFIER",
-        value: "A"
+        type: 'IDENTIFIER',
+        value: 'A',
       },
       arguments: undefined,
-      body: undefined
-    });
-  });
+      body: undefined,
+    })
+  })
 
-  it("arguments", () => {
-    expect(Parser.parse("A()", parser => parser.enumConstant())).toEqual({
-      type: "ENUM_CONSTANT",
+  it('arguments', () => {
+    expect(Parser.parse('A()', (parser) => parser.enumConstant())).toEqual({
+      type: 'ENUM_CONSTANT',
       modifiers: [],
       name: {
-        type: "IDENTIFIER",
-        value: "A"
+        type: 'IDENTIFIER',
+        value: 'A',
       },
       arguments: {
-        type: "EXPRESSION_LIST",
-        list: []
+        type: 'EXPRESSION_LIST',
+        list: [],
       },
-      body: undefined
-    });
-  });
+      body: undefined,
+    })
+  })
 
-  it("body", () => {
-    expect(Parser.parse("A {}", parser => parser.enumConstant())).toEqual({
-      type: "ENUM_CONSTANT",
+  it('body', () => {
+    expect(Parser.parse('A {}', (parser) => parser.enumConstant())).toEqual({
+      type: 'ENUM_CONSTANT',
       modifiers: [],
       name: {
-        type: "IDENTIFIER",
-        value: "A"
+        type: 'IDENTIFIER',
+        value: 'A',
       },
       arguments: undefined,
       body: {
-        type: "CLASS_BODY",
-        declarations: []
-      }
-    });
-  });
-});
+        type: 'CLASS_BODY',
+        declarations: [],
+      },
+    })
+  })
+})

@@ -1,228 +1,179 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("statementWithStartingToken", () => {
-  it("block", () => {
-    expect(
-      Parser.parse("{}", parser => parser.statementWithStartingToken())
-    ).toEqual({
-      type: "BLOCK",
-      statements: []
-    });
-  });
+describe('statementWithStartingToken', () => {
+  it('block', () => {
+    expect(Parser.parse('{}', (parser) => parser.statementWithStartingToken())).toEqual({
+      type: 'BLOCK',
+      statements: [],
+    })
+  })
 
-  it("assertStatement", () => {
-    expect(
-      Parser.parse("assert this;", parser =>
-        parser.statementWithStartingToken()
-      )
-    ).toEqual({
-      type: "ASSERT_STATEMENT",
+  it('assertStatement', () => {
+    expect(Parser.parse('assert this;', (parser) => parser.statementWithStartingToken())).toEqual({
+      type: 'ASSERT_STATEMENT',
       booleanExpression: {
-        type: "THIS"
-      }
-    });
-  });
+        type: 'THIS',
+      },
+    })
+  })
 
-  it("ifStatement", () => {
-    expect(
-      Parser.parse("if (this) {}", parser =>
-        parser.statementWithStartingToken()
-      )
-    ).toEqual({
-      type: "IF_STATEMENT",
+  it('ifStatement', () => {
+    expect(Parser.parse('if (this) {}', (parser) => parser.statementWithStartingToken())).toEqual({
+      type: 'IF_STATEMENT',
       condition: {
-        type: "THIS"
+        type: 'THIS',
       },
       body: {
-        type: "BLOCK",
-        statements: []
+        type: 'BLOCK',
+        statements: [],
       },
-      else: undefined
-    });
-  });
+      else: undefined,
+    })
+  })
 
-  it("forStatement", () => {
-    expect(
-      Parser.parse("for (;;) {}", parser => parser.statementWithStartingToken())
-    ).toEqual({
-      type: "FOR_STATEMENT",
+  it('forStatement', () => {
+    expect(Parser.parse('for (;;) {}', (parser) => parser.statementWithStartingToken())).toEqual({
+      type: 'FOR_STATEMENT',
       forControl: {
-        type: "BASIC_FOR_CONTROL",
+        type: 'BASIC_FOR_CONTROL',
         forInit: undefined,
         expression: undefined,
-        expressionList: undefined
+        expressionList: undefined,
       },
       body: {
-        type: "BLOCK",
-        statements: []
-      }
-    });
-  });
+        type: 'BLOCK',
+        statements: [],
+      },
+    })
+  })
 
-  it("whileStatement", () => {
+  it('whileStatement', () => {
     expect(
-      Parser.parse("while (this) {}", parser =>
-        parser.statementWithStartingToken()
-      )
+      Parser.parse('while (this) {}', (parser) => parser.statementWithStartingToken())
     ).toEqual({
-      type: "WHILE_STATEMENT",
+      type: 'WHILE_STATEMENT',
       condition: {
-        type: "THIS"
+        type: 'THIS',
       },
       body: {
-        type: "BLOCK",
-        statements: []
+        type: 'BLOCK',
+        statements: [],
       },
-      else: undefined
-    });
-  });
+      else: undefined,
+    })
+  })
 
-  it("doWhileStatement", () => {
+  it('doWhileStatement', () => {
     expect(
-      Parser.parse("do {} while (this);", parser =>
-        parser.statementWithStartingToken()
-      )
+      Parser.parse('do {} while (this);', (parser) => parser.statementWithStartingToken())
     ).toEqual({
-      type: "DO_WHILE_STATEMENT",
+      type: 'DO_WHILE_STATEMENT',
       body: {
-        type: "BLOCK",
-        statements: []
+        type: 'BLOCK',
+        statements: [],
       },
       condition: {
-        type: "THIS"
-      }
-    });
-  });
+        type: 'THIS',
+      },
+    })
+  })
 
-  it("tryStatement", () => {
+  it('tryStatement', () => {
     expect(
-      Parser.parse("try {} catch (A e) {}", parser =>
-        parser.statementWithStartingToken()
-      )
+      Parser.parse('try {} catch (A e) {}', (parser) => parser.statementWithStartingToken())
     ).toEqual({
-      type: "TRY_STATEMENT",
+      type: 'TRY_STATEMENT',
       resourceSpecification: undefined,
       body: {
-        type: "BLOCK",
-        statements: []
+        type: 'BLOCK',
+        statements: [],
       },
       catchClauses: [
         {
-          type: "CATCH_CLAUSE",
+          type: 'CATCH_CLAUSE',
           modifiers: [],
           catchType: {
-            type: "CATCH_TYPE",
+            type: 'CATCH_TYPE',
             list: [
               {
-                type: "QUALIFIED_NAME",
+                type: 'QUALIFIED_NAME',
                 name: [
                   {
-                    type: "IDENTIFIER",
-                    value: "A"
-                  }
-                ]
-              }
-            ]
+                    type: 'IDENTIFIER',
+                    value: 'A',
+                  },
+                ],
+              },
+            ],
           },
           id: {
-            type: "IDENTIFIER",
-            value: "e"
+            type: 'IDENTIFIER',
+            value: 'e',
           },
           block: {
-            type: "BLOCK",
-            statements: []
-          }
-        }
+            type: 'BLOCK',
+            statements: [],
+          },
+        },
       ],
-      finally: undefined
-    });
-  });
+      finally: undefined,
+    })
+  })
 
-  it("switchStatement", () => {
-    expect(
-      Parser.parse("switch (this) {}", parser =>
-        parser.statementWithStartingToken()
-      )
-    ).toEqual({
-      type: "SWITCH_STATEMENT",
-      condition: {
-        type: "THIS"
-      },
-      statementGroups: []
-    });
-  });
+  // TODO: add Switch-when support and uncomment this
+  // it('switchStatement', () => {
+  //   expect(
+  //     Parser.parse('switch (this) {}', (parser) => parser.statementWithStartingToken())
+  //   ).toEqual({
+  //     type: 'SWITCH_STATEMENT',
+  //     condition: {
+  //       type: 'THIS',
+  //     },
+  //     statementGroups: [],
+  //   })
+  // })
 
-  it("synchronizedStatement", () => {
-    expect(
-      Parser.parse("synchronized (this) {}", parser =>
-        parser.statementWithStartingToken()
-      )
-    ).toEqual({
-      type: "SYNCHRONIZED_STATEMENT",
-      condition: {
-        type: "THIS"
-      },
-      body: {
-        type: "BLOCK",
-        statements: []
-      }
-    });
-  });
-
-  it("returnStatement", () => {
-    expect(
-      Parser.parse("return this;", parser =>
-        parser.statementWithStartingToken()
-      )
-    ).toEqual({
-      type: "RETURN_STATEMENT",
+  it('returnStatement', () => {
+    expect(Parser.parse('return this;', (parser) => parser.statementWithStartingToken())).toEqual({
+      type: 'RETURN_STATEMENT',
       expression: {
-        type: "THIS"
-      }
-    });
-  });
+        type: 'THIS',
+      },
+    })
+  })
 
-  it("throwStatement", () => {
-    expect(
-      Parser.parse("throw this;", parser => parser.statementWithStartingToken())
-    ).toEqual({
-      type: "THROW_STATEMENT",
+  it('throwStatement', () => {
+    expect(Parser.parse('throw this;', (parser) => parser.statementWithStartingToken())).toEqual({
+      type: 'THROW_STATEMENT',
       expression: {
-        type: "THIS"
-      }
-    });
-  });
+        type: 'THIS',
+      },
+    })
+  })
 
-  it("breakStatement", () => {
-    expect(
-      Parser.parse("break a;", parser => parser.statementWithStartingToken())
-    ).toEqual({
-      type: "BREAK_STATEMENT",
+  it('breakStatement', () => {
+    expect(Parser.parse('break a;', (parser) => parser.statementWithStartingToken())).toEqual({
+      type: 'BREAK_STATEMENT',
       identifier: {
-        type: "IDENTIFIER",
-        value: "a"
-      }
-    });
-  });
+        type: 'IDENTIFIER',
+        value: 'a',
+      },
+    })
+  })
 
-  it("continueStatement", () => {
-    expect(
-      Parser.parse("continue a;", parser => parser.statementWithStartingToken())
-    ).toEqual({
-      type: "CONTINUE_STATEMENT",
+  it('continueStatement', () => {
+    expect(Parser.parse('continue a;', (parser) => parser.statementWithStartingToken())).toEqual({
+      type: 'CONTINUE_STATEMENT',
       identifier: {
-        type: "IDENTIFIER",
-        value: "a"
-      }
-    });
-  });
+        type: 'IDENTIFIER',
+        value: 'a',
+      },
+    })
+  })
 
-  it("semiColonStatement", () => {
-    expect(
-      Parser.parse(";", parser => parser.statementWithStartingToken())
-    ).toEqual({
-      type: "SEMI_COLON_STATEMENT"
-    });
-  });
-});
+  it('semiColonStatement', () => {
+    expect(Parser.parse(';', (parser) => parser.statementWithStartingToken())).toEqual({
+      type: 'SEMI_COLON_STATEMENT',
+    })
+  })
+})

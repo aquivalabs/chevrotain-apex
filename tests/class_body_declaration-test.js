@@ -1,199 +1,184 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("classBodyDeclaration", () => {
-  it("classBodyBlock", () => {
-    expect(Parser.parse("{}", parser => parser.classBodyDeclaration())).toEqual(
-      {
-        type: "CLASS_BODY_BLOCK",
-        static: false,
-        block: {
-          type: "BLOCK",
-          statements: []
-        }
-      }
-    );
-  });
+describe('classBodyDeclaration', () => {
+  it('classBodyBlock', () => {
+    expect(Parser.parse('{}', (parser) => parser.classBodyDeclaration())).toEqual({
+      type: 'CLASS_BODY_BLOCK',
+      static: false,
+      block: {
+        type: 'BLOCK',
+        statements: [],
+      },
+    })
+  })
 
-  it("classBodyBlock - static", () => {
-    expect(
-      Parser.parse("static {}", parser => parser.classBodyDeclaration())
-    ).toEqual({
-      type: "CLASS_BODY_BLOCK",
+  it('classBodyBlock - static', () => {
+    expect(Parser.parse('static {}', (parser) => parser.classBodyDeclaration())).toEqual({
+      type: 'CLASS_BODY_BLOCK',
       static: true,
       block: {
-        type: "BLOCK",
-        statements: []
-      }
-    });
-  });
+        type: 'BLOCK',
+        statements: [],
+      },
+    })
+  })
 
-  it("classBodyMemberDeclaration", () => {
-    expect(
-      Parser.parse("void a() {}", parser => parser.classBodyDeclaration())
-    ).toEqual({
-      type: "CLASS_BODY_MEMBER_DECLARATION",
+  it('classBodyMemberDeclaration', () => {
+    expect(Parser.parse('void a() {}', (parser) => parser.classBodyDeclaration())).toEqual({
+      type: 'CLASS_BODY_MEMBER_DECLARATION',
       modifiers: [],
       declaration: {
-        type: "METHOD_DECLARATION",
+        type: 'METHOD_DECLARATION',
         typeType: {
-          type: "VOID"
+          type: 'VOID',
         },
         name: {
-          type: "IDENTIFIER",
-          value: "a"
+          type: 'IDENTIFIER',
+          value: 'a',
         },
         parameters: {
-          type: "FORMAL_PARAMETERS",
-          parameters: []
+          type: 'FORMAL_PARAMETERS',
+          parameters: [],
         },
         dimensions: [],
         throws: undefined,
         body: {
-          type: "BLOCK",
-          statements: []
-        }
+          type: 'BLOCK',
+          statements: [],
+        },
       },
-      followedEmptyLine: false
-    });
-  });
+      followedEmptyLine: false,
+    })
+  })
 
-  it("classBodyMemberDeclaration - one modifier", () => {
-    expect(
-      Parser.parse("@Bean void a() {}", parser => parser.classBodyDeclaration())
-    ).toEqual({
-      type: "CLASS_BODY_MEMBER_DECLARATION",
+  it('classBodyMemberDeclaration - one modifier', () => {
+    expect(Parser.parse('@Bean void a() {}', (parser) => parser.classBodyDeclaration())).toEqual({
+      type: 'CLASS_BODY_MEMBER_DECLARATION',
       modifiers: [
         {
-          type: "ANNOTATION",
+          type: 'ANNOTATION',
           name: {
-            type: "QUALIFIED_NAME",
+            type: 'QUALIFIED_NAME',
             name: [
               {
-                type: "IDENTIFIER",
-                value: "Bean"
-              }
-            ]
+                type: 'IDENTIFIER',
+                value: 'Bean',
+              },
+            ],
           },
           hasBraces: false,
-          values: undefined
-        }
+          values: undefined,
+        },
       ],
       declaration: {
-        type: "METHOD_DECLARATION",
+        type: 'METHOD_DECLARATION',
         typeType: {
-          type: "VOID"
+          type: 'VOID',
         },
         name: {
-          type: "IDENTIFIER",
-          value: "a"
+          type: 'IDENTIFIER',
+          value: 'a',
         },
         parameters: {
-          type: "FORMAL_PARAMETERS",
-          parameters: []
+          type: 'FORMAL_PARAMETERS',
+          parameters: [],
         },
         dimensions: [],
         throws: undefined,
         body: {
-          type: "BLOCK",
-          statements: []
-        }
+          type: 'BLOCK',
+          statements: [],
+        },
       },
-      followedEmptyLine: false
-    });
-  });
+      followedEmptyLine: false,
+    })
+  })
 
-  it("classBodyMemberDeclaration - multiple modifiers", () => {
+  it('classBodyMemberDeclaration - multiple modifiers', () => {
     expect(
-      Parser.parse("@Bean public void a() {}", parser =>
-        parser.classBodyDeclaration()
-      )
+      Parser.parse('@Bean public void a() {}', (parser) => parser.classBodyDeclaration())
     ).toEqual({
-      type: "CLASS_BODY_MEMBER_DECLARATION",
+      type: 'CLASS_BODY_MEMBER_DECLARATION',
       modifiers: [
         {
-          type: "ANNOTATION",
+          type: 'ANNOTATION',
           name: {
-            type: "QUALIFIED_NAME",
+            type: 'QUALIFIED_NAME',
             name: [
               {
-                type: "IDENTIFIER",
-                value: "Bean"
-              }
-            ]
+                type: 'IDENTIFIER',
+                value: 'Bean',
+              },
+            ],
           },
           hasBraces: false,
-          values: undefined
+          values: undefined,
         },
         {
-          type: "MODIFIER",
-          value: "public"
-        }
+          type: 'MODIFIER',
+          value: 'public',
+        },
       ],
       declaration: {
-        type: "METHOD_DECLARATION",
+        type: 'METHOD_DECLARATION',
         typeType: {
-          type: "VOID"
+          type: 'VOID',
         },
         name: {
-          type: "IDENTIFIER",
-          value: "a"
+          type: 'IDENTIFIER',
+          value: 'a',
         },
         parameters: {
-          type: "FORMAL_PARAMETERS",
-          parameters: []
+          type: 'FORMAL_PARAMETERS',
+          parameters: [],
         },
         dimensions: [],
         throws: undefined,
         body: {
-          type: "BLOCK",
-          statements: []
-        }
+          type: 'BLOCK',
+          statements: [],
+        },
       },
-      followedEmptyLine: false
-    });
-  });
+      followedEmptyLine: false,
+    })
+  })
 
-  it("classBodyMemberDeclaration - static modifier", () => {
-    expect(
-      Parser.parse("static void a() {}", parser =>
-        parser.classBodyDeclaration()
-      )
-    ).toEqual({
-      type: "CLASS_BODY_MEMBER_DECLARATION",
+  it('classBodyMemberDeclaration - static modifier', () => {
+    expect(Parser.parse('static void a() {}', (parser) => parser.classBodyDeclaration())).toEqual({
+      type: 'CLASS_BODY_MEMBER_DECLARATION',
       modifiers: [
         {
-          type: "MODIFIER",
-          value: "static"
-        }
+          type: 'MODIFIER',
+          value: 'static',
+        },
       ],
       declaration: {
-        type: "METHOD_DECLARATION",
+        type: 'METHOD_DECLARATION',
         typeType: {
-          type: "VOID"
+          type: 'VOID',
         },
         name: {
-          type: "IDENTIFIER",
-          value: "a"
+          type: 'IDENTIFIER',
+          value: 'a',
         },
         parameters: {
-          type: "FORMAL_PARAMETERS",
-          parameters: []
+          type: 'FORMAL_PARAMETERS',
+          parameters: [],
         },
         dimensions: [],
         throws: undefined,
         body: {
-          type: "BLOCK",
-          statements: []
-        }
+          type: 'BLOCK',
+          statements: [],
+        },
       },
-      followedEmptyLine: false
-    });
-  });
+      followedEmptyLine: false,
+    })
+  })
 
-  it("semiColon", () => {
-    expect(Parser.parse(";", parser => parser.classBodyDeclaration())).toEqual({
-      type: "SEMI_COLON_STATEMENT"
-    });
-  });
-});
+  it('semiColon', () => {
+    expect(Parser.parse(';', (parser) => parser.classBodyDeclaration())).toEqual({
+      type: 'SEMI_COLON_STATEMENT',
+    })
+  })
+})

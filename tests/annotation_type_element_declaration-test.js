@@ -1,51 +1,45 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("annotationTypeElementDeclaration", () => {
-  it("without modifiers", () => {
+describe('annotationTypeElementDeclaration', () => {
+  it('without modifiers', () => {
     expect(
-      Parser.parse("class A{}", parser =>
-        parser.annotationTypeElementDeclaration()
-      )
+      Parser.parse('class A{}', (parser) => parser.annotationTypeElementDeclaration())
     ).toEqual({
-      type: "ANNOTATION_TYPE_ELEMENT_DECLARATION",
+      type: 'ANNOTATION_TYPE_ELEMENT_DECLARATION',
       modifiers: [],
       declaration: {
-        type: "CLASS_DECLARATION",
+        type: 'CLASS_DECLARATION',
         name: {
-          type: "IDENTIFIER",
-          value: "A"
+          type: 'IDENTIFIER',
+          value: 'A',
         },
         body: {
-          type: "CLASS_BODY",
-          declarations: []
-        }
-      }
-    });
-  });
+          type: 'CLASS_BODY',
+          declarations: [],
+        },
+      },
+    })
+  })
 
-  it("modifiers", () => {
+  it('modifiers', () => {
     expect(
-      Parser.parse("native transient class A{}", parser =>
+      Parser.parse('transient class A{}', (parser) =>
         parser.annotationTypeElementDeclaration()
       )
     ).toEqual({
-      type: "ANNOTATION_TYPE_ELEMENT_DECLARATION",
-      modifiers: [
-        { type: "MODIFIER", value: "native" },
-        { type: "MODIFIER", value: "transient" }
-      ],
+      type: 'ANNOTATION_TYPE_ELEMENT_DECLARATION',
+      modifiers: [{ type: 'MODIFIER', value: 'transient' }],
       declaration: {
-        type: "CLASS_DECLARATION",
+        type: 'CLASS_DECLARATION',
         name: {
-          type: "IDENTIFIER",
-          value: "A"
+          type: 'IDENTIFIER',
+          value: 'A',
         },
         body: {
-          type: "CLASS_BODY",
-          declarations: []
-        }
-      }
-    });
-  });
-});
+          type: 'CLASS_BODY',
+          declarations: [],
+        },
+      },
+    })
+  })
+})

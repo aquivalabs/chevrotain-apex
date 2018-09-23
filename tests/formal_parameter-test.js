@@ -1,108 +1,79 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("formalParameter", () => {
-  it("simple", () => {
-    expect(
-      Parser.parse("boolean a", parser => parser.formalParameter())
-    ).toEqual({
-      type: "FORMAL_PARAMETER",
+describe('formalParameter', () => {
+  it('simple', () => {
+    expect(Parser.parse('boolean a', (parser) => parser.formalParameter())).toEqual({
+      type: 'FORMAL_PARAMETER',
       modifiers: [],
       typeType: {
-        type: "PRIMITIVE_TYPE",
-        value: "boolean"
+        type: 'PRIMITIVE_TYPE',
+        value: 'boolean',
       },
       dotDotDot: false,
       id: {
-        type: "VARIABLE_DECLARATOR_ID",
+        type: 'VARIABLE_DECLARATOR_ID',
         id: {
-          type: "IDENTIFIER",
-          value: "a"
+          type: 'IDENTIFIER',
+          value: 'a',
         },
-        dimensions: []
-      }
-    });
-  });
+        dimensions: [],
+      },
+    })
+  })
 
-  it("one annotation", () => {
-    expect(
-      Parser.parse("final boolean a", parser => parser.formalParameter())
-    ).toEqual({
-      type: "FORMAL_PARAMETER",
-      modifiers: [{ type: "MODIFIER", value: "final" }],
+  it('one annotation', () => {
+    expect(Parser.parse('final boolean a', (parser) => parser.formalParameter())).toEqual({
+      type: 'FORMAL_PARAMETER',
+      modifiers: [{ type: 'MODIFIER', value: 'final' }],
       typeType: {
-        type: "PRIMITIVE_TYPE",
-        value: "boolean"
+        type: 'PRIMITIVE_TYPE',
+        value: 'boolean',
       },
       dotDotDot: false,
       id: {
-        type: "VARIABLE_DECLARATOR_ID",
+        type: 'VARIABLE_DECLARATOR_ID',
         id: {
-          type: "IDENTIFIER",
-          value: "a"
+          type: 'IDENTIFIER',
+          value: 'a',
         },
-        dimensions: []
-      }
-    });
-  });
+        dimensions: [],
+      },
+    })
+  })
 
-  it("two annotation", () => {
-    expect(
-      Parser.parse("@Bean final boolean a", parser => parser.formalParameter())
-    ).toEqual({
-      type: "FORMAL_PARAMETER",
+  it('two annotation', () => {
+    expect(Parser.parse('@Bean final boolean a', (parser) => parser.formalParameter())).toEqual({
+      type: 'FORMAL_PARAMETER',
       modifiers: [
         {
-          type: "ANNOTATION",
+          type: 'ANNOTATION',
           name: {
-            type: "QUALIFIED_NAME",
+            type: 'QUALIFIED_NAME',
             name: [
               {
-                type: "IDENTIFIER",
-                value: "Bean"
-              }
-            ]
+                type: 'IDENTIFIER',
+                value: 'Bean',
+              },
+            ],
           },
           hasBraces: false,
-          values: undefined
+          values: undefined,
         },
-        { type: "MODIFIER", value: "final" }
+        { type: 'MODIFIER', value: 'final' },
       ],
       typeType: {
-        type: "PRIMITIVE_TYPE",
-        value: "boolean"
+        type: 'PRIMITIVE_TYPE',
+        value: 'boolean',
       },
       dotDotDot: false,
       id: {
-        type: "VARIABLE_DECLARATOR_ID",
+        type: 'VARIABLE_DECLARATOR_ID',
         id: {
-          type: "IDENTIFIER",
-          value: "a"
+          type: 'IDENTIFIER',
+          value: 'a',
         },
-        dimensions: []
-      }
-    });
-  });
-
-  it("dotDotDot", () => {
-    expect(
-      Parser.parse("boolean... a", parser => parser.formalParameter())
-    ).toEqual({
-      type: "FORMAL_PARAMETER",
-      modifiers: [],
-      typeType: {
-        type: "PRIMITIVE_TYPE",
-        value: "boolean"
+        dimensions: [],
       },
-      dotDotDot: true,
-      id: {
-        type: "VARIABLE_DECLARATOR_ID",
-        id: {
-          type: "IDENTIFIER",
-          value: "a"
-        },
-        dimensions: []
-      }
-    });
-  });
-});
+    })
+  })
+})

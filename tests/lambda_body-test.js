@@ -1,17 +1,17 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("lambdaBody", () => {
-  it("block", () => {
-    expect(Parser.parse("{}", parser => parser.lambdaBody())).toEqual({
-      type: "BLOCK",
-      statements: []
-    });
-  });
+// FIXME: lambdas not supported. Maybe we should remove those rules completely
+describe('lambdaBody', () => {
+  it('block', () => {
+    expect(Parser.parse('{}', (parser) => parser.lambdaBody())).toEqual({
+      type: 'BLOCK',
+      statements: [],
+    })
+  })
 
-  it("expression", () => {
-    expect(Parser.parse("this", parser => parser.lambdaBody())).toEqual({
-      type: "THIS"
-    });
-  });
-});
+  it('expression', () => {
+    expect(Parser.parse('this', (parser) => parser.lambdaBody())).toEqual({
+      type: 'THIS',
+    })
+  })
+})
