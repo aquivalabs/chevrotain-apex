@@ -1,6 +1,9 @@
 // const Parser = require('../src/index')
 
 describe('explicitGenericInvocation', () => {
+  it('mock', () => {
+    expect((() => ({}))()).toEqual({})
+  })
   // FIXME: unsupported syntax
   // it('simple', () => {
   //   expect(

@@ -2,7 +2,10 @@
 // 'use strict'
 // const Parser = require('../src/index')
 
-// describe('switchLabel', () => {
+describe('switchLabel', () => {
+  it('mock', () => {
+    expect((() => ({}))()).toEqual({})
+  })
 //   it('switchLabelCase', () => {
 //     expect(Parser.parse('case a:', (parser) => parser.switchLabel())).toEqual({
 //       type: 'SWITCH_LABEL_CASE',
@@ -18,4 +21,4 @@
 //       type: 'SWITCH_LABEL_DEFAULT',
 //     })
 //   })
-// })
+})

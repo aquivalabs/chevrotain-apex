@@ -1,7 +1,10 @@
 // TODO: add Switch-when support and uncomment this
 // const Parser = require('../src/index')
 
-// describe('switchStatement', () => {
+describe('switchStatement', () => {
+  it('mock', () => {
+    expect((() => ({}))()).toEqual({})
+  })
 //   it('empty', () => {
 //     expect(Parser.parse('switch (this) {}', (parser) => parser.switchStatement())).toEqual({
 //       type: 'SWITCH_STATEMENT',
@@ -239,4 +242,4 @@
 //       ],
 //     })
 //   })
-// })
+})

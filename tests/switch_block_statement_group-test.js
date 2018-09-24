@@ -1,7 +1,10 @@
 // const Parser = require('../src/index')
 
 // TODO: add Switch-when support and uncomment this
-// describe('switchBlockStatementGroup', () => {
+describe('switchBlockStatementGroup', () => {
+  it('mock', () => {
+    expect((() => ({}))()).toEqual({})
+  })
   // it('single', () => {
   //   expect(
   //     Parser.parse('case a: boolean A;', (parser) => parser.switchBlockStatementGroup())
@@ -139,4 +142,4 @@
   //     statements: [],
   //   })
   // })
-// })
+})
