@@ -109,20 +109,6 @@ function soqlParser($) {
     $.OPTION(() => $.CONSUME(tokens.soql.Not))
     $.SUBRULE($.identifierName)
     $.SUBRULE($.comparisonOperator)
-    // $.OR([
-    //   { ALT: () => {
-    //       $.SUBRULE($.identifierName)
-    //       $.SUBRULE($.comparisonOperator)
-    //     }
-    //   },
-    //   {
-    //     ALT: () => {
-    //       $.CONSUME(tokens.soql.Not)
-    //       $.SUBRULE1($.identifierName)
-    //       $.SUBRULE1($.comparisonOperator)
-    //     }
-    //   }
-    // ])
 
     $.OR1([
       { ALT: () => $.SUBRULE($.subquery) },
