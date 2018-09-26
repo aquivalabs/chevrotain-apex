@@ -2571,6 +2571,43 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     }
   }
 
+  dmlOperator(ctx) {
+    let dml_operator
+    if (ctx.Insert) {
+      dml_operator = 'insert'
+    }
+    if (ctx.Update) {
+      dml_operator = 'update'
+    }
+    if (ctx.Upsert) {
+      dml_operator = 'upsert'
+    }
+    if (ctx.Delete) {
+      dml_operator = 'delete'
+    }
+
+    return {
+      type: 'DML_OPERATOR',
+      operator: dml_operator,
+    }
+  }
+
+  dmlStatement(ctx) {
+    const dml_operator = this.visit(ctx.dml_operator)
+    const identifier = this.identifier(ctx.Identifier[0])
+    let upsertKey = undefined
+    if (ctx.Identifier.length > 1) {
+      upsertKey = this.identifier(ctx.Identifier[1])
+    }
+
+    return {
+      type: 'DML_STATEMENT',
+      dmlOperation: dml_operator,
+      identifier: identifier,
+      upsertKey: upsertKey
+    }
+  }
+
   operator(ctx) {
     let operator = undefined
     // ('*'|'/'|'%')

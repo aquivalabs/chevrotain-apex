@@ -12,6 +12,7 @@ public abstract class AqObj {
   public List<sObject> a = r.r.qwe(0);
   public String vah = 'a"b"c';
   private static final List<String> definedList = new List<String>{'a', 'b'};
+  String listElementByIndex = definedList[0];
   private static final Map<String, String> definedList = new Map<String, String>{'a' => 'a', 'b' => 'b'};
 
   public String abc {
@@ -66,6 +67,22 @@ public abstract class AqObj {
   protected virtual void calculate(List<sObject> records) {}
 
   protected virtual void validate(List<sObject> records) {}
+
+  protected virtual void dmlStatements(List<sObject> records) {
+    if(records.size() > 0) {
+      if (records[0].Id != null) {
+        insert records;
+      } else {
+        update records;
+      }
+      upsert records;
+      uPSert records externalId;
+      try {
+        delete records;
+      } catch(Exception e) {}
+      undelete records;
+    }
+  }
 
   protected virtual void postInsert(List<sObject> records) {}
 
