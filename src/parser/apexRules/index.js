@@ -8,6 +8,7 @@ const { collections } = require('./collections')
 const { creators } = require('./creators')
 const { declarations } = require('./declarations')
 const { expressions } = require('./expressions')
+const { dmlStatements } = require('./dmlStatements')
 
 function apexRules($) {
   primitives($)
@@ -20,6 +21,7 @@ function apexRules($) {
   creators($)
   declarations($)
   expressions($)
+  dmlStatements($)
 }
 
 module.exports = {

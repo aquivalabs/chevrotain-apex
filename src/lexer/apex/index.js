@@ -7,6 +7,7 @@ const loopsAndConditionTokens = require('./loopsAndConds')
 const exceptionTokens = require('./exceptions')
 const classAndMethodTokens = require('./classAndMethods')
 const symbolsTokens = require('./symbols')
+const dmlTokens = require('./dml')
 
 const Get = createKeywordToken({
   categories: Identifier,
@@ -39,6 +40,7 @@ module.exports = {
   ...loopsAndConditionTokens,
   ...constants,
   LSquareSelect,
+  ...dmlTokens,
   Get,
   Set,
   Assert,

@@ -260,6 +260,7 @@ function basics($) {
       // localTypeDeclaration
       { ALT: () => $.SUBRULE($.interfaceDeclaration) },
       { ALT: () => $.SUBRULE($.statementWithStartingToken) },
+      { ALT: () => $.SUBRULE($.dmlStatement) },
     ])
   })
 
