@@ -9,16 +9,16 @@ const { creators } = require('./creators')
 const { declarations } = require('./declarations')
 const { expressions } = require('./expressions')
 
-function apexRules($, LA) {
+function apexRules($) {
   primitives($)
-  complexTypes($, LA)
-  namesAndIdentifiers($, LA)
+  complexTypes($)
+  namesAndIdentifiers($)
   annotations($)
-  basics($, LA)
-  classesAndMethods($, LA)
-  collections($, LA)
+  basics($)
+  classesAndMethods($)
+  collections($)
   creators($)
-  declarations($, LA)
+  declarations($)
   expressions($)
 }
 
