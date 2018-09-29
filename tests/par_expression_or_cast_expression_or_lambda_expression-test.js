@@ -288,40 +288,7 @@ describe('parExpressionOrCastExpressionOrLambdaExpression', () => {
       Parser.parse('(final boolean a) -> {}', (parser) =>
         parser.parExpressionOrCastExpressionOrLambdaExpression()
       )
-    ).toEqual({
-      type: 'LAMBDA_EXPRESSION',
-      parameters: {
-        type: 'FORMAL_PARAMETERS',
-        parameters: [
-          {
-            modifiers: [
-              {
-                type: 'MODIFIER',
-                value: 'final',
-              },
-            ],
-            type: 'FORMAL_PARAMETER',
-            typeType: {
-              type: 'PRIMITIVE_TYPE',
-              value: 'boolean',
-            },
-            id: {
-              type: 'VARIABLE_DECLARATOR_ID',
-              id: {
-                type: 'IDENTIFIER',
-                value: 'a',
-              },
-              dimensions: [],
-            },
-            dotDotDot: false,
-          },
-        ],
-      },
-      body: {
-        type: 'BLOCK',
-        statements: [],
-      },
-    })
+    ).toThrow(MismatchedTokenException)
   })
 
   it('lambdaExpression: final only on the second', () => {
@@ -329,57 +296,7 @@ describe('parExpressionOrCastExpressionOrLambdaExpression', () => {
       Parser.parse('(boolean a, final double b) -> {}', (parser) =>
         parser.parExpressionOrCastExpressionOrLambdaExpression()
       )
-    ).toEqual({
-      type: 'LAMBDA_EXPRESSION',
-      parameters: {
-        type: 'FORMAL_PARAMETERS',
-        parameters: [
-          {
-            modifiers: [],
-            type: 'FORMAL_PARAMETER',
-            typeType: {
-              type: 'PRIMITIVE_TYPE',
-              value: 'boolean',
-            },
-            id: {
-              type: 'VARIABLE_DECLARATOR_ID',
-              id: {
-                type: 'IDENTIFIER',
-                value: 'a',
-              },
-              dimensions: [],
-            },
-            dotDotDot: false,
-          },
-          {
-            modifiers: [
-              {
-                type: 'MODIFIER',
-                value: 'final',
-              },
-            ],
-            type: 'FORMAL_PARAMETER',
-            typeType: {
-              type: 'PRIMITIVE_TYPE',
-              value: 'double',
-            },
-            id: {
-              type: 'VARIABLE_DECLARATOR_ID',
-              id: {
-                type: 'IDENTIFIER',
-                value: 'b',
-              },
-              dimensions: [],
-            },
-            dotDotDot: false,
-          },
-        ],
-      },
-      body: {
-        type: 'BLOCK',
-        statements: [],
-      },
-    })
+    ).toThrow(MismatchedTokenException)
   })
 
   it('parExpression with following operator expression', () => {
@@ -458,7 +375,7 @@ describe('parExpressionOrCastExpressionOrLambdaExpression', () => {
 
   it('parExpression with following method call followed by short if else', () => {
     expect(
-      Parser.parse('((Cast) obj).call() ? "a" : "b"', (parser) =>
+      Parser.parse("((Cast) obj).call() ? 'a' : 'b'", (parser) =>
         parser.parExpressionOrCastExpressionOrLambdaExpression()
       )
     ).toEqual({
@@ -491,18 +408,18 @@ describe('parExpressionOrCastExpressionOrLambdaExpression', () => {
       },
       if: {
         type: 'STRING_LITERAL',
-        value: '"a"',
+        value: "'a'",
       },
       else: {
         type: 'STRING_LITERAL',
-        value: '"b"',
+        value: "'b'",
       },
     })
   })
 
   it('parExpression with qualifiedExpression following operatorExpression followed by short if else', () => {
     expect(
-      Parser.parse('((Cast) obj).call() && true ? "a" : "b"', (parser) =>
+      Parser.parse("((Cast) obj).call() && true ? 'a' : 'b'", (parser) =>
         parser.parExpressionOrCastExpressionOrLambdaExpression()
       )
     ).toEqual({
@@ -545,11 +462,11 @@ describe('parExpressionOrCastExpressionOrLambdaExpression', () => {
         },
         else: {
           type: 'STRING_LITERAL',
-          value: '"b"',
+          value: "'b'",
         },
         if: {
           type: 'STRING_LITERAL',
-          value: '"a"',
+          value: "'a'",
         },
       },
     })
@@ -557,7 +474,7 @@ describe('parExpressionOrCastExpressionOrLambdaExpression', () => {
 
   it('parExpression followed by short if else', () => {
     expect(
-      Parser.parse('(true) ? "a" : "b"', (parser) =>
+      Parser.parse("(true) ? 'a' : 'b'", (parser) =>
         parser.parExpressionOrCastExpressionOrLambdaExpression()
       )
     ).toEqual({
@@ -571,11 +488,11 @@ describe('parExpressionOrCastExpressionOrLambdaExpression', () => {
       },
       else: {
         type: 'STRING_LITERAL',
-        value: '"b"',
+        value: "'b'",
       },
       if: {
         type: 'STRING_LITERAL',
-        value: '"a"',
+        value: "'a'",
       },
     })
   })
