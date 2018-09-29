@@ -1,6 +1,6 @@
 const Parser = require('../src/index')
 
-const MismatchedTokenException = require('chevrotain').MismatchedTokenException
+const { MismatchedTokenException } = require('chevrotain')
 
 describe('parExpressionOrCastExpressionOrLambdaExpression', () => {
   it('parExpression', () => {
@@ -277,23 +277,6 @@ describe('parExpressionOrCastExpressionOrLambdaExpression', () => {
   it('error castExpression: cast expression is not an identifier', () => {
     expect(() =>
       Parser.parse('(1+1) this', (parser) =>
-        parser.parExpressionOrCastExpressionOrLambdaExpression()
-      )
-    ).toThrow(MismatchedTokenException)
-  })
-
-  // FIXME: lambda not supported
-  it('lambdaExpression: final modifier', () => {
-    expect(
-      Parser.parse('(final boolean a) -> {}', (parser) =>
-        parser.parExpressionOrCastExpressionOrLambdaExpression()
-      )
-    ).toThrow(MismatchedTokenException)
-  })
-
-  it('lambdaExpression: final only on the second', () => {
-    expect(
-      Parser.parse('(boolean a, final double b) -> {}', (parser) =>
         parser.parExpressionOrCastExpressionOrLambdaExpression()
       )
     ).toThrow(MismatchedTokenException)
