@@ -53,45 +53,6 @@ describe('operatorExpressionRest', () => {
     })
   })
 
-  it('LessLess', () => {
-    expect(Parser.parse('<<super', (parser) => parser.operatorExpressionRest())).toEqual({
-      type: 'OPERATOR_EXPRESSION_REST',
-      operator: {
-        type: 'OPERATOR',
-        operator: '<<',
-      },
-      expression: {
-        type: 'SUPER',
-      },
-    })
-  })
-
-  it('GreaterGreater', () => {
-    expect(Parser.parse('>>super', (parser) => parser.operatorExpressionRest())).toEqual({
-      type: 'OPERATOR_EXPRESSION_REST',
-      operator: {
-        type: 'OPERATOR',
-        operator: '>>',
-      },
-      expression: {
-        type: 'SUPER',
-      },
-    })
-  })
-
-  it('GreaterGreaterGreater', () => {
-    expect(Parser.parse('>>>super', (parser) => parser.operatorExpressionRest())).toEqual({
-      type: 'OPERATOR_EXPRESSION_REST',
-      operator: {
-        type: 'OPERATOR',
-        operator: '>>>',
-      },
-      expression: {
-        type: 'SUPER',
-      },
-    })
-  })
-
   it('LessEquals', () => {
     expect(Parser.parse('<=super', (parser) => parser.operatorExpressionRest())).toEqual({
       type: 'OPERATOR_EXPRESSION_REST',
@@ -176,19 +137,6 @@ describe('operatorExpressionRest', () => {
       operator: {
         type: 'OPERATOR',
         operator: '&',
-      },
-      expression: {
-        type: 'SUPER',
-      },
-    })
-  })
-
-  it('Caret', () => {
-    expect(Parser.parse('^super', (parser) => parser.operatorExpressionRest())).toEqual({
-      type: 'OPERATOR_EXPRESSION_REST',
-      operator: {
-        type: 'OPERATOR',
-        operator: '^',
       },
       expression: {
         type: 'SUPER',
@@ -319,58 +267,6 @@ describe('operatorExpressionRest', () => {
       operator: {
         type: 'OPERATOR',
         operator: '|=',
-      },
-      expression: {
-        type: 'SUPER',
-      },
-    })
-  })
-
-  it('CaretEquals', () => {
-    expect(Parser.parse('^=super', (parser) => parser.operatorExpressionRest())).toEqual({
-      type: 'OPERATOR_EXPRESSION_REST',
-      operator: {
-        type: 'OPERATOR',
-        operator: '^=',
-      },
-      expression: {
-        type: 'SUPER',
-      },
-    })
-  })
-
-  it('GreaterGreaterEquals', () => {
-    expect(Parser.parse('>>=super', (parser) => parser.operatorExpressionRest())).toEqual({
-      type: 'OPERATOR_EXPRESSION_REST',
-      operator: {
-        type: 'OPERATOR',
-        operator: '>>=',
-      },
-      expression: {
-        type: 'SUPER',
-      },
-    })
-  })
-
-  it('GreaterGreaterGreaterEquals', () => {
-    expect(Parser.parse('>>>=super', (parser) => parser.operatorExpressionRest())).toEqual({
-      type: 'OPERATOR_EXPRESSION_REST',
-      operator: {
-        type: 'OPERATOR',
-        operator: '>>>=',
-      },
-      expression: {
-        type: 'SUPER',
-      },
-    })
-  })
-
-  it('LessLessEquals', () => {
-    expect(Parser.parse('<<=super', (parser) => parser.operatorExpressionRest())).toEqual({
-      type: 'OPERATOR_EXPRESSION_REST',
-      operator: {
-        type: 'OPERATOR',
-        operator: '<<=',
       },
       expression: {
         type: 'SUPER',
