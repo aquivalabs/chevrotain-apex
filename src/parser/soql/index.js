@@ -66,6 +66,7 @@ function soqlParser($) {
       { ALT: () => $.CONSUME(tokens.soql.Greater) },
       { ALT: () => $.CONSUME(tokens.soql.Less) },
       { ALT: () => $.CONSUME(tokens.soql.In) },
+      { ALT: () => $.CONSUME(tokens.soql.NotIn) },
       { ALT: () => $.CONSUME(tokens.soql.Like) },
     ])
   })
@@ -108,6 +109,13 @@ function soqlParser($) {
       { ALT: () => $.SUBRULE($.subquery) },
       { ALT: () => $.SUBRULE($.literal) },
       { ALT: () => $.SUBRULE($.colonIdentifierName) },
+      {
+        ALT: () => {
+          $.CONSUME3(tokens.apex.LBrace)
+          $.SUBRULE($.literalList)
+          $.CONSUME3(tokens.apex.RBrace)
+        },
+      },
     ])
   })
 

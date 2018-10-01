@@ -3517,6 +3517,18 @@ class ApexVisitor extends BaseCstVisitor {
     }
   }
 
+  literalList(ctx) {
+    const list = []
+    if (ctx.literal) {
+      ctx.literal.map((literal) => list.push(this.visit(literal)))
+    }
+
+    return {
+      type: 'LITERAL_LIST',
+      list: list,
+    }
+  }
+
   literal(ctx) {
     if (ctx.integerLiteral) {
       return this.visit(ctx.integerLiteral)

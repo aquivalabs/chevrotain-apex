@@ -2469,6 +2469,18 @@ class ApexParser extends chevrotain.Parser {
       $.OPTION(() => $.SUBRULE($.arguments))
     })
 
+
+    // literalList
+    // : literal (',' literal)*
+    $.RULE('literalList', () => {
+      $.AT_LEAST_ONE_SEP({
+        SEP: tokens.apex.Comma,
+        DEF: () => {
+          $.SUBRULE($.literal)
+        },
+      })
+    })
+
     // literal
     // : integerLiteral
     // | floatLiteral
