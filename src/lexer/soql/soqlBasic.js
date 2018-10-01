@@ -1,4 +1,10 @@
-const { createKeywordToken, Select } = require('../_shared')
+const { createKeywordToken, LSquareSelect } = require('../_shared')
+
+const Select = createKeywordToken({
+  name: 'Select',
+  pattern: /SELECT/,
+  label: "'SELECT'",
+})
 
 const From = createKeywordToken({
   name: 'From',
@@ -16,6 +22,12 @@ const Limit = createKeywordToken({
   name: 'Limit',
   pattern: /LIMIT/,
   label: "'LIMIT'",
+})
+
+const Offset = createKeywordToken({
+  name: 'Offset',
+  pattern: /OFFSET/,
+  label: "'OFFSET'",
 })
 
 const Order = createKeywordToken({
@@ -60,11 +72,43 @@ const Or = createKeywordToken({
   label: "'OR'",
 })
 
+const Asc = createKeywordToken({
+  name: 'Asc',
+  pattern: /ASC/,
+  label: "'ASC'",
+})
+
+const Desc = createKeywordToken({
+  name: 'Desc',
+  pattern: /DESC/,
+  label: "'DESC'",
+})
+
+const Nulls = createKeywordToken({
+  name: 'Nulls',
+  pattern: /NULLS/,
+  label: "'NULLS'",
+})
+
+const First = createKeywordToken({
+  name: 'First',
+  pattern: /FIRST/,
+  label: "'FIRST'",
+})
+
+const Last = createKeywordToken({
+  name: 'Last',
+  pattern: /LAST/,
+  label: "'LAST'",
+})
+
 module.exports = {
+  LSquareSelect,
   Select,
   From,
   Where,
   Limit,
+  Offset,
   Order,
   By,
   NotIn,
@@ -72,4 +116,9 @@ module.exports = {
   Like,
   And,
   Or,
+  Asc,
+  Desc,
+  Nulls,
+  First,
+  Last,
 }

@@ -1,5 +1,11 @@
 const { createKeywordToken } = require('../_shared')
 
+const Enum = createKeywordToken({
+  name: 'Enum',
+  pattern: /enum/,
+  label: "'enum'",
+})
+
 const Instanceof = createKeywordToken({
   name: 'Instanceof',
   pattern: /instanceof/,
@@ -85,6 +91,7 @@ const Return = createKeywordToken({
 })
 
 module.exports = {
+  Enum,
   Instanceof,
   Interface,
   Class,

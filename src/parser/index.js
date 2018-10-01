@@ -783,11 +783,11 @@ class ApexParser extends chevrotain.Parser {
     })
 
     // variableInitializer
-    // : arrayInitializer
+    // : arrayOrMapInitializer
     // | expression
     $.RULE('variableInitializer', () => {
       $.OR([
-        { ALT: () => $.SUBRULE($.arrayInitializer) },
+        { ALT: () => $.SUBRULE($.arrayOrMapInitializer) },
         {
           ALT: () => {
             $.SUBRULE($.expression)
@@ -802,18 +802,26 @@ class ApexParser extends chevrotain.Parser {
       ])
     })
 
-    // arrayInitializer
+    // arrayOrMapInitializer
     // : '{' (variableInitializer (',' variableInitializer)* (',')? )? '}'
-    $.RULE('arrayInitializer', () => {
+    $.RULE('arrayOrMapInitializer', () => {
       $.CONSUME(tokens.apex.LCurly)
       $.OPTION(() => {
         $.SUBRULE($.variableInitializer)
+        $.OPTION1(() => {
+          $.CONSUME(tokens.apex.EqualsGreater)
+          $.SUBRULE1($.variableInitializer)
+        })
         $.MANY({
           GATE: () =>
             this.LA(2).tokenType !== tokens.apex.Comma && this.LA(2).tokenType !== tokens.apex.RCurly,
           DEF: () => {
             $.CONSUME(tokens.apex.Comma)
             $.SUBRULE2($.variableInitializer)
+            $.OPTION3(() => {
+              $.CONSUME1(tokens.apex.EqualsGreater)
+              $.SUBRULE3($.variableInitializer)
+            })
           },
         })
       })
@@ -1731,7 +1739,7 @@ class ApexParser extends chevrotain.Parser {
         },
         {
           ALT: () => {
-            $.SUBRULE($.baseSoqlQuery)
+            $.SUBRULE($.queryUnit)
           },
         },
       ])
@@ -2205,6 +2213,7 @@ class ApexParser extends chevrotain.Parser {
     $.RULE('simpleCreator', () => {
       $.SUBRULE($.createdName)
       $.OR([
+        { ALT: () => $.SUBRULE($.arrayOrMapInitializer) },
         { ALT: () => $.SUBRULE($.arrayCreatorRest) },
         { ALT: () => $.SUBRULE($.classCreatorRest) },
       ])
@@ -2251,7 +2260,7 @@ class ApexParser extends chevrotain.Parser {
     })
 
     // arrayCreatorRest
-    // : '[' (']' ('[' ']')* arrayInitializer | expression ']' ('[' expression ']')* ('[' ']')*)
+    // : '[' (']' ('[' ']')* arrayOrMapInitializer | expression ']' ('[' expression ']')* ('[' ']')*)
     $.RULE('arrayCreatorRest', () => {
       $.CONSUME(tokens.apex.LSquare)
       $.OR([
@@ -2262,7 +2271,7 @@ class ApexParser extends chevrotain.Parser {
               $.CONSUME2(tokens.apex.LSquare)
               $.CONSUME2(tokens.apex.RSquare)
             })
-            $.SUBRULE($.arrayInitializer)
+            $.SUBRULE($.arrayOrMapInitializer)
           },
         },
         {
@@ -2463,10 +2472,10 @@ class ApexParser extends chevrotain.Parser {
     // literal
     // : integerLiteral
     // | floatLiteral
-    // | CHAR_LITERAL
-    // | STRING_LITERAL
-    // | BOOL_LITERAL
-    // | NULL_LITERAL
+    // | charLiteral
+    // | stringLiteral
+    // | boolLiteral
+    // | NULL
     $.RULE('literal', () => {
       $.OR([
         { ALT: () => $.SUBRULE($.integerLiteral) },
@@ -2486,7 +2495,10 @@ class ApexParser extends chevrotain.Parser {
     // : TRUE
     // | FALSE
     $.RULE('booleanLiteral', () => {
-      $.OR([{ ALT: () => $.CONSUME(tokens.apex.True) }, { ALT: () => $.CONSUME(tokens.apex.False) }])
+      $.OR([
+        { ALT: () => $.CONSUME(tokens.apex.True) },
+        { ALT: () => $.CONSUME(tokens.apex.False) },
+      ])
     })
 
     // integerLiteral

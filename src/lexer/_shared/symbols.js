@@ -86,6 +86,12 @@ const Colon = createToken({
   label: "':'",
 })
 
+const EqualsGreater = createToken({
+  name: 'EqualsGreater',
+  pattern: /=>/,
+  label: "'=>'",
+})
+
 const Equals = createToken({
   name: 'Equals',
   pattern: /=/,
@@ -105,6 +111,7 @@ module.exports = {
   ExclamationmarkEquals,
   LessEquals,
   GreaterEquals,
+  EqualsGreater,
   Equals,
   Greater,
   Less,

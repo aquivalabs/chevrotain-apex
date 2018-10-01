@@ -1,16 +1,16 @@
 "use strict";
 const Parser = require("../src/index");
 
-describe("arrayInitializer", () => {
+describe("arrayOrMapInitializer", () => {
   it("empty", () => {
-    expect(Parser.parse("{}", parser => parser.arrayInitializer())).toEqual({
+    expect(Parser.parse("{}", parser => parser.arrayOrMapInitializer())).toEqual({
       type: "ARRAY_INITIALIZER",
       variableInitializers: []
     });
   });
 
   it("with variable initializer", () => {
-    expect(Parser.parse("{this}", parser => parser.arrayInitializer())).toEqual(
+    expect(Parser.parse("{this}", parser => parser.arrayOrMapInitializer())).toEqual(
       {
         type: "ARRAY_INITIALIZER",
         variableInitializers: [
@@ -24,7 +24,7 @@ describe("arrayInitializer", () => {
 
   it("comma after last element", () => {
     expect(
-      Parser.parse("{this,super,}", parser => parser.arrayInitializer())
+      Parser.parse("{this,super,}", parser => parser.arrayOrMapInitializer())
     ).toEqual({
       type: "ARRAY_INITIALIZER",
       variableInitializers: [
