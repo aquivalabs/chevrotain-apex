@@ -30,6 +30,12 @@ const By = createKeywordToken({
   label: "'BY'",
 })
 
+const NotIn = createKeywordToken({
+  name: 'NotIn',
+  pattern: /NOT IN/,
+  label: "'NOT IN'",
+})
+
 const In = createKeywordToken({
   name: 'In',
   pattern: /IN/,
@@ -61,6 +67,7 @@ module.exports = {
   Limit,
   Order,
   By,
+  NotIn,
   In,
   Like,
   And,
