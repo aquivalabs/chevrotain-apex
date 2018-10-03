@@ -1,6 +1,7 @@
 'use strict'
 const chevrotain = require('chevrotain')
 const { ApexLexer, tokens } = require('../lexer')
+const { soqlParser } = require('./soql')
 
 const Parser = chevrotain.Parser
 
@@ -1736,6 +1737,11 @@ class ApexParser extends chevrotain.Parser {
             $.SUBRULE($.parExpressionOrCastExpressionOrLambdaExpression)
           },
         },
+        {
+          ALT: () => {
+            $.SUBRULE($.queryUnit)
+          },
+        },
       ])
     })
 
@@ -2463,13 +2469,25 @@ class ApexParser extends chevrotain.Parser {
       $.OPTION(() => $.SUBRULE($.arguments))
     })
 
+
+    // literalList
+    // : literal (',' literal)*
+    $.RULE('literalList', () => {
+      $.AT_LEAST_ONE_SEP({
+        SEP: tokens.apex.Comma,
+        DEF: () => {
+          $.SUBRULE($.literal)
+        },
+      })
+    })
+
     // literal
     // : integerLiteral
     // | floatLiteral
-    // | CHAR_LITERAL
-    // | STRING_LITERAL
-    // | BOOL_LITERAL
-    // | NULL_LITERAL
+    // | charLiteral
+    // | stringLiteral
+    // | boolLiteral
+    // | NULL
     $.RULE('literal', () => {
       $.OR([
         { ALT: () => $.SUBRULE($.integerLiteral) },
@@ -2489,7 +2507,10 @@ class ApexParser extends chevrotain.Parser {
     // : TRUE
     // | FALSE
     $.RULE('booleanLiteral', () => {
-      $.OR([{ ALT: () => $.CONSUME(tokens.apex.True) }, { ALT: () => $.CONSUME(tokens.apex.False) }])
+      $.OR([
+        { ALT: () => $.CONSUME(tokens.apex.True) },
+        { ALT: () => $.CONSUME(tokens.apex.False) },
+      ])
     })
 
     // integerLiteral
@@ -2540,6 +2561,8 @@ class ApexParser extends chevrotain.Parser {
         { ALT: () => $.CONSUME(tokens.apex.SemiColonWithFollowEmptyLine) },
       ])
     })
+
+    soqlParser($)
 
     Parser.performSelfAnalysis(this)
   }

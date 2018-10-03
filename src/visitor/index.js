@@ -1,14 +1,17 @@
 'use strict'
-const ApexParser = require('./parser')
+const ApexParser = require('../parser')
 
 const parser = new ApexParser([])
-const BaseSQLVisitor = parser.getBaseCstVisitorConstructor()
+const BaseCstVisitor = parser.getBaseCstVisitorConstructor()
 
-const MismatchedTokenException = require('chevrotain').MismatchedTokenException
+const { MismatchedTokenException } = require('chevrotain')
 
-class SQLToAstVisitor extends BaseSQLVisitor {
+const { soqlVisitor } = require('./soql')
+
+class ApexVisitor extends BaseCstVisitor {
   constructor() {
     super()
+    soqlVisitor(this)
     this.validateVisitor()
   }
 
@@ -3514,6 +3517,18 @@ class SQLToAstVisitor extends BaseSQLVisitor {
     }
   }
 
+  literalList(ctx) {
+    const list = []
+    if (ctx.literal) {
+      ctx.literal.map((literal) => list.push(this.visit(literal)))
+    }
+
+    return {
+      type: 'LITERAL_LIST',
+      list: list,
+    }
+  }
+
   literal(ctx) {
     if (ctx.integerLiteral) {
       return this.visit(ctx.integerLiteral)
@@ -3717,4 +3732,4 @@ class SQLToAstVisitor extends BaseSQLVisitor {
   }
 }
 
-module.exports = SQLToAstVisitor
+module.exports = ApexVisitor

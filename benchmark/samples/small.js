@@ -1,10 +1,4 @@
-'use strict'
-
-// original source from:
-// https://github.com/jhipster/generator-jhipster/blob/b536b2559e36437983d5d1e412e790dbec9f45f7/generators/server/templates/src/main/java/package/security/jwt/TokenProvider.java.ejs
-module.exports = `
-
-public abstract class AqObj {
+module.exports = `public abstract class AqObj {
   public static final String NAME = 'VALUE';
   public List<sObject> l = Trigger.new.get(0);
   public List<sObject> a = r.dsr.get(0);
@@ -13,6 +7,144 @@ public abstract class AqObj {
   public String vah = 'a"b"c';
   private static final List<String> definedList = new List<String>{'a', 'b'};
   private static final Map<String, String> definedList = new Map<String, String>{'a' => 'a', 'b' => 'b'};
+  List<sObject> a = nEw List<sObject>();
+
+  public List<sObject> a = [
+    SELECT Id, Name, Contact.Name FROM Account
+  ];
+
+  public List<sObject> a = [
+    select Id from Account
+    where Id = :sasa
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name FRoM Account
+    whErE id = 1
+  ];
+
+  public List<sObject> a = [
+    sELeCt Id, Name FRoM Account
+    whErE id = 1
+    limit 232
+  ];
+
+  public List<sObject> a = [
+    sELeCt Id, Name FRoM Account
+    whErE id = 1
+    limit 123
+    offset 232
+  ];
+
+  public List<sObject> a = [
+    sELeCt Id, Name FRoM Account
+    whErE id = 1
+    offset 232
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name fRoM Account
+    WhErE id like 'qweqw'
+      and name = 231
+      or dew = true
+    ORDER by Something
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name fRoM Account
+    WhErE id like 'qweqw'
+      and name = 231
+      or dew = true
+    ORDER by Something asc
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name fRoM Account
+    WhErE not Name like 'qweqw'
+      and name = 231
+      or dew = true
+    ORDER by Something asc
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name fRoM Account
+    WhErE not Lookup__c.Name like 'qweqw'
+      and name = 231
+      or dew = true
+    ORDER by Something asc
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name fRoM Account
+    WhErE not Lookup__c.Name = 'qweqw'
+      and name = 231
+      or dew = true
+    ORDER by Something asc
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name fRoM Account
+    WhErE not Lookup__c.Name >= 'qweqw'
+      and name = 231
+      or dew = true
+    ORDER by Something asc
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name fRoM Account
+    WhErE id like 'qweqw'
+      and name = 231
+      or dew = true
+    ORDER by Something desc Nulls first
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name, (SELECT Id, sth__c from Contacts) fRoM Account
+    WhErE id like 'qweqw'
+      and name = 231
+      or dew = true
+    ORDER by Something desc Nulls first
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name, (SELECT Id, sth__c from Contacts) fRoM Account
+    WhErE id like 'qweqw'
+      and name = 231
+      or dew in (select id from sth)
+    ORDER by Something desc Nulls first
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name, (SELECT Id, sth__c from Contacts) fRoM Account
+    WhErE id like 'qweqw'
+      and name = 231
+      or Name not in :names
+    ORDER by Something desc Nulls first
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name, (SELECT Id, sth__c from Contacts) fRoM Account
+    WhErE id like 'qweqw'
+      and name = 231
+      or Name not in ('name1', 'name2')
+    ORDER by Something desc Nulls first
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name, (SELECT Id, sth__c from Contacts) fRoM Account
+    WhErE id like 'qweqw'
+      and name = 231
+      or NOT Name not in ('name1', 'name2')
+    ORDER by Something desc Nulls first
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name, (SELECT Id, sth__c from Contacts) fRoM Account
+    WhErE id like 'qweqw'
+      and name = 231
+      or something__c in (123, 321)
+    ORDER by Something desc Nulls first
+  ];
 
   public String abc {
       get;
@@ -278,7 +410,4 @@ public abstract class AqObj {
   protected Boolean isChangedFieldToNonNull(sObject record, sObjectField field) {
       return isChangedField(record, field) && record.get(field) != null;
   }
-}
-
-
-`
+}`

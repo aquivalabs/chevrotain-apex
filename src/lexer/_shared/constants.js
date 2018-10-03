@@ -1,27 +1,9 @@
-const { createKeywordToken, createToken, makePattern } = require('../_shared')
-
-const True = createKeywordToken({
-  name: 'True',
-  pattern: /true/,
-  label: "'true'",
-})
-
-const False = createKeywordToken({
-  name: 'False',
-  pattern: /false/,
-  label: "'false'",
-})
+const { createToken, createKeywordToken, makePattern } = require('./helpers')
 
 const Null = createKeywordToken({
   name: 'Null',
   pattern: /null/,
   label: "'null'",
-})
-
-const Enum = createKeywordToken({
-  name: 'Enum',
-  pattern: /enum/,
-  label: "'enum'",
 })
 
 const FloatLiteral = createToken({
@@ -44,11 +26,22 @@ const StringLiteral = createToken({
   label: "'StringLiteral'",
 })
 
+const True = createKeywordToken({
+  name: 'True',
+  pattern: /true/,
+  label: "'true'",
+})
+
+const False = createKeywordToken({
+  name: 'False',
+  pattern: /false/,
+  label: "'false'",
+})
+
 module.exports = {
   True,
   False,
   Null,
-  Enum,
   FloatLiteral,
   DecimalLiteral,
   StringLiteral,

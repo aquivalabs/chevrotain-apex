@@ -1,112 +1,105 @@
-"use strict";
+const fs = require('fs')
+const extname = require('path').extname
+const prettier = require('prettier')
+const massageAST = require('prettier/src/common/clean-ast').massageAST
+const normalizeOptions = require('prettier/src/main/options').normalize
 
-const fs = require("fs");
-const extname = require("path").extname;
-const prettier = require("prettier");
-const massageAST = require("prettier/src/common/clean-ast").massageAST;
-const normalizeOptions = require("prettier/src/main/options").normalize;
-
-const AST_COMPARE = process.env["AST_COMPARE"];
+const AST_COMPARE = process.env['AST_COMPARE']
 
 function run_spec(dirname, parsers, options) {
   options = Object.assign(
     {
-      plugins: ["."],
-      tabWidth: 4
+      plugins: ['.'],
+      tabWidth: 4,
     },
     options
-  );
+  )
 
   /* instabul ignore if */
   if (!parsers || !parsers.length) {
-    throw new Error(`No parsers were specified for ${dirname}`);
+    throw new Error(`No parsers were specified for ${dirname}`)
   }
 
-  fs.readdirSync(dirname).forEach(filename => {
-    const path = dirname + "/" + filename;
+  fs.readdirSync(dirname).forEach((filename) => {
+    const path = dirname + '/' + filename
     if (
-      extname(filename) !== ".snap" &&
+      extname(filename) !== '.snap' &&
       fs.lstatSync(path).isFile() &&
-      filename[0] !== "." &&
-      filename !== "jsfmt.spec.js"
+      filename[0] !== '.' &&
+      filename !== 'jsfmt.spec.js'
     ) {
-      const source = read(path).replace(/\r\n/g, "\n");
+      const source = read(path).replace(/\r\n/g, '\n')
 
       const mergedOptions = Object.assign({}, options, {
-        parser: parsers[0]
-      });
-      const output = prettyprint(source, path, mergedOptions);
+        parser: parsers[0],
+      })
+      const output = prettyprint(source, path, mergedOptions)
       test(`${filename} - ${mergedOptions.parser}-verify`, () => {
-        expect(raw(source + "~".repeat(80) + "\n" + output)).toMatchSnapshot(
-          filename
-        );
-      });
+        expect(raw(source + '~'.repeat(80) + '\n' + output)).toMatchSnapshot(filename)
+      })
 
-      parsers.slice(1).forEach(parserName => {
+      parsers.slice(1).forEach((parserName) => {
         test(`${filename} - ${parserName}-verify`, () => {
           const verifyOptions = Object.assign(mergedOptions, {
-            parser: parserName
-          });
-          const verifyOutput = prettyprint(source, path, verifyOptions);
-          expect(output).toEqual(verifyOutput);
-        });
-      });
+            parser: parserName,
+          })
+          const verifyOutput = prettyprint(source, path, verifyOptions)
+          expect(output).toEqual(verifyOutput)
+        })
+      })
 
       if (AST_COMPARE) {
-        const ast = parse(source, mergedOptions);
-        const normalizedOptions = normalizeOptions(mergedOptions);
-        const astMassaged = massageAST(ast, normalizedOptions);
-        let ppastMassaged;
-        let pperr = null;
+        const ast = parse(source, mergedOptions)
+        const normalizedOptions = normalizeOptions(mergedOptions)
+        const astMassaged = massageAST(ast, normalizedOptions)
+        let ppastMassaged
+        let pperr = null
         try {
-          const ppast = parse(
-            prettyprint(source, path, mergedOptions),
-            mergedOptions
-          );
-          ppastMassaged = massageAST(ppast, normalizedOptions);
+          const ppast = parse(prettyprint(source, path, mergedOptions), mergedOptions)
+          ppastMassaged = massageAST(ppast, normalizedOptions)
         } catch (e) {
-          pperr = e.stack;
+          pperr = e.stack
         }
 
-        test(path + " parse", () => {
-          expect(pperr).toBe(null);
-          expect(ppastMassaged).toBeDefined();
+        test(path + ' parse', () => {
+          expect(pperr).toBe(null)
+          expect(ppastMassaged).toBeDefined()
           if (!ast.errors || ast.errors.length === 0) {
-            expect(astMassaged).toEqual(ppastMassaged);
+            expect(astMassaged).toEqual(ppastMassaged)
           }
-        });
+        })
       }
     }
-  });
+  })
 }
-global.run_spec = run_spec;
+global.run_spec = run_spec
 
 function stripLocation(ast) {
   if (Array.isArray(ast)) {
-    return ast.map(e => stripLocation(e));
+    return ast.map((e) => stripLocation(e))
   }
-  if (typeof ast === "object") {
-    const newObj = {};
+  if (typeof ast === 'object') {
+    const newObj = {}
     for (const key in ast) {
       if (
-        key === "loc" ||
-        key === "range" ||
-        key === "raw" ||
-        key === "comments" ||
-        key === "parent" ||
-        key === "prev"
+        key === 'loc' ||
+        key === 'range' ||
+        key === 'raw' ||
+        key === 'comments' ||
+        key === 'parent' ||
+        key === 'prev'
       ) {
-        continue;
+        continue
       }
-      newObj[key] = stripLocation(ast[key]);
+      newObj[key] = stripLocation(ast[key])
     }
-    return newObj;
+    return newObj
   }
-  return ast;
+  return ast
 }
 
 function parse(string, opts) {
-  return stripLocation(prettier.__debug.parse(string, opts));
+  return stripLocation(prettier.__debug.parse(string, opts))
 }
 
 function prettyprint(src, filename, options) {
@@ -114,15 +107,15 @@ function prettyprint(src, filename, options) {
     src,
     Object.assign(
       {
-        filepath: filename
+        filepath: filename,
       },
       options
     )
-  );
+  )
 }
 
 function read(filename) {
-  return fs.readFileSync(filename, "utf8");
+  return fs.readFileSync(filename, 'utf8')
 }
 
 /**
@@ -131,8 +124,8 @@ function read(filename) {
  * Backticks will still be escaped.
  */
 function raw(string) {
-  if (typeof string !== "string") {
-    throw new Error("Raw snapshots have to be strings.");
+  if (typeof string !== 'string') {
+    throw new Error('Raw snapshots have to be strings.')
   }
-  return { [Symbol.for("raw")]: string };
+  return { [Symbol.for('raw')]: string }
 }
