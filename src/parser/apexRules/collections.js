@@ -25,7 +25,11 @@ function collections($) {
     $.OPTION(() => {
       $.SUBRULE($.variableInitializer)
       $.OPTION1(() => {
+<<<<<<< HEAD
         $.CONSUME(tokens.apex.EqualsGreater)
+=======
+        $.CONSUME(tokens.apex.KeyValue)
+>>>>>>> 113449adc8263323841642f46d005005af13f702
         $.SUBRULE1($.variableInitializer)
       })
       $.MANY({
@@ -35,7 +39,11 @@ function collections($) {
           $.CONSUME(tokens.apex.Comma)
           $.SUBRULE2($.variableInitializer)
           $.OPTION3(() => {
+<<<<<<< HEAD
             $.CONSUME1(tokens.apex.EqualsGreater)
+=======
+            $.CONSUME1(tokens.apex.KeyValue)
+>>>>>>> 113449adc8263323841642f46d005005af13f702
             $.SUBRULE3($.variableInitializer)
           })
         },
