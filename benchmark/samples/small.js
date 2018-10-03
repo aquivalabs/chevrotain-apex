@@ -76,6 +76,22 @@ module.exports = `public abstract class AqObj {
 
   public List<sObject> a = [
     SeLeCt Id, Name fRoM Account
+    WhErE not Lookup__c.Name = 'qweqw'
+      and name = 231
+      or dew = true
+    ORDER by Something asc
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name fRoM Account
+    WhErE not Lookup__c.Name >= 'qweqw'
+      and name = 231
+      or dew = true
+    ORDER by Something asc
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name fRoM Account
     WhErE id like 'qweqw'
       and name = 231
       or dew = true
@@ -111,6 +127,14 @@ module.exports = `public abstract class AqObj {
     WhErE id like 'qweqw'
       and name = 231
       or Name not in ('name1', 'name2')
+    ORDER by Something desc Nulls first
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name, (SELECT Id, sth__c from Contacts) fRoM Account
+    WhErE id like 'qweqw'
+      and name = 231
+      or NOT Name not in ('name1', 'name2')
     ORDER by Something desc Nulls first
   ];
 

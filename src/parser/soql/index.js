@@ -65,11 +65,9 @@ function soqlParser($) {
       { ALT: () => $.CONSUME(tokens.soql.Equals) },
       { ALT: () => $.CONSUME(tokens.soql.Greater) },
       { ALT: () => $.CONSUME(tokens.soql.Less) },
-      { ALT: () => $.CONSUME(tokens.soql.In) },
-      {
-        ALT: () => {
-          $.CONSUME(tokens.soql.Not)
-          $.CONSUME1(tokens.soql.In)
+      { ALT: () => {
+          $.OPTION(() => $.CONSUME(tokens.soql.Not))
+          $.CONSUME(tokens.soql.In)
         }
       },
       { ALT: () => $.CONSUME1(tokens.soql.Like) },
@@ -108,20 +106,23 @@ function soqlParser($) {
   // singleWhereCondition
   // : identifierName comparisonOperator (literal|colonIdentifierName)
   $.RULE('singleWhereCondition', () => {
-    $.OR([
-      { ALT: () => {
-          $.SUBRULE($.identifierName)
-          $.SUBRULE($.comparisonOperator)
-        }
-      },
-      {
-        ALT: () => {
-          $.CONSUME(tokens.soql.Not)
-          $.SUBRULE1($.identifierName)
-          $.CONSUME(tokens.soql.Like)
-        }
-      }
-    ])
+    $.OPTION(() => $.CONSUME(tokens.soql.Not))
+    $.SUBRULE($.identifierName)
+    $.SUBRULE($.comparisonOperator)
+    // $.OR([
+    //   { ALT: () => {
+    //       $.SUBRULE($.identifierName)
+    //       $.SUBRULE($.comparisonOperator)
+    //     }
+    //   },
+    //   {
+    //     ALT: () => {
+    //       $.CONSUME(tokens.soql.Not)
+    //       $.SUBRULE1($.identifierName)
+    //       $.SUBRULE1($.comparisonOperator)
+    //     }
+    //   }
+    // ])
 
     $.OR1([
       { ALT: () => $.SUBRULE($.subquery) },
