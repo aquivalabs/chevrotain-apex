@@ -42,10 +42,10 @@ const By = createKeywordToken({
   label: "'BY'",
 })
 
-const NotIn = createKeywordToken({
-  name: 'NotIn',
-  pattern: /NOT IN/,
-  label: "'NOT IN'",
+const Not = createKeywordToken({
+  name: 'Not',
+  pattern: /NOT/,
+  label: "'NOT'",
 })
 
 const In = createKeywordToken({
@@ -111,7 +111,7 @@ module.exports = {
   Offset,
   Order,
   By,
-  NotIn,
+  Not,
   In,
   Like,
   And,

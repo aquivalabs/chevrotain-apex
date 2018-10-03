@@ -60,6 +60,22 @@ module.exports = `public abstract class AqObj {
 
   public List<sObject> a = [
     SeLeCt Id, Name fRoM Account
+    WhErE not Name like 'qweqw'
+      and name = 231
+      or dew = true
+    ORDER by Something asc
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name fRoM Account
+    WhErE not Lookup__c.Name like 'qweqw'
+      and name = 231
+      or dew = true
+    ORDER by Something asc
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name fRoM Account
     WhErE id like 'qweqw'
       and name = 231
       or dew = true
