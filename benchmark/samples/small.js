@@ -10,15 +10,21 @@ module.exports = `public abstract class AqObj {
   private static final Map<String, String> definedList = new Map<String, String>{'a' => 'a', 'b' => 'b'};
   List<sObject> a = nEw List<sObject>();
 
+  public static void ifElseStatements(){
+    if(a == 1 || (b > 1 || (d) && c != 23)){
+
+    }
+  }
+
   public List<sObject> a = [
     SELECT Id, Name, Contact.Name FROM Account
   ];
-
+  /* comments */
   public List<sObject> a = [
     select Id from Account
     where Id = :sasa
   ];
-
+  // comments here
   public List<sObject> a = [
     SeLeCt Id, Name FRoM Account
     whErE id = 1
@@ -53,9 +59,9 @@ module.exports = `public abstract class AqObj {
 
   public List<sObject> a = [
     SeLeCt Id, Name fRoM Account
-    WhErE id like 'qweqw'
-      and name = 231
-      or dew = true
+    WhErE ((id like 'qweqw')
+            and (name = 231)
+      or dew = true)
     ORDER by Something asc
   ];
 
@@ -135,6 +141,14 @@ module.exports = `public abstract class AqObj {
     SeLeCt Id, Name, (SELECT Id, sth__c from Contacts) fRoM Account
     WhErE id like 'qweqw'
       and name = 231
+      or NOT Name not in ('name1', 'name2')
+    ORDER by Something desc Nulls first
+  ];
+
+  public List<sObject> a = [
+    SeLeCt Id, Name, (SELECT Id, sth__c from Contacts) fRoM Account
+    WhErE id like 'qweqw'
+          and name = 231
       or NOT Name not in ('name1', 'name2')
     ORDER by Something desc Nulls first
   ];

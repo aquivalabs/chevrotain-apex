@@ -94,13 +94,46 @@ function soqlParser($) {
   // : WHERE singleWhereCondition (andOr singleWhereCondition)*
   $.RULE('whereClause', () => {
     $.CONSUME(tokens.soql.Where)
-    $.SUBRULE($.singleWhereCondition)
+    let lBrackets = 0
     $.OPTION(() =>
       $.MANY(() => {
-        $.SUBRULE($.andOr)
-        $.SUBRULE1($.singleWhereCondition)
+        $.CONSUME(tokens.soql.LBrace)
+        lBrackets++
       })
     )
+    $.SUBRULE($.singleWhereCondition)
+    if (lBrackets > 0) {
+      $.OPTION1(() => {
+        $.CONSUME2(tokens.soql.RBrace)
+        lBrackets--
+      })
+    }
+    $.OPTION2(() =>
+      $.MANY1(() => {
+        $.SUBRULE($.andOr)
+        $.OPTION3(() => {
+          $.MANY2(() => {
+            $.CONSUME1(tokens.soql.LBrace)
+            lBrackets++
+          })
+        })
+        $.SUBRULE1($.singleWhereCondition)
+        if (lBrackets > 0) {
+          $.OPTION4(() => {
+            $.MANY3(() => {
+              $.CONSUME(tokens.soql.RBrace)
+              lBrackets--
+            })
+          })
+        }
+      })
+    )
+
+    if (lBrackets > 0) {
+      for (let i = 0; i < lBrackets; i++) {
+        $.CONSUME1(tokens.soql.RBrace)
+      }
+    }
   })
 
   // singleWhereCondition
