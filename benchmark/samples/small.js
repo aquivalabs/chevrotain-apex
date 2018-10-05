@@ -201,6 +201,7 @@ module.exports = `public abstract class AqObj {
   protected virtual void validate(List<sObject> records) {}
 
   protected virtual void dmlStatements(List<sObject> records) {
+    Map<String, sObject> objMap = new Map<String, sObject>();
     if(records.size() > 0) {
       if (records[0].Id != null) {
         insert records;
@@ -213,6 +214,10 @@ module.exports = `public abstract class AqObj {
         delete records;
       } catch(Exception e) {}
       undelete records;
+      merge record1 record2 records;
+
+      insert getValues();
+      insert objMap.values();
     }
   }
 

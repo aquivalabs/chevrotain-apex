@@ -33,19 +33,19 @@ function dmlStatements($) {
           $.CONSUME(tokens.apex.Undelete)
         },
       },
+      {
+        ALT: () => {
+          $.CONSUME(tokens.apex.Merge)
+        },
+      },
     ])
   })
 
   // dmlStatement
   // : dmlOperator Identifier
   $.RULE('dmlStatement', () => {
-    const dmlOperator = $.SUBRULE($.dmlOperator)
-    $.CONSUME(tokens.apex.Identifier)
-    $.OPTION(() => {
-      if (dmlOperator.children.Upsert.length > 0) {
-        $.CONSUME1(tokens.apex.Identifier)
-      }
-    })
+    $.SUBRULE($.dmlOperator)
+    $.SUBRULE($.expression)
   })
 }
 

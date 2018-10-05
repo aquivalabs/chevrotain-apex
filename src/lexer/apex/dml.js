@@ -18,6 +18,12 @@ const Upsert = createKeywordToken({
   label: "'upsert'",
 })
 
+const Merge = createKeywordToken({
+  name: 'Merge',
+  pattern: /merge/,
+  label: "'merge'",
+})
+
 const Delete = createKeywordToken({
   name: 'Delete',
   pattern: /delete/,
@@ -34,6 +40,7 @@ module.exports = {
   Insert,
   Update,
   Upsert,
+  Merge,
   Delete,
   Undelete,
 }
