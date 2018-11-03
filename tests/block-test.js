@@ -119,7 +119,7 @@ describe('block', () => {
     })
   })
 
-  it("System.out.println('please work')", () => {
+  it("System.debug('please work')", () => {
     expect(Parser.parse("{ System.debug('please work'); }", (parser) => parser.block())).toEqual({
       type: 'BLOCK',
       statements: [
