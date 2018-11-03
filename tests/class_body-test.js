@@ -1,117 +1,108 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("classBody", () => {
-  it("empty", () => {
-    expect(Parser.parse("{}", parser => parser.classBody())).toEqual({
-      type: "CLASS_BODY",
-      declarations: []
-    });
-  });
+describe('classBody', () => {
+  it('empty', () => {
+    expect(Parser.parse('{}', (parser) => parser.classBody())).toEqual({
+      type: 'CLASS_BODY',
+      declarations: [],
+    })
+  })
 
-  it("one declaration", () => {
-    expect(
-      Parser.parse("{ void a() {} }", parser => parser.classBody())
-    ).toEqual({
-      type: "CLASS_BODY",
+  it('one declaration', () => {
+    expect(Parser.parse('{ void a() {} }', (parser) => parser.classBody())).toEqual({
+      type: 'CLASS_BODY',
       declarations: [
         {
-          type: "CLASS_BODY_MEMBER_DECLARATION",
+          type: 'CLASS_BODY_MEMBER_DECLARATION',
           modifiers: [],
           declaration: {
-            type: "METHOD_DECLARATION",
+            type: 'METHOD_DECLARATION',
             typeType: {
-              type: "VOID"
+              type: 'VOID',
             },
             name: {
-              type: "IDENTIFIER",
-              value: "a"
+              type: 'IDENTIFIER',
+              value: 'a',
             },
             parameters: {
-              type: "FORMAL_PARAMETERS",
-              parameters: []
+              type: 'FORMAL_PARAMETERS',
+              parameters: [],
             },
             dimensions: [],
             throws: undefined,
             body: {
-              type: "BLOCK",
-              statements: []
-            }
+              type: 'BLOCK',
+              statements: [],
+            },
           },
-          followedEmptyLine: false
-        }
-      ]
-    });
-  });
+          followedEmptyLine: false,
+        },
+      ],
+    })
+  })
 
-  it("multiple declarations", () => {
-    expect(
-      Parser.parse("{ void a() {} {} }", parser => parser.classBody())
-    ).toEqual({
-      type: "CLASS_BODY",
+  it('multiple declarations', () => {
+    expect(Parser.parse('{ void a() {} {} }', (parser) => parser.classBody())).toEqual({
+      type: 'CLASS_BODY',
       declarations: [
         {
-          type: "CLASS_BODY_MEMBER_DECLARATION",
+          type: 'CLASS_BODY_MEMBER_DECLARATION',
           modifiers: [],
           declaration: {
-            type: "METHOD_DECLARATION",
+            type: 'METHOD_DECLARATION',
             typeType: {
-              type: "VOID"
+              type: 'VOID',
             },
             name: {
-              type: "IDENTIFIER",
-              value: "a"
+              type: 'IDENTIFIER',
+              value: 'a',
             },
             parameters: {
-              type: "FORMAL_PARAMETERS",
-              parameters: []
+              type: 'FORMAL_PARAMETERS',
+              parameters: [],
             },
             dimensions: [],
             throws: undefined,
             body: {
-              type: "BLOCK",
-              statements: []
-            }
+              type: 'BLOCK',
+              statements: [],
+            },
           },
-          followedEmptyLine: false
+          followedEmptyLine: false,
         },
         {
-          type: "CLASS_BODY_BLOCK",
+          type: 'CLASS_BODY_BLOCK',
           static: false,
           block: {
-            type: "BLOCK",
-            statements: []
-          }
-        }
-      ]
-    });
-  });
+            type: 'BLOCK',
+            statements: [],
+          },
+        },
+      ],
+    })
+  })
 
-  it("line comment standalone", () => {
-    expect(
-      Parser.parse("{\n// comment\n\n }", parser => parser.classBody())
-    ).toEqual({
-      type: "CLASS_BODY",
+  it('line comment standalone', () => {
+    expect(Parser.parse('{\n// comment\n\n }', (parser) => parser.classBody())).toEqual({
+      type: 'CLASS_BODY',
       declarations: [
         {
-          type: "COMMENT_STANDALONE",
-          value: "// comment"
-        }
-      ]
-    });
-  });
+          type: 'COMMENT_STANDALONE',
+          value: '// comment',
+        },
+      ],
+    })
+  })
 
-  it("line comment", () => {
-    expect(
-      Parser.parse("{\n// comment\n }", parser => parser.classBody())
-    ).toEqual({
-      type: "CLASS_BODY",
+  it('line comment', () => {
+    expect(Parser.parse('{\n// comment\n }', (parser) => parser.classBody())).toEqual({
+      type: 'CLASS_BODY',
       declarations: [
         {
-          type: "COMMENT_STANDALONE",
-          value: "// comment"
-        }
-      ]
-    });
-  });
-});
+          type: 'COMMENT_STANDALONE',
+          value: '// comment',
+        },
+      ],
+    })
+  })
+})

@@ -6,24 +6,6 @@ const Boolean = createKeywordToken({
   label: "'Boolean'",
 })
 
-const Char = createKeywordToken({
-  name: 'Char',
-  pattern: /Char/,
-  label: "'Char'",
-})
-
-const Byte = createKeywordToken({
-  name: 'Byte',
-  pattern: /Byte/,
-  label: "'Byte'",
-})
-
-const Short = createKeywordToken({
-  name: 'Short',
-  pattern: /Short/,
-  label: "'Short'",
-})
-
 const Integer = createKeywordToken({
   name: 'Integer',
   pattern: /Integer/,
@@ -34,12 +16,6 @@ const Long = createKeywordToken({
   name: 'Long',
   pattern: /Long/,
   label: "'Long'",
-})
-
-const Float = createKeywordToken({
-  name: 'Float',
-  pattern: /Float/,
-  label: "'Float'",
 })
 
 const Double = createKeywordToken({
@@ -62,12 +38,8 @@ const Void = createKeywordToken({
 
 module.exports = {
   Boolean,
-  Char,
-  Byte,
-  Short,
   Integer,
   Long,
-  Float,
   Double,
   String,
   Void,

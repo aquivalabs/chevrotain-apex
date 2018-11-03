@@ -1,129 +1,122 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("catchClause", () => {
-  it("simple", () => {
-    expect(
-      Parser.parse("catch (A e) {}", parser => parser.catchClause())
-    ).toEqual({
-      type: "CATCH_CLAUSE",
+describe('catchClause', () => {
+  it('simple', () => {
+    expect(Parser.parse('catch (A e) {}', (parser) => parser.catchClause())).toEqual({
+      type: 'CATCH_CLAUSE',
       modifiers: [],
       catchType: {
-        type: "CATCH_TYPE",
+        type: 'CATCH_TYPE',
         list: [
           {
-            type: "QUALIFIED_NAME",
+            type: 'QUALIFIED_NAME',
             name: [
               {
-                type: "IDENTIFIER",
-                value: "A"
-              }
-            ]
-          }
-        ]
+                type: 'IDENTIFIER',
+                value: 'A',
+              },
+            ],
+          },
+        ],
       },
       id: {
-        type: "IDENTIFIER",
-        value: "e"
+        type: 'IDENTIFIER',
+        value: 'e',
       },
       block: {
-        type: "BLOCK",
-        statements: []
-      }
-    });
-  });
+        type: 'BLOCK',
+        statements: [],
+      },
+    })
+  })
 
-  it("one modifier", () => {
-    expect(
-      Parser.parse("catch (@Bean A e) {}", parser => parser.catchClause())
-    ).toEqual({
-      type: "CATCH_CLAUSE",
+  it('one modifier', () => {
+    expect(Parser.parse('catch (@Bean A e) {}', (parser) => parser.catchClause())).toEqual({
+      type: 'CATCH_CLAUSE',
       modifiers: [
         {
-          type: "ANNOTATION",
+          type: 'ANNOTATION',
           name: {
-            type: "QUALIFIED_NAME",
+            type: 'QUALIFIED_NAME',
             name: [
               {
-                type: "IDENTIFIER",
-                value: "Bean"
-              }
-            ]
+                type: 'IDENTIFIER',
+                value: 'Bean',
+              },
+            ],
           },
-          hasBraces: false
-        }
+          hasBraces: false,
+        },
       ],
       catchType: {
-        type: "CATCH_TYPE",
+        type: 'CATCH_TYPE',
         list: [
           {
-            type: "QUALIFIED_NAME",
+            type: 'QUALIFIED_NAME',
             name: [
               {
-                type: "IDENTIFIER",
-                value: "A"
-              }
-            ]
-          }
-        ]
+                type: 'IDENTIFIER',
+                value: 'A',
+              },
+            ],
+          },
+        ],
       },
       id: {
-        type: "IDENTIFIER",
-        value: "e"
+        type: 'IDENTIFIER',
+        value: 'e',
       },
       block: {
-        type: "BLOCK",
-        statements: []
-      }
-    });
-  });
+        type: 'BLOCK',
+        statements: [],
+      },
+    })
+  })
 
-  it("multiple modifiers", () => {
-    expect(
-      Parser.parse("catch (@Bean final A e) {}", parser => parser.catchClause())
-    ).toEqual({
-      type: "CATCH_CLAUSE",
+  it('multiple modifiers', () => {
+    expect(Parser.parse('catch (@Bean final A e) {}', (parser) => parser.catchClause())).toEqual({
+      type: 'CATCH_CLAUSE',
       modifiers: [
         {
-          type: "ANNOTATION",
+          type: 'ANNOTATION',
           name: {
-            type: "QUALIFIED_NAME",
+            type: 'QUALIFIED_NAME',
             name: [
               {
-                type: "IDENTIFIER",
-                value: "Bean"
-              }
-            ]
+                type: 'IDENTIFIER',
+                value: 'Bean',
+              },
+            ],
           },
-          hasBraces: false
+          hasBraces: false,
         },
         {
-          type: "MODIFIER",
-          value: "final"
-        }
+          type: 'MODIFIER',
+          value: 'final',
+        },
       ],
       catchType: {
-        type: "CATCH_TYPE",
+        type: 'CATCH_TYPE',
         list: [
           {
-            type: "QUALIFIED_NAME",
+            type: 'QUALIFIED_NAME',
             name: [
               {
-                type: "IDENTIFIER",
-                value: "A"
-              }
-            ]
-          }
-        ]
+                type: 'IDENTIFIER',
+                value: 'A',
+              },
+            ],
+          },
+        ],
       },
       id: {
-        type: "IDENTIFIER",
-        value: "e"
+        type: 'IDENTIFIER',
+        value: 'e',
       },
       block: {
-        type: "BLOCK",
-        statements: []
-      }
-    });
-  });
-});
+        type: 'BLOCK',
+        statements: [],
+      },
+    })
+  })
+})

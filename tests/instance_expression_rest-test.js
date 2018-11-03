@@ -1,134 +1,128 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("instanceofExpressionRest", () => {
-  it("simple", () => {
+describe('instanceofExpressionRest', () => {
+  it('simple', () => {
     expect(
-      Parser.parse("instanceof boolean", parser =>
-        parser.instanceofExpressionRest()
-      )
+      Parser.parse('instanceof boolean', (parser) => parser.instanceofExpressionRest())
     ).toEqual({
-      type: "INSTANCEOF_EXPRESSION_REST",
+      type: 'INSTANCEOF_EXPRESSION_REST',
       typeType: {
-        type: "PRIMITIVE_TYPE",
-        value: "boolean"
-      }
-    });
-  });
+        type: 'PRIMITIVE_TYPE',
+        value: 'boolean',
+      },
+    })
+  })
 
-  it("with following operator expression", () => {
+  it('with following operator expression', () => {
     expect(
-      Parser.parse("instanceof boolean && true", parser =>
-        parser.instanceofExpressionRest()
-      )
+      Parser.parse('instanceof boolean && true', (parser) => parser.instanceofExpressionRest())
     ).toEqual({
-      type: "INSTANCEOF_EXPRESSION_REST",
+      type: 'INSTANCEOF_EXPRESSION_REST',
       typeType: {
-        type: "PRIMITIVE_TYPE",
-        value: "boolean"
+        type: 'PRIMITIVE_TYPE',
+        value: 'boolean',
       },
       operatorExpressionRest: {
-        type: "OPERATOR_EXPRESSION_REST",
+        type: 'OPERATOR_EXPRESSION_REST',
         operator: {
-          type: "OPERATOR",
-          operator: "&&"
+          type: 'OPERATOR',
+          operator: '&&',
         },
         expression: {
-          type: "BOOLEAN_LITERAL",
-          value: "true"
-        }
-      }
-    });
-  });
+          type: 'BOOLEAN_LITERAL',
+          value: 'true',
+        },
+      },
+    })
+  })
 
-  it("with following operator expressions", () => {
+  it('with following operator expressions', () => {
     expect(
-      Parser.parse("instanceof boolean && true && false", parser =>
+      Parser.parse('instanceof boolean && true && false', (parser) =>
         parser.instanceofExpressionRest()
       )
     ).toEqual({
-      type: "INSTANCEOF_EXPRESSION_REST",
+      type: 'INSTANCEOF_EXPRESSION_REST',
       typeType: {
-        type: "PRIMITIVE_TYPE",
-        value: "boolean"
+        type: 'PRIMITIVE_TYPE',
+        value: 'boolean',
       },
       operatorExpressionRest: {
-        type: "OPERATOR_EXPRESSION_REST",
+        type: 'OPERATOR_EXPRESSION_REST',
         operator: {
-          type: "OPERATOR",
-          operator: "&&"
+          type: 'OPERATOR',
+          operator: '&&',
         },
         expression: {
-          type: "OPERATOR_EXPRESSION",
+          type: 'OPERATOR_EXPRESSION',
           left: {
-            type: "BOOLEAN_LITERAL",
-            value: "true"
+            type: 'BOOLEAN_LITERAL',
+            value: 'true',
           },
           operator: {
-            type: "OPERATOR",
-            operator: "&&"
+            type: 'OPERATOR',
+            operator: '&&',
           },
           right: {
-            type: "BOOLEAN_LITERAL",
-            value: "false"
-          }
-        }
-      }
-    });
-  });
+            type: 'BOOLEAN_LITERAL',
+            value: 'false',
+          },
+        },
+      },
+    })
+  })
 
-  it("with following operator expressions and instanceof", () => {
+  it('with following operator expressions and instanceof', () => {
     expect(
-      Parser.parse(
-        "instanceof boolean && true && false && i instanceof Integer",
-        parser => parser.instanceofExpressionRest()
+      Parser.parse('instanceof boolean && true && false && i instanceof Integer', (parser) =>
+        parser.instanceofExpressionRest()
       )
     ).toEqual({
-      type: "INSTANCEOF_EXPRESSION_REST",
+      type: 'INSTANCEOF_EXPRESSION_REST',
       typeType: {
-        type: "PRIMITIVE_TYPE",
-        value: "boolean"
+        type: 'PRIMITIVE_TYPE',
+        value: 'boolean',
       },
       operatorExpressionRest: {
-        type: "OPERATOR_EXPRESSION_REST",
+        type: 'OPERATOR_EXPRESSION_REST',
         operator: {
-          type: "OPERATOR",
-          operator: "&&"
+          type: 'OPERATOR',
+          operator: '&&',
         },
         expression: {
-          type: "OPERATOR_EXPRESSION",
+          type: 'OPERATOR_EXPRESSION',
           left: {
-            type: "BOOLEAN_LITERAL",
-            value: "true"
+            type: 'BOOLEAN_LITERAL',
+            value: 'true',
           },
           operator: {
-            type: "OPERATOR",
-            operator: "&&"
+            type: 'OPERATOR',
+            operator: '&&',
           },
           right: {
-            type: "OPERATOR_EXPRESSION",
+            type: 'OPERATOR_EXPRESSION',
             left: {
-              type: "BOOLEAN_LITERAL",
-              value: "false"
+              type: 'BOOLEAN_LITERAL',
+              value: 'false',
             },
             operator: {
-              type: "OPERATOR",
-              operator: "&&"
+              type: 'OPERATOR',
+              operator: '&&',
             },
             right: {
-              type: "INSTANCEOF_EXPRESSION",
+              type: 'INSTANCEOF_EXPRESSION',
               expression: {
-                type: "IDENTIFIER",
-                value: "i"
+                type: 'IDENTIFIER',
+                value: 'i',
               },
               instanceof: {
-                type: "IDENTIFIER",
-                value: "Integer"
-              }
-            }
-          }
-        }
-      }
-    });
-  });
-});
+                type: 'PRIMITIVE_TYPE',
+                value: 'integer',
+              },
+            },
+          },
+        },
+      },
+    })
+  })
+})

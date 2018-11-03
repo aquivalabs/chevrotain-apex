@@ -106,14 +106,8 @@ class ApexVisitor extends BaseCstVisitor {
     }
 
     let value = ''
-    if (ctx.Native) {
-      value = 'native'
-    } else if (ctx.Synchronized) {
-      value = 'synchronized'
-    } else if (ctx.Transient) {
+    if (ctx.Transient) {
       value = 'transient'
-    } else if (ctx.Volatile) {
-      value = 'volatile'
     }
 
     return {

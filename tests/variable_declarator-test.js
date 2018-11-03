@@ -1,38 +1,35 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("variableDeclarator", () => {
-  it("without init", () => {
-    expect(Parser.parse("A", parser => parser.variableDeclarator())).toEqual({
-      type: "VARIABLE_DECLARATOR",
+describe('variableDeclarator', () => {
+  it('without init', () => {
+    expect(Parser.parse('A', (parser) => parser.variableDeclarator())).toEqual({
+      type: 'VARIABLE_DECLARATOR',
       id: {
-        type: "VARIABLE_DECLARATOR_ID",
+        type: 'VARIABLE_DECLARATOR_ID',
         id: {
-          type: "IDENTIFIER",
-          value: "A"
+          type: 'IDENTIFIER',
+          value: 'A',
         },
-        dimensions: []
+        dimensions: [],
       },
-      init: undefined
-    });
-  });
+      init: undefined,
+    })
+  })
 
-  it("with init", () => {
-    expect(
-      Parser.parse("A = this", parser => parser.variableDeclarator())
-    ).toEqual({
-      type: "VARIABLE_DECLARATOR",
+  it('with init', () => {
+    expect(Parser.parse('A = this', (parser) => parser.variableDeclarator())).toEqual({
+      type: 'VARIABLE_DECLARATOR',
       id: {
-        type: "VARIABLE_DECLARATOR_ID",
+        type: 'VARIABLE_DECLARATOR_ID',
         id: {
-          type: "IDENTIFIER",
-          value: "A"
+          type: 'IDENTIFIER',
+          value: 'A',
         },
-        dimensions: []
+        dimensions: [],
       },
       init: {
-        type: "THIS"
-      }
-    });
-  });
-});
+        type: 'THIS',
+      },
+    })
+  })
+})

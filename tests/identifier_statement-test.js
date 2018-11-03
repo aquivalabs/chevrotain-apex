@@ -1,23 +1,21 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("identifierStatement", () => {
-  it("simple", () => {
-    expect(
-      Parser.parse("a:this;", parser => parser.identifierStatement())
-    ).toEqual({
-      type: "IDENTIFIER_STATEMENT",
+describe('identifierStatement', () => {
+  // FIXME: unsupported syntax
+  it('simple', () => {
+    expect(Parser.parse('a:this;', (parser) => parser.identifierStatement())).toEqual({
+      type: 'IDENTIFIER_STATEMENT',
       identifier: {
-        type: "IDENTIFIER",
-        value: "a"
+        type: 'IDENTIFIER',
+        value: 'a',
       },
       statement: {
-        type: "EXPRESSION_STATEMENT",
+        type: 'EXPRESSION_STATEMENT',
         expression: {
-          type: "THIS"
+          type: 'THIS',
         },
-        followedEmptyLine: false
-      }
-    });
-  });
-});
+        followedEmptyLine: false,
+      },
+    })
+  })
+})

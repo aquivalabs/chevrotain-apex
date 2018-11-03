@@ -1,69 +1,64 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("creatorOptionalNonWildcardInnerCreator", () => {
-  it("without typeArguments", () => {
+describe('creatorOptionalNonWildcardInnerCreator', () => {
+  it('without typeArguments', () => {
     expect(
-      Parser.parse("new a()", parser =>
-        parser.creatorOptionalNonWildcardInnerCreator()
-      )
+      Parser.parse('new a()', (parser) => parser.creatorOptionalNonWildcardInnerCreator())
     ).toEqual({
-      type: "CREATOR_OPTIONAL_NON_WILDCARD_INNER_CREATOR",
+      type: 'CREATOR_OPTIONAL_NON_WILDCARD_INNER_CREATOR',
       typeArguments: undefined,
       innerCreator: {
-        type: "INNER_CREATOR",
+        type: 'INNER_CREATOR',
         id: {
-          type: "IDENTIFIER",
-          value: "a"
+          type: 'IDENTIFIER',
+          value: 'a',
         },
         typeArguments: undefined,
         rest: {
-          type: "CLASS_CREATOR_REST",
+          type: 'CLASS_CREATOR_REST',
           arguments: {
-            type: "EXPRESSION_LIST",
-            list: []
+            type: 'EXPRESSION_LIST',
+            list: [],
           },
-          body: undefined
-        }
-      }
-    });
-  });
+          body: undefined,
+        },
+      },
+    })
+  })
 
-  it("with typeArguments", () => {
+  it('with typeArguments', () => {
     expect(
-      Parser.parse("new <boolean> a()", parser =>
-        parser.creatorOptionalNonWildcardInnerCreator()
-      )
+      Parser.parse('new <boolean> a()', (parser) => parser.creatorOptionalNonWildcardInnerCreator())
     ).toEqual({
-      type: "CREATOR_OPTIONAL_NON_WILDCARD_INNER_CREATOR",
+      type: 'CREATOR_OPTIONAL_NON_WILDCARD_INNER_CREATOR',
       typeArguments: {
-        type: "TYPE_ARGUMENTS",
+        type: 'TYPE_ARGUMENTS',
         value: {
-          type: "TYPE_LIST",
+          type: 'TYPE_LIST',
           list: [
             {
-              type: "PRIMITIVE_TYPE",
-              value: "boolean"
-            }
-          ]
-        }
+              type: 'PRIMITIVE_TYPE',
+              value: 'boolean',
+            },
+          ],
+        },
       },
       innerCreator: {
-        type: "INNER_CREATOR",
+        type: 'INNER_CREATOR',
         id: {
-          type: "IDENTIFIER",
-          value: "a"
+          type: 'IDENTIFIER',
+          value: 'a',
         },
         typeArguments: undefined,
         rest: {
-          type: "CLASS_CREATOR_REST",
+          type: 'CLASS_CREATOR_REST',
           arguments: {
-            type: "EXPRESSION_LIST",
-            list: []
+            type: 'EXPRESSION_LIST',
+            list: [],
           },
-          body: undefined
-        }
-      }
-    });
-  });
-});
+          body: undefined,
+        },
+      },
+    })
+  })
+})

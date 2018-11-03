@@ -1,95 +1,88 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("elementValueArrayInitializer", () => {
-  it("single", () => {
+describe('elementValueArrayInitializer', () => {
+  it('single', () => {
+    expect(Parser.parse('{@Something}', (parser) => parser.elementValueArrayInitializer())).toEqual(
+      {
+        type: 'ELEMENT_VALUE_ARRAY_INITIALIZER',
+        values: [
+          {
+            type: 'ANNOTATION',
+            name: {
+              type: 'QUALIFIED_NAME',
+              name: [
+                {
+                  type: 'IDENTIFIER',
+                  value: 'Something',
+                },
+              ],
+            },
+            hasBraces: false,
+            values: undefined,
+          },
+        ],
+      }
+    )
+  })
+
+  it('multiple', () => {
     expect(
-      Parser.parse("{@Something}", parser =>
-        parser.elementValueArrayInitializer()
-      )
+      Parser.parse('{@Something, @Another}', (parser) => parser.elementValueArrayInitializer())
     ).toEqual({
-      type: "ELEMENT_VALUE_ARRAY_INITIALIZER",
+      type: 'ELEMENT_VALUE_ARRAY_INITIALIZER',
       values: [
         {
-          type: "ANNOTATION",
+          type: 'ANNOTATION',
           name: {
-            type: "QUALIFIED_NAME",
+            type: 'QUALIFIED_NAME',
             name: [
               {
-                type: "IDENTIFIER",
-                value: "Something"
-              }
-            ]
+                type: 'IDENTIFIER',
+                value: 'Something',
+              },
+            ],
           },
           hasBraces: false,
-          values: undefined
-        }
-      ]
-    });
-  });
-
-  it("multiple", () => {
-    expect(
-      Parser.parse("{@Something, @Another}", parser =>
-        parser.elementValueArrayInitializer()
-      )
-    ).toEqual({
-      type: "ELEMENT_VALUE_ARRAY_INITIALIZER",
-      values: [
-        {
-          type: "ANNOTATION",
-          name: {
-            type: "QUALIFIED_NAME",
-            name: [
-              {
-                type: "IDENTIFIER",
-                value: "Something"
-              }
-            ]
-          },
-          hasBraces: false,
-          values: undefined
+          values: undefined,
         },
         {
-          type: "ANNOTATION",
+          type: 'ANNOTATION',
           name: {
-            type: "QUALIFIED_NAME",
+            type: 'QUALIFIED_NAME',
             name: [
               {
-                type: "IDENTIFIER",
-                value: "Another"
-              }
-            ]
+                type: 'IDENTIFIER',
+                value: 'Another',
+              },
+            ],
           },
           hasBraces: false,
-          values: undefined
-        }
-      ]
-    });
-  });
-  it("comma at the end", () => {
+          values: undefined,
+        },
+      ],
+    })
+  })
+  it('comma at the end', () => {
     expect(
-      Parser.parse("{@Something,}", parser =>
-        parser.elementValueArrayInitializer()
-      )
+      Parser.parse('{@Something,}', (parser) => parser.elementValueArrayInitializer())
     ).toEqual({
-      type: "ELEMENT_VALUE_ARRAY_INITIALIZER",
+      type: 'ELEMENT_VALUE_ARRAY_INITIALIZER',
       values: [
         {
-          type: "ANNOTATION",
+          type: 'ANNOTATION',
           name: {
-            type: "QUALIFIED_NAME",
+            type: 'QUALIFIED_NAME',
             name: [
               {
-                type: "IDENTIFIER",
-                value: "Something"
-              }
-            ]
+                type: 'IDENTIFIER',
+                value: 'Something',
+              },
+            ],
           },
           hasBraces: false,
-          values: undefined
-        }
-      ]
-    });
-  });
-});
+          values: undefined,
+        },
+      ],
+    })
+  })
+})

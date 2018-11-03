@@ -1,32 +1,31 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("typeList", () => {
-  it("single", () => {
-    expect(Parser.parse("boolean", parser => parser.typeList())).toEqual({
-      type: "TYPE_LIST",
+describe('typeList', () => {
+  it('single', () => {
+    expect(Parser.parse('boolean', (parser) => parser.typeList())).toEqual({
+      type: 'TYPE_LIST',
       list: [
         {
-          type: "PRIMITIVE_TYPE",
-          value: "boolean"
-        }
-      ]
-    });
-  });
+          type: 'PRIMITIVE_TYPE',
+          value: 'boolean',
+        },
+      ],
+    })
+  })
 
-  it("multiple", () => {
-    expect(Parser.parse("boolean, char", parser => parser.typeList())).toEqual({
-      type: "TYPE_LIST",
+  it('multiple', () => {
+    expect(Parser.parse('boolean, integer', (parser) => parser.typeList())).toEqual({
+      type: 'TYPE_LIST',
       list: [
         {
-          type: "PRIMITIVE_TYPE",
-          value: "boolean"
+          type: 'PRIMITIVE_TYPE',
+          value: 'boolean',
         },
         {
-          type: "PRIMITIVE_TYPE",
-          value: "char"
-        }
-      ]
-    });
-  });
-});
+          type: 'PRIMITIVE_TYPE',
+          value: 'integer',
+        },
+      ],
+    })
+  })
+})

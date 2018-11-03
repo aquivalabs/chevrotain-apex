@@ -1,29 +1,25 @@
-"use strict";
-const Parser = require("../src/index");
+'use strict'
+const Parser = require('../src/index')
 
-describe("assertStatement", () => {
-  it("one expression", () => {
-    expect(
-      Parser.parse("assert this;", parser => parser.assertStatement())
-    ).toEqual({
-      type: "ASSERT_STATEMENT",
+describe('assertStatement', () => {
+  it('one expression', () => {
+    expect(Parser.parse('assert this;', (parser) => parser.assertStatement())).toEqual({
+      type: 'ASSERT_STATEMENT',
       booleanExpression: {
-        type: "THIS"
-      }
-    });
-  });
+        type: 'THIS',
+      },
+    })
+  })
 
-  it("multiple expressions", () => {
-    expect(
-      Parser.parse("assert this:super;", parser => parser.assertStatement())
-    ).toEqual({
-      type: "ASSERT_STATEMENT",
+  it('multiple expressions', () => {
+    expect(Parser.parse('assert this:super;', (parser) => parser.assertStatement())).toEqual({
+      type: 'ASSERT_STATEMENT',
       booleanExpression: {
-        type: "THIS"
+        type: 'THIS',
       },
       valueExpression: {
-        type: "SUPER"
-      }
-    });
-  });
-});
+        type: 'SUPER',
+      },
+    })
+  })
+})

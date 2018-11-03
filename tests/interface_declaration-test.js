@@ -1,81 +1,46 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("interfaceDeclaration", () => {
-  it("empty", () => {
-    expect(
-      Parser.parse("interface A{}", parser => parser.interfaceDeclaration())
-    ).toEqual({
-      type: "INTERFACE_DECLARATION",
+describe('interfaceDeclaration', () => {
+  it('empty', () => {
+    expect(Parser.parse('interface A{}', (parser) => parser.interfaceDeclaration())).toEqual({
+      type: 'INTERFACE_DECLARATION',
       name: {
-        type: "IDENTIFIER",
-        value: "A"
+        type: 'IDENTIFIER',
+        value: 'A',
       },
       typeParameters: undefined,
       extends: undefined,
       body: {
-        type: "INTERFACE_BODY",
-        declarations: []
-      }
-    });
-  });
-
-  it("typeParameters", () => {
-    expect(
-      Parser.parse("interface A<B>{}", parser => parser.interfaceDeclaration())
-    ).toEqual({
-      type: "INTERFACE_DECLARATION",
-      name: {
-        type: "IDENTIFIER",
-        value: "A"
+        type: 'INTERFACE_BODY',
+        declarations: [],
       },
-      typeParameters: {
-        type: "TYPE_PARAMETERS",
-        list: [
-          {
-            type: "TYPE_PARAMETER",
-            modifiers: [],
-            name: {
-              type: "IDENTIFIER",
-              value: "B"
-            },
-            typeBound: undefined
-          }
-        ]
-      },
-      extends: undefined,
-      body: {
-        type: "INTERFACE_BODY",
-        declarations: []
-      }
-    });
-  });
+    })
+  })
 
-  it("typeList", () => {
+  // FIXME: unsupported syntax - you can't extend primitives or standard classes
+  it('typeList', () => {
     expect(
-      Parser.parse("interface A extends boolean {}", parser =>
-        parser.interfaceDeclaration()
-      )
+      Parser.parse('interface A extends boolean {}', (parser) => parser.interfaceDeclaration())
     ).toEqual({
-      type: "INTERFACE_DECLARATION",
+      type: 'INTERFACE_DECLARATION',
       name: {
-        type: "IDENTIFIER",
-        value: "A"
+        type: 'IDENTIFIER',
+        value: 'A',
       },
       typeParameters: undefined,
       extends: {
-        type: "TYPE_LIST",
+        type: 'TYPE_LIST',
         list: [
           {
-            type: "PRIMITIVE_TYPE",
-            value: "boolean"
-          }
-        ]
+            type: 'PRIMITIVE_TYPE',
+            value: 'boolean',
+          },
+        ],
       },
       body: {
-        type: "INTERFACE_BODY",
-        declarations: []
-      }
-    });
-  });
-});
+        type: 'INTERFACE_BODY',
+        declarations: [],
+      },
+    })
+  })
+})

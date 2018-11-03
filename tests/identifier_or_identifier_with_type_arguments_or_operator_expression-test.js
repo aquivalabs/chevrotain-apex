@@ -1,82 +1,82 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("identifierOrIdentifierWithTypeArgumentsOrOperatorExpression", () => {
-  it("identifier", () => {
+describe('identifierOrIdentifierWithTypeArgumentsOrOperatorExpression', () => {
+  it('identifier', () => {
     expect(
-      Parser.parse("i", parser =>
+      Parser.parse('i', (parser) =>
         parser.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression()
       )
     ).toEqual({
-      type: "IDENTIFIER",
-      value: "i"
-    });
-  });
+      type: 'IDENTIFIER',
+      value: 'i',
+    })
+  })
 
-  it("identifier with typeArguments", () => {
+  // FIXME: unsupported syntax
+  it('identifier with typeArguments', () => {
     expect(
-      Parser.parse("i<boolean>", parser =>
+      Parser.parse('i<boolean>', (parser) =>
         parser.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression()
       )
     ).toEqual({
-      type: "CLASS_OR_INTERFACE_TYPE_ELEMENT",
+      type: 'CLASS_OR_INTERFACE_TYPE_ELEMENT',
       name: {
-        type: "IDENTIFIER",
-        value: "i"
+        type: 'IDENTIFIER',
+        value: 'i',
       },
       typeArguments: {
-        type: "TYPE_ARGUMENTS",
+        type: 'TYPE_ARGUMENTS',
         value: {
-          type: "TYPE_LIST",
+          type: 'TYPE_LIST',
           list: [
             {
-              type: "TYPE_ARGUMENT",
+              type: 'TYPE_ARGUMENT',
               argument: {
-                type: "PRIMITIVE_TYPE",
-                value: "boolean"
+                type: 'PRIMITIVE_TYPE',
+                value: 'boolean',
               },
               extends: undefined,
-              super: undefined
-            }
-          ]
-        }
-      }
-    });
-  });
+              super: undefined,
+            },
+          ],
+        },
+      },
+    })
+  })
 
-  it("operatorExpression Less", () => {
+  it('operatorExpression Less', () => {
     expect(
-      Parser.parse("i < array.length", parser =>
+      Parser.parse('i < array.length', (parser) =>
         parser.identifierOrIdentifierWithTypeArgumentsOrOperatorExpression()
       )
     ).toEqual({
-      type: "OPERATOR_EXPRESSION",
+      type: 'OPERATOR_EXPRESSION',
       left: {
-        type: "IDENTIFIER",
-        value: "i"
+        type: 'IDENTIFIER',
+        value: 'i',
       },
       operator: {
-        type: "OPERATOR",
-        operator: "<"
+        type: 'OPERATOR',
+        operator: '<',
       },
       right: {
-        type: "TYPE_ARGUMENT",
+        type: 'TYPE_ARGUMENT',
         argument: {
-          type: "CLASS_OR_INTERFACE_TYPE",
+          type: 'CLASS_OR_INTERFACE_TYPE',
           elements: [
             {
-              type: "IDENTIFIER",
-              value: "array"
+              type: 'IDENTIFIER',
+              value: 'array',
             },
             {
-              type: "IDENTIFIER",
-              value: "length"
-            }
-          ]
+              type: 'IDENTIFIER',
+              value: 'length',
+            },
+          ],
         },
         extends: undefined,
-        super: undefined
-      }
-    });
-  });
-});
+        super: undefined,
+      },
+    })
+  })
+})

@@ -1,32 +1,28 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("nonWildcardTypeArgumentsOrDiamond", () => {
-  it("nonWildcardTypeArguments", () => {
+describe('nonWildcardTypeArgumentsOrDiamond', () => {
+  it('nonWildcardTypeArguments', () => {
     expect(
-      Parser.parse("<boolean>", parser =>
-        parser.nonWildcardTypeArgumentsOrDiamond()
-      )
+      Parser.parse('<boolean>', (parser) => parser.nonWildcardTypeArgumentsOrDiamond())
     ).toEqual({
-      type: "TYPE_ARGUMENTS",
+      type: 'TYPE_ARGUMENTS',
       value: {
-        type: "TYPE_LIST",
+        type: 'TYPE_LIST',
         list: [
           {
-            type: "PRIMITIVE_TYPE",
-            value: "boolean"
-          }
-        ]
-      }
-    });
-  });
+            type: 'PRIMITIVE_TYPE',
+            value: 'boolean',
+          },
+        ],
+      },
+    })
+  })
 
-  it("emptyDiamond", () => {
-    expect(
-      Parser.parse("<>", parser => parser.nonWildcardTypeArgumentsOrDiamond())
-    ).toEqual({
-      type: "TYPE_ARGUMENTS",
-      value: undefined
-    });
-  });
-});
+  // FIXME: unsupportedd syntax
+  it('emptyDiamond', () => {
+    expect(Parser.parse('<>', (parser) => parser.nonWildcardTypeArgumentsOrDiamond())).toEqual({
+      type: 'TYPE_ARGUMENTS',
+      value: undefined,
+    })
+  })
+})

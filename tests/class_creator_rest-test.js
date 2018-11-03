@@ -1,29 +1,28 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("classCreatorRest", () => {
-  it("without body", () => {
-    expect(Parser.parse("()", parser => parser.classCreatorRest())).toEqual({
-      type: "CLASS_CREATOR_REST",
+describe('classCreatorRest', () => {
+  it('without body', () => {
+    expect(Parser.parse('()', (parser) => parser.classCreatorRest())).toEqual({
+      type: 'CLASS_CREATOR_REST',
       arguments: {
-        type: "EXPRESSION_LIST",
-        list: []
+        type: 'EXPRESSION_LIST',
+        list: [],
       },
-      body: undefined
-    });
-  });
+      body: undefined,
+    })
+  })
 
-  it("with body", () => {
-    expect(Parser.parse("() {}", parser => parser.classCreatorRest())).toEqual({
-      type: "CLASS_CREATOR_REST",
+  it('with body', () => {
+    expect(Parser.parse('() {}', (parser) => parser.classCreatorRest())).toEqual({
+      type: 'CLASS_CREATOR_REST',
       arguments: {
-        type: "EXPRESSION_LIST",
-        list: []
+        type: 'EXPRESSION_LIST',
+        list: [],
       },
       body: {
-        type: "CLASS_BODY",
-        declarations: []
-      }
-    });
-  });
-});
+        type: 'CLASS_BODY',
+        declarations: [],
+      },
+    })
+  })
+})

@@ -1,57 +1,52 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("typeArguments", () => {
-  it("single", () => {
-    expect(Parser.parse("<boolean>", parser => parser.typeArguments())).toEqual(
-      {
-        type: "TYPE_ARGUMENTS",
-        value: {
-          type: "TYPE_LIST",
-          list: [
-            {
-              type: "TYPE_ARGUMENT",
-              argument: {
-                type: "PRIMITIVE_TYPE",
-                value: "boolean"
-              },
-              super: undefined,
-              extends: undefined
-            }
-          ]
-        }
-      }
-    );
-  });
-
-  it("multi", () => {
-    expect(
-      Parser.parse("<boolean, char>", parser => parser.typeArguments())
-    ).toEqual({
-      type: "TYPE_ARGUMENTS",
+describe('typeArguments', () => {
+  it('single', () => {
+    expect(Parser.parse('<boolean>', (parser) => parser.typeArguments())).toEqual({
+      type: 'TYPE_ARGUMENTS',
       value: {
-        type: "TYPE_LIST",
+        type: 'TYPE_LIST',
         list: [
           {
-            type: "TYPE_ARGUMENT",
+            type: 'TYPE_ARGUMENT',
             argument: {
-              type: "PRIMITIVE_TYPE",
-              value: "boolean"
+              type: 'PRIMITIVE_TYPE',
+              value: 'boolean',
             },
             super: undefined,
-            extends: undefined
+            extends: undefined,
+          },
+        ],
+      },
+    })
+  })
+
+  it('multi', () => {
+    expect(Parser.parse('<boolean, integer>', (parser) => parser.typeArguments())).toEqual({
+      type: 'TYPE_ARGUMENTS',
+      value: {
+        type: 'TYPE_LIST',
+        list: [
+          {
+            type: 'TYPE_ARGUMENT',
+            argument: {
+              type: 'PRIMITIVE_TYPE',
+              value: 'boolean',
+            },
+            super: undefined,
+            extends: undefined,
           },
           {
-            type: "TYPE_ARGUMENT",
+            type: 'TYPE_ARGUMENT',
             argument: {
-              type: "PRIMITIVE_TYPE",
-              value: "char"
+              type: 'PRIMITIVE_TYPE',
+              value: 'integer',
             },
             super: undefined,
-            extends: undefined
-          }
-        ]
-      }
-    });
-  });
-});
+            extends: undefined,
+          },
+        ],
+      },
+    })
+  })
+})

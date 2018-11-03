@@ -1,187 +1,180 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("resourceSpecification", () => {
-  it("one resource", () => {
-    expect(
-      Parser.parse("( A.B a = this )", parser => parser.resourceSpecification())
-    ).toEqual({
-      type: "RESOURCE_SPECIFICATION",
+describe('resourceSpecification', () => {
+  it('one resource', () => {
+    expect(Parser.parse('( A.B a = this )', (parser) => parser.resourceSpecification())).toEqual({
+      type: 'RESOURCE_SPECIFICATION',
       resources: {
-        type: "RESOURCES",
+        type: 'RESOURCES',
         resources: [
           {
-            type: "RESOURCE",
+            type: 'RESOURCE',
             modifiers: [],
             typeType: {
-              type: "CLASS_OR_INTERFACE_TYPE",
+              type: 'CLASS_OR_INTERFACE_TYPE',
               elements: [
                 {
-                  type: "IDENTIFIER",
-                  value: "A"
+                  type: 'IDENTIFIER',
+                  value: 'A',
                 },
                 {
-                  type: "IDENTIFIER",
-                  value: "B"
-                }
-              ]
+                  type: 'IDENTIFIER',
+                  value: 'B',
+                },
+              ],
             },
             id: {
-              type: "VARIABLE_DECLARATOR_ID",
+              type: 'VARIABLE_DECLARATOR_ID',
               id: {
-                type: "IDENTIFIER",
-                value: "a"
+                type: 'IDENTIFIER',
+                value: 'a',
               },
-              dimensions: []
+              dimensions: [],
             },
             expression: {
-              type: "THIS"
-            }
-          }
-        ]
-      }
-    });
-  });
+              type: 'THIS',
+            },
+          },
+        ],
+      },
+    })
+  })
 
-  it("multiple resources", () => {
+  it('multiple resources', () => {
     expect(
-      Parser.parse("( A.B a = this; B.C b = this )", parser =>
-        parser.resourceSpecification()
-      )
+      Parser.parse('( A.B a = this; B.C b = this )', (parser) => parser.resourceSpecification())
     ).toEqual({
-      type: "RESOURCE_SPECIFICATION",
+      type: 'RESOURCE_SPECIFICATION',
       resources: {
-        type: "RESOURCES",
+        type: 'RESOURCES',
         resources: [
           {
-            type: "RESOURCE",
+            type: 'RESOURCE',
             modifiers: [],
             typeType: {
-              type: "CLASS_OR_INTERFACE_TYPE",
+              type: 'CLASS_OR_INTERFACE_TYPE',
               elements: [
                 {
-                  type: "IDENTIFIER",
-                  value: "A"
+                  type: 'IDENTIFIER',
+                  value: 'A',
                 },
                 {
-                  type: "IDENTIFIER",
-                  value: "B"
-                }
-              ]
+                  type: 'IDENTIFIER',
+                  value: 'B',
+                },
+              ],
             },
             id: {
-              type: "VARIABLE_DECLARATOR_ID",
+              type: 'VARIABLE_DECLARATOR_ID',
               id: {
-                type: "IDENTIFIER",
-                value: "a"
+                type: 'IDENTIFIER',
+                value: 'a',
               },
-              dimensions: []
+              dimensions: [],
             },
             expression: {
-              type: "THIS"
-            }
+              type: 'THIS',
+            },
           },
           {
-            type: "RESOURCE",
+            type: 'RESOURCE',
             modifiers: [],
             typeType: {
-              type: "CLASS_OR_INTERFACE_TYPE",
+              type: 'CLASS_OR_INTERFACE_TYPE',
               elements: [
                 {
-                  type: "IDENTIFIER",
-                  value: "B"
+                  type: 'IDENTIFIER',
+                  value: 'B',
                 },
                 {
-                  type: "IDENTIFIER",
-                  value: "C"
-                }
-              ]
+                  type: 'IDENTIFIER',
+                  value: 'C',
+                },
+              ],
             },
             id: {
-              type: "VARIABLE_DECLARATOR_ID",
+              type: 'VARIABLE_DECLARATOR_ID',
               id: {
-                type: "IDENTIFIER",
-                value: "b"
+                type: 'IDENTIFIER',
+                value: 'b',
               },
-              dimensions: []
+              dimensions: [],
             },
             expression: {
-              type: "THIS"
-            }
-          }
-        ]
-      }
-    });
-  });
+              type: 'THIS',
+            },
+          },
+        ],
+      },
+    })
+  })
 
-  it("multiple resources with ending semicolon", () => {
+  it('multiple resources with ending semicolon', () => {
     expect(
-      Parser.parse("( A.B a = this; B.C b = this; )", parser =>
-        parser.resourceSpecification()
-      )
+      Parser.parse('( A.B a = this; B.C b = this; )', (parser) => parser.resourceSpecification())
     ).toEqual({
-      type: "RESOURCE_SPECIFICATION",
+      type: 'RESOURCE_SPECIFICATION',
       resources: {
-        type: "RESOURCES",
+        type: 'RESOURCES',
         resources: [
           {
-            type: "RESOURCE",
+            type: 'RESOURCE',
             modifiers: [],
             typeType: {
-              type: "CLASS_OR_INTERFACE_TYPE",
+              type: 'CLASS_OR_INTERFACE_TYPE',
               elements: [
                 {
-                  type: "IDENTIFIER",
-                  value: "A"
+                  type: 'IDENTIFIER',
+                  value: 'A',
                 },
                 {
-                  type: "IDENTIFIER",
-                  value: "B"
-                }
-              ]
+                  type: 'IDENTIFIER',
+                  value: 'B',
+                },
+              ],
             },
             id: {
-              type: "VARIABLE_DECLARATOR_ID",
+              type: 'VARIABLE_DECLARATOR_ID',
               id: {
-                type: "IDENTIFIER",
-                value: "a"
+                type: 'IDENTIFIER',
+                value: 'a',
               },
-              dimensions: []
+              dimensions: [],
             },
             expression: {
-              type: "THIS"
-            }
+              type: 'THIS',
+            },
           },
           {
-            type: "RESOURCE",
+            type: 'RESOURCE',
             modifiers: [],
             typeType: {
-              type: "CLASS_OR_INTERFACE_TYPE",
+              type: 'CLASS_OR_INTERFACE_TYPE',
               elements: [
                 {
-                  type: "IDENTIFIER",
-                  value: "B"
+                  type: 'IDENTIFIER',
+                  value: 'B',
                 },
                 {
-                  type: "IDENTIFIER",
-                  value: "C"
-                }
-              ]
+                  type: 'IDENTIFIER',
+                  value: 'C',
+                },
+              ],
             },
             id: {
-              type: "VARIABLE_DECLARATOR_ID",
+              type: 'VARIABLE_DECLARATOR_ID',
               id: {
-                type: "IDENTIFIER",
-                value: "b"
+                type: 'IDENTIFIER',
+                value: 'b',
               },
-              dimensions: []
+              dimensions: [],
             },
             expression: {
-              type: "THIS"
-            }
-          }
-        ]
-      }
-    });
-  });
-});
+              type: 'THIS',
+            },
+          },
+        ],
+      },
+    })
+  })
+})

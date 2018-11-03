@@ -1,111 +1,110 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("methodBody", () => {
-  it("block", () => {
-    expect(Parser.parse("{}", parser => parser.methodBody())).toEqual({
-      type: "BLOCK",
-      statements: []
-    });
-  });
+describe('methodBody', () => {
+  it('block', () => {
+    expect(Parser.parse('{}', (parser) => parser.methodBody())).toEqual({
+      type: 'BLOCK',
+      statements: [],
+    })
+  })
 
-  it("semiColon", () => {
-    expect(Parser.parse(";", parser => parser.methodBody())).toEqual(undefined);
-  });
+  it('semiColon', () => {
+    expect(Parser.parse(';', (parser) => parser.methodBody())).toEqual(undefined)
+  })
 
-  it("charLiteral", () => {
+  it('stringLiteral', () => {
     expect(
       Parser.parse(
-        "{\nif (message.indexOf('h') > 0) {}\nint destination = message.indexOf('d');\n}",
-        parser => parser.methodBody()
+        "{\nif (message.indexOf('h') > 0) {}\ninteger destination = message.indexOf('d');\n}",
+        (parser) => parser.methodBody()
       )
     ).toEqual({
-      type: "BLOCK",
+      type: 'BLOCK',
       statements: [
         {
-          type: "IF_STATEMENT",
+          type: 'IF_STATEMENT',
           condition: {
-            type: "OPERATOR_EXPRESSION",
+            type: 'OPERATOR_EXPRESSION',
             left: {
-              type: "QUALIFIED_EXPRESSION",
+              type: 'QUALIFIED_EXPRESSION',
               expression: {
-                type: "IDENTIFIER",
-                value: "message"
+                type: 'IDENTIFIER',
+                value: 'message',
               },
               rest: {
-                type: "METHOD_INVOCATION",
+                type: 'METHOD_INVOCATION',
                 name: {
-                  type: "IDENTIFIER",
-                  value: "indexOf"
+                  type: 'IDENTIFIER',
+                  value: 'indexOf',
                 },
                 parameters: {
                   list: [
                     {
-                      type: "CHAR_LITERAL",
-                      value: "'h'"
-                    }
+                      type: 'STRING_LITERAL',
+                      value: "'h'",
+                    },
                   ],
-                  type: "EXPRESSION_LIST"
+                  type: 'EXPRESSION_LIST',
                 },
-                dimensions: []
-              }
+                dimensions: [],
+              },
             },
             operator: {
-              type: "OPERATOR",
-              operator: ">"
+              type: 'OPERATOR',
+              operator: '>',
             },
             right: {
-              type: "DECIMAL_LITERAL",
-              value: "0"
-            }
+              type: 'DECIMAL_LITERAL',
+              value: '0',
+            },
           },
           body: {
             statements: [],
-            type: "BLOCK"
+            type: 'BLOCK',
           },
-          else: undefined
+          else: undefined,
         },
         {
-          type: "EXPRESSION_STATEMENT",
+          type: 'EXPRESSION_STATEMENT',
           expression: {
-            type: "LOCAL_VARIABLE_DECLARATION",
+            type: 'LOCAL_VARIABLE_DECLARATION',
             modifiers: [],
-            typeType: { type: "PRIMITIVE_TYPE", value: "int" },
+            typeType: { type: 'PRIMITIVE_TYPE', value: 'integer' },
             declarators: {
-              type: "VARIABLE_DECLARATORS",
+              type: 'VARIABLE_DECLARATORS',
               list: [
                 {
-                  type: "VARIABLE_DECLARATOR",
+                  type: 'VARIABLE_DECLARATOR',
                   id: {
-                    type: "VARIABLE_DECLARATOR_ID",
+                    type: 'VARIABLE_DECLARATOR_ID',
                     dimensions: [],
-                    id: { type: "IDENTIFIER", value: "destination" }
+                    id: { type: 'IDENTIFIER', value: 'destination' },
                   },
                   init: {
-                    type: "QUALIFIED_EXPRESSION",
-                    expression: { type: "IDENTIFIER", value: "message" },
+                    type: 'QUALIFIED_EXPRESSION',
+                    expression: { type: 'IDENTIFIER', value: 'message' },
                     rest: {
                       dimensions: [],
-                      name: { type: "IDENTIFIER", value: "indexOf" },
+                      name: { type: 'IDENTIFIER', value: 'indexOf' },
                       parameters: {
                         list: [
                           {
-                            type: "CHAR_LITERAL",
-                            value: "'d'"
-                          }
+                            type: 'STRING_LITERAL',
+                            value: "'d'",
+                          },
                         ],
-                        type: "EXPRESSION_LIST"
+                        type: 'EXPRESSION_LIST',
                       },
-                      type: "METHOD_INVOCATION"
-                    }
-                  }
-                }
-              ]
-            }
+                      type: 'METHOD_INVOCATION',
+                    },
+                  },
+                },
+              ],
+            },
           },
-          followedEmptyLine: false
-        }
-      ]
-    });
-  });
-});
+          followedEmptyLine: false,
+        },
+      ],
+    })
+  })
+})

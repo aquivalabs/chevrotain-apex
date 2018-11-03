@@ -1,34 +1,31 @@
-"use strict";
-const Parser = require("../src/index");
+const Parser = require('../src/index')
 
-describe("fieldDeclaration", () => {
-  it("simple", () => {
-    expect(
-      Parser.parse("Abc def;", parser => parser.fieldDeclaration())
-    ).toEqual({
-      type: "FIELD_DECLARATION",
+describe('fieldDeclaration', () => {
+  it('simple', () => {
+    expect(Parser.parse('Abc def;', (parser) => parser.fieldDeclaration())).toEqual({
+      type: 'FIELD_DECLARATION',
       typeType: {
-        type: "IDENTIFIER",
-        value: "Abc"
+        type: 'IDENTIFIER',
+        value: 'Abc',
       },
       variableDeclarators: {
-        type: "VARIABLE_DECLARATORS",
+        type: 'VARIABLE_DECLARATORS',
         list: [
           {
-            type: "VARIABLE_DECLARATOR",
+            type: 'VARIABLE_DECLARATOR',
             id: {
-              type: "VARIABLE_DECLARATOR_ID",
+              type: 'VARIABLE_DECLARATOR_ID',
               id: {
-                type: "IDENTIFIER",
-                value: "def"
+                type: 'IDENTIFIER',
+                value: 'def',
               },
-              dimensions: []
+              dimensions: [],
             },
-            init: undefined
-          }
-        ]
+            init: undefined,
+          },
+        ],
       },
-      followedEmptyLine: false
-    });
-  });
-});
+      followedEmptyLine: false,
+    })
+  })
+})
