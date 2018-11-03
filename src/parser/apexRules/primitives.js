@@ -13,6 +13,7 @@ function primitives($) {
       { ALT: () => $.CONSUME(tokens.apex.Integer) },
       { ALT: () => $.CONSUME(tokens.apex.Long) },
       { ALT: () => $.CONSUME(tokens.apex.Double) },
+      { ALT: () => $.CONSUME(tokens.apex.Decimal) },
       { ALT: () => $.CONSUME(tokens.apex.String) },
     ])
   })

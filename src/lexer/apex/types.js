@@ -24,6 +24,12 @@ const Double = createKeywordToken({
   label: "'Double'",
 })
 
+const Decimal = createKeywordToken({
+  name: 'Decimal',
+  pattern: /Decimal/,
+  label: "'Decimal'",
+})
+
 const String = createKeywordToken({
   name: 'String',
   pattern: /String/,
@@ -41,6 +47,7 @@ module.exports = {
   Integer,
   Long,
   Double,
+  Decimal,
   String,
   Void,
 }

@@ -5,6 +5,7 @@ module.exports = `public abstract class AqObj {
   public List<sObject> a = r.dsr.de.set(0);
   public List<sObject> a = r.r.qwe(0);
   public String vah = 'a"b"c';
+  public Decimal vah = 123.2;
   private static final List<String> definedList = new List<String>{'a', 'b'};
   String listElementByIndex = definedList[0];
   private static final Map<String, String> definedList = new Map<String, String>{'a' => 'a', 'b' => 'b'};
