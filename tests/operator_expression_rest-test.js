@@ -274,6 +274,7 @@ describe('operatorExpressionRest', () => {
     })
   })
 
+  // FIXME
   it('PercentageEquals', () => {
     expect(Parser.parse('%=super', (parser) => parser.operatorExpressionRest())).toEqual({
       type: 'OPERATOR_EXPRESSION_REST',
