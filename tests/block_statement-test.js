@@ -36,12 +36,12 @@ describe('blockStatement', () => {
   })
 
   it('localVariableDeclaration: complex', () => {
-    expect(Parser.parse('Byte byteVariable;', (parser) => parser.blockStatement())).toEqual({
+    expect(Parser.parse('integer integerVariable;', (parser) => parser.blockStatement())).toEqual({
       type: 'EXPRESSION_STATEMENT',
       expression: {
         type: 'LOCAL_VARIABLE_DECLARATION',
         modifiers: [],
-        typeType: { type: 'PRIMITIVE_TYPE', value: 'byte' },
+        typeType: { type: 'PRIMITIVE_TYPE', value: 'integer' },
         declarators: {
           type: 'VARIABLE_DECLARATORS',
           list: [
@@ -51,7 +51,7 @@ describe('blockStatement', () => {
                 dimensions: [],
                 id: {
                   type: 'IDENTIFIER',
-                  value: 'byteVariable',
+                  value: 'integerVariable',
                 },
                 type: 'VARIABLE_DECLARATOR_ID',
               },

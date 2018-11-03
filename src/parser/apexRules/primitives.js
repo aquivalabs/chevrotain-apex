@@ -3,22 +3,15 @@ const { tokens } = require('../../lexer')
 function primitives($) {
   // primitiveType
   // : BOOLEAN
-  // | CHAR
-  // | BYTE
-  // | SHORT
   // | INTEGER
   // | LONG
-  // | FLOAT
   // | DOUBLE
+  // | STRING
   $.RULE('primitiveType', () => {
     $.OR([
       { ALT: () => $.CONSUME(tokens.apex.Boolean) },
-      { ALT: () => $.CONSUME(tokens.apex.Char) },
-      { ALT: () => $.CONSUME(tokens.apex.Byte) },
-      { ALT: () => $.CONSUME(tokens.apex.Short) },
       { ALT: () => $.CONSUME(tokens.apex.Integer) },
       { ALT: () => $.CONSUME(tokens.apex.Long) },
-      { ALT: () => $.CONSUME(tokens.apex.Float) },
       { ALT: () => $.CONSUME(tokens.apex.Double) },
       { ALT: () => $.CONSUME(tokens.apex.String) },
     ])

@@ -22,7 +22,7 @@ describe('typeArguments', () => {
   })
 
   it('multi', () => {
-    expect(Parser.parse('<boolean, char>', (parser) => parser.typeArguments())).toEqual({
+    expect(Parser.parse('<boolean, integer>', (parser) => parser.typeArguments())).toEqual({
       type: 'TYPE_ARGUMENTS',
       value: {
         type: 'TYPE_LIST',
@@ -40,7 +40,7 @@ describe('typeArguments', () => {
             type: 'TYPE_ARGUMENT',
             argument: {
               type: 'PRIMITIVE_TYPE',
-              value: 'char',
+              value: 'integer',
             },
             super: undefined,
             extends: undefined,

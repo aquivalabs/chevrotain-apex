@@ -8,27 +8,6 @@ describe('primitiveType', () => {
     })
   })
 
-  it('char', () => {
-    expect(Parser.parse('char', (parser) => parser.primitiveType())).toEqual({
-      type: 'PRIMITIVE_TYPE',
-      value: 'char',
-    })
-  })
-
-  it('byte', () => {
-    expect(Parser.parse('byte', (parser) => parser.primitiveType())).toEqual({
-      type: 'PRIMITIVE_TYPE',
-      value: 'byte',
-    })
-  })
-
-  it('short', () => {
-    expect(Parser.parse('short', (parser) => parser.primitiveType())).toEqual({
-      type: 'PRIMITIVE_TYPE',
-      value: 'short',
-    })
-  })
-
   it('integer', () => {
     expect(Parser.parse('integer', (parser) => parser.primitiveType())).toEqual({
       type: 'PRIMITIVE_TYPE',
@@ -40,13 +19,6 @@ describe('primitiveType', () => {
     expect(Parser.parse('long', (parser) => parser.primitiveType())).toEqual({
       type: 'PRIMITIVE_TYPE',
       value: 'long',
-    })
-  })
-
-  it('float', () => {
-    expect(Parser.parse('float', (parser) => parser.primitiveType())).toEqual({
-      type: 'PRIMITIVE_TYPE',
-      value: 'float',
     })
   })
 

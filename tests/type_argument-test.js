@@ -25,7 +25,7 @@ describe('typeArgument', () => {
   })
 
   it('primitiveType extends primitiveType', () => {
-    expect(Parser.parse('boolean extends char', (parser) => parser.typeArgument())).toEqual({
+    expect(Parser.parse('boolean extends someType', (parser) => parser.typeArgument())).toEqual({
       type: 'TYPE_ARGUMENT',
       argument: {
         type: 'PRIMITIVE_TYPE',
@@ -33,29 +33,29 @@ describe('typeArgument', () => {
       },
       super: undefined,
       extends: {
-        type: 'PRIMITIVE_TYPE',
-        value: 'char',
+        type: 'IDENTIFIER',
+        value: 'someType',
       },
     })
   })
 
   it('primitiveType super primitiveType', () => {
-    expect(Parser.parse('boolean super char', (parser) => parser.typeArgument())).toEqual({
+    expect(Parser.parse('boolean super someType', (parser) => parser.typeArgument())).toEqual({
       type: 'TYPE_ARGUMENT',
       argument: {
         type: 'PRIMITIVE_TYPE',
         value: 'boolean',
       },
       super: {
-        type: 'PRIMITIVE_TYPE',
-        value: 'char',
+        type: 'IDENTIFIER',
+        value: 'someType',
       },
       extends: undefined,
     })
   })
 
   it('questionmark extends primitiveType', () => {
-    expect(Parser.parse('? extends char', (parser) => parser.typeArgument())).toEqual({
+    expect(Parser.parse('? extends integer', (parser) => parser.typeArgument())).toEqual({
       type: 'TYPE_ARGUMENT',
       argument: {
         type: 'QUESTIONMARK',
@@ -63,20 +63,20 @@ describe('typeArgument', () => {
       super: undefined,
       extends: {
         type: 'PRIMITIVE_TYPE',
-        value: 'char',
+        value: 'integer',
       },
     })
   })
 
   it('questionmark super primitiveType', () => {
-    expect(Parser.parse('? super char', (parser) => parser.typeArgument())).toEqual({
+    expect(Parser.parse('? super integer', (parser) => parser.typeArgument())).toEqual({
       type: 'TYPE_ARGUMENT',
       argument: {
         type: 'QUESTIONMARK',
       },
       super: {
         type: 'PRIMITIVE_TYPE',
-        value: 'char',
+        value: 'integer',
       },
       extends: undefined,
     })

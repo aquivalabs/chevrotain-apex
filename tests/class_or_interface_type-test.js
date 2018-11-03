@@ -17,8 +17,11 @@ describe('classOrInterfaceType', () => {
     })
   })
 
+  // FIXME: this might be a false positive
   it('typeArguments', () => {
-    expect(Parser.parse('A<boolean>.B<char>', (parser) => parser.classOrInterfaceType())).toEqual({
+    expect(
+      Parser.parse('A<boolean>.B<someType>', (parser) => parser.classOrInterfaceType())
+    ).toEqual({
       type: 'CLASS_OR_INTERFACE_TYPE',
       elements: [
         {
@@ -59,8 +62,8 @@ describe('classOrInterfaceType', () => {
                 {
                   type: 'TYPE_ARGUMENT',
                   argument: {
-                    type: 'PRIMITIVE_TYPE',
-                    value: 'char',
+                    type: 'IDENTIFIER',
+                    value: 'someType',
                   },
                   super: undefined,
                   extends: undefined,

@@ -14,7 +14,7 @@ describe('typeBound', () => {
   })
 
   it('multiple', () => {
-    expect(Parser.parse('boolean & char', (parser) => parser.typeBound())).toEqual({
+    expect(Parser.parse('boolean & integer', (parser) => parser.typeBound())).toEqual({
       type: 'TYPE_BOUND',
       list: [
         {
@@ -23,7 +23,7 @@ describe('typeBound', () => {
         },
         {
           type: 'PRIMITIVE_TYPE',
-          value: 'char',
+          value: 'integer',
         },
       ],
     })

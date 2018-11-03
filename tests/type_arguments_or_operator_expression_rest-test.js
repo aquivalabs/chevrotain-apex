@@ -25,7 +25,7 @@ describe('typeArgumentsOrOperatorExpressionRest', () => {
 
   it('multi', () => {
     expect(
-      Parser.parse('<boolean, char>', (parser) => parser.typeArgumentsOrOperatorExpressionRest())
+      Parser.parse('<boolean, integer>', (parser) => parser.typeArgumentsOrOperatorExpressionRest())
     ).toEqual({
       type: 'TYPE_ARGUMENTS',
       value: {
@@ -44,7 +44,7 @@ describe('typeArgumentsOrOperatorExpressionRest', () => {
             type: 'TYPE_ARGUMENT',
             argument: {
               type: 'PRIMITIVE_TYPE',
-              value: 'char',
+              value: 'integer',
             },
             super: undefined,
             extends: undefined,

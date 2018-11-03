@@ -33,6 +33,7 @@ describe('primary', () => {
     })
   })
 
+  // FIXME: wrong type, should be DOUBLE_LITERAL
   it('floatLiteral', () => {
     expect(Parser.parse('0.1', (parser) => parser.primary())).toEqual({
       type: 'FLOAT_LITERAL',

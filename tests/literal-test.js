@@ -15,6 +15,7 @@ describe('literal', () => {
     })
   })
 
+  // FIXME: wrong type, should be DOUBLE_LITERAL
   it('floatLiteral: positive', () => {
     expect(Parser.parse('0.1', (parser) => parser.literal())).toEqual({
       type: 'FLOAT_LITERAL',
@@ -29,7 +30,7 @@ describe('literal', () => {
     })
   })
 
-  it('charLiteral: colon', () => {
+  it('stringLiteral: colon', () => {
     expect(Parser.parse("':'", (parser) => parser.literal())).toEqual({
       type: 'STRING_LITERAL',
       value: "':'",
@@ -37,37 +38,37 @@ describe('literal', () => {
   })
 
   // FIXME: these are not parsed right
-  it('charLiteral: t', () => {
+  it('stringLiteral: t', () => {
     expect(Parser.parse("'\t'", (parser) => parser.literal())).toEqual({
       type: 'STRING_LITERAL',
       value: "'\\t'",
     })
   })
-  it('charLiteral: n', () => {
+  it('stringLiteral: n', () => {
     expect(Parser.parse("'\n'", (parser) => parser.literal())).toEqual({
       type: 'STRING_LITERAL',
       value: "'\\n'",
     })
   })
-  it('charLiteral: r', () => {
+  it('stringLiteral: r', () => {
     expect(Parser.parse("'\r'", (parser) => parser.literal())).toEqual({
       type: 'STRING_LITERAL',
       value: "'\\r'",
     })
   })
-  it('charLiteral: f', () => {
+  it('stringLiteral: f', () => {
     expect(Parser.parse("'\f'", (parser) => parser.literal())).toEqual({
       type: 'STRING_LITERAL',
       value: "'\\f'",
     })
   })
-  it("charLiteral: '", () => {
-    expect(Parser.parse("'\''", (parser) => parser.literal())).toEqual({
+  it("stringLiteral: '", () => {
+    expect(Parser.parse("'''", (parser) => parser.literal())).toEqual({
       type: 'STRING_LITERAL',
       value: "'\\''",
     })
   })
-  it('charLiteral: \\', () => {
+  it('stringLiteral: \\', () => {
     expect(Parser.parse("'\\'", (parser) => parser.literal())).toEqual({
       type: 'STRING_LITERAL',
       value: "'\\\\'",
@@ -75,7 +76,7 @@ describe('literal', () => {
   })
 
   // TODO unicode not supported
-  // it("charLiteral: unicode", () => {
+  // it("stringLiteral: unicode", () => {
   //   expect(Parser.parse("'\uFFFF'", parser => parser.literal())).toEqual({
   //     type: "STRING_LITERAL",
   //     value: "'\\uFFFF'"

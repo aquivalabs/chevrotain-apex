@@ -12,7 +12,7 @@ describe('methodBody', () => {
     expect(Parser.parse(';', (parser) => parser.methodBody())).toEqual(undefined)
   })
 
-  it('charLiteral', () => {
+  it('stringLiteral', () => {
     expect(
       Parser.parse(
         "{\nif (message.indexOf('h') > 0) {}\ninteger destination = message.indexOf('d');\n}",

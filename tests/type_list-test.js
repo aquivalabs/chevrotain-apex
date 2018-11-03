@@ -14,7 +14,7 @@ describe('typeList', () => {
   })
 
   it('multiple', () => {
-    expect(Parser.parse('boolean, char', (parser) => parser.typeList())).toEqual({
+    expect(Parser.parse('boolean, integer', (parser) => parser.typeList())).toEqual({
       type: 'TYPE_LIST',
       list: [
         {
@@ -23,7 +23,7 @@ describe('typeList', () => {
         },
         {
           type: 'PRIMITIVE_TYPE',
-          value: 'char',
+          value: 'integer',
         },
       ],
     })
