@@ -133,6 +133,7 @@ describe('enum', () => {
     })
   })
 
+  // FIXME: false positive, enums don't allow method declaration and trailing commas
   it('enumConstants with comma && enumBodyDeclarations', () => {
     expect(Parser.parse('enum A{B,; void a() {}}', (parser) => parser.enumDeclaration())).toEqual({
       type: 'ENUM_DECLARATION',
