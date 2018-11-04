@@ -177,6 +177,10 @@ module.exports = `public abstract without sharing class AqObj {
       }
   }
 
+  public static testmethod void methodThatTests() {
+      return;
+  }
+
   public virtual void onTrigger() {
       if (Trigger.isBefore) {
           if (Trigger.isDelete) {

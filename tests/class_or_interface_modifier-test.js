@@ -36,6 +36,7 @@ describe('classOrInterfaceModifier', () => {
     })
   })
 
+<<<<<<< HEAD
   it('with sharing', () => {
     expect(Parser.parse('with sharing', (parser) => parser.sharingModifier())).toEqual({
       type: 'SHARING_MODIFIER',
@@ -54,6 +55,13 @@ describe('classOrInterfaceModifier', () => {
     expect(Parser.parse('inherit sharing', (parser) => parser.sharingModifier())).toEqual({
       type: 'SHARING_MODIFIER',
       value: 'inherit sharing',
+    })
+  })
+
+  it('testmethod', () => {
+    expect(Parser.parse('testmethod', (parser) => parser.classOrInterfaceModifier())).toEqual({
+      type: 'MODIFIER',
+      value: 'testmethod',
     })
   })
 
