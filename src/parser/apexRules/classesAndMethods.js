@@ -67,6 +67,17 @@ function classesAndMethods($) {
     ])
   })
 
+  // sharingModifier
+  // ( with | without | inherit ) sharing
+  $.RULE('sharingModifier', () => {
+    $.OR([
+      { ALT: () => $.CONSUME(tokens.apex.With) },
+      { ALT: () => $.CONSUME(tokens.apex.Without) },
+      { ALT: () => $.CONSUME(tokens.apex.Inherit) },
+    ])
+    $.CONSUME(tokens.apex.Sharing)
+  })
+
   // classOrInterfaceModifier
   // : annotation
   // | accessModifier
@@ -78,6 +89,7 @@ function classesAndMethods($) {
       { ALT: () => $.SUBRULE($.annotation) },
       { ALT: () => $.SUBRULE($.accessModifier) },
       { ALT: () => $.SUBRULE($.abstractOrVirtual) },
+      { ALT: () => $.SUBRULE($.sharingModifier) },
       { ALT: () => $.CONSUME(tokens.apex.Static) },
       { ALT: () => $.CONSUME(tokens.apex.Final) },
     ])
