@@ -49,6 +49,7 @@ module.exports = {
   LSquareSelect,
   ...dmlTokens,
   ...keywordTokens,
+  ...keywords,
   Get,
   Set,
   Assert,
