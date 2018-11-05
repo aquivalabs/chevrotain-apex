@@ -2593,7 +2593,7 @@ class ApexVisitor extends BaseCstVisitor {
       type: 'DML_STATEMENT',
       dmlOperation: dml_operator,
       identifier: identifier,
-      upsertKey: upsertKey
+      upsertKey: upsertKey,
     }
   }
 
@@ -3601,7 +3601,38 @@ class ApexVisitor extends BaseCstVisitor {
   }
 
   stringLiteral(ctx) {
-    const value = ctx.StringLiteral[0].image
+    let value = ctx.StringLiteral[0].image
+
+    switch (value) {
+      case "'\t'": {
+        value = "'\\t'"
+        break
+      }
+      case "'\n'": {
+        value = "'\\n'"
+        break
+      }
+      case "'\r'": {
+        value = "'\\r'"
+        break
+      }
+      case "'\f'": {
+        value = "'\\f'"
+        break
+      }
+      // eslint-disable-next-line prettier/prettier
+      // case "'\''": {
+      //   value = "'\\''"
+      //   break
+      // }
+      case "'\\'": {
+        value = "'\\\\'"
+        break
+      }
+      default: {
+        value = ctx.StringLiteral[0].image
+      }
+    }
 
     return {
       type: 'STRING_LITERAL',

@@ -37,7 +37,6 @@ describe('literal', () => {
     })
   })
 
-  // FIXME: these are not parsed right
   it('stringLiteral: t', () => {
     expect(Parser.parse("'\t'", (parser) => parser.literal())).toEqual({
       type: 'STRING_LITERAL',
@@ -62,8 +61,9 @@ describe('literal', () => {
       value: "'\\f'",
     })
   })
+  // FIXME: these are not parsed right
   it("stringLiteral: '", () => {
-    expect(Parser.parse("'''", (parser) => parser.literal())).toEqual({
+    expect(Parser.parse("'\''", (parser) => parser.literal())).toEqual({
       type: 'STRING_LITERAL',
       value: "'\\''",
     })
