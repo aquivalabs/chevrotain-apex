@@ -1,4 +1,4 @@
-module.exports = `public abstract class AqObj {
+module.exports = `public abstract without sharing class AqObj {
   public static final String NAME = 'VALUE';
   public List<sObject> l = Trigger.new.get(0);
   public List<sObject> a = r.dsr.get(0);

@@ -17,4 +17,30 @@ describe('classDeclaration', () => {
       },
     })
   })
+
+  it('with sharing class', () => {
+    expect(Parser.parse('with sharing class A{}', (parser) => parser.typeDeclaration())).toEqual({
+      declaration: {
+        type: 'CLASS_DECLARATION',
+        name: {
+          type: 'IDENTIFIER',
+          value: 'A',
+        },
+        typeParameters: undefined,
+        extends: undefined,
+        implements: undefined,
+        body: {
+          type: 'CLASS_BODY',
+          declarations: [],
+        },
+      },
+      modifiers: [
+        {
+          type: 'MODIFIER',
+          value: 'with sharing',
+        },
+      ],
+      type: 'TYPE_DECLARATION',
+    })
+  })
 })

@@ -131,6 +131,23 @@ class ApexVisitor extends BaseCstVisitor {
     }
   }
 
+  sharingModifier(ctx) {
+    let value
+
+    if (ctx.With) {
+      value = 'with sharing'
+    } else if (ctx.Without) {
+      value = 'without sharing'
+    } else if (ctx.Inherit) {
+      value = 'inherit sharing'
+    }
+
+    return {
+      type: 'SHARING_MODIFIER',
+      value: value,
+    }
+  }
+
   classOrInterfaceModifier(ctx) {
     if (ctx.annotation) {
       return this.visit(ctx.annotation)
@@ -141,6 +158,8 @@ class ApexVisitor extends BaseCstVisitor {
       value = this.visit(ctx.accessModifier).value
     } else if (ctx.abstractOrVirtual) {
       value = this.visit(ctx.abstractOrVirtual).value
+    } else if (ctx.sharingModifier) {
+      value = this.visit(ctx.sharingModifier).value
     } else if (ctx.Static) {
       value = 'static'
     } else if (ctx.Final) {
@@ -2593,7 +2612,7 @@ class ApexVisitor extends BaseCstVisitor {
       type: 'DML_STATEMENT',
       dmlOperation: dml_operator,
       identifier: identifier,
-      upsertKey: upsertKey
+      upsertKey: upsertKey,
     }
   }
 
