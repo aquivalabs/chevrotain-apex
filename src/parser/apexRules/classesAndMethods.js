@@ -90,6 +90,7 @@ function classesAndMethods($) {
       { ALT: () => $.SUBRULE($.accessModifier) },
       { ALT: () => $.SUBRULE($.abstractOrVirtual) },
       { ALT: () => $.SUBRULE($.sharingModifier) },
+      { ALT: () => $.CONSUME(tokens.apex.Testmethod) },
       { ALT: () => $.CONSUME(tokens.apex.Static) },
       { ALT: () => $.CONSUME(tokens.apex.Final) },
     ])

@@ -160,6 +160,8 @@ class ApexVisitor extends BaseCstVisitor {
       value = this.visit(ctx.abstractOrVirtual).value
     } else if (ctx.sharingModifier) {
       value = this.visit(ctx.sharingModifier).value
+    } else if (ctx.Testmethod) {
+      value = 'testmethod'
     } else if (ctx.Static) {
       value = 'static'
     } else if (ctx.Final) {

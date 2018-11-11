@@ -24,9 +24,16 @@ const Inherit = createKeywordToken({
   label: "'inherit'",
 })
 
+const Testmethod = createKeywordToken({
+  name: 'Testmethod',
+  pattern: /testmethod/,
+  label: "'testmethod'",
+})
+
 module.exports = {
   Sharing,
   Without,
   Inherit,
   With,
+  Testmethod,
 }
