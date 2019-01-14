@@ -1,49 +1,49 @@
 const { createKeywordToken } = require('../_shared')
 
 const CountDistinct = createKeywordToken({
-  name: 'COUNT_DISTINCT',
+  name: 'CountDistinct',
   pattern: /COUNT_DISTINCT/,
   label: "'COUNT DISTINCT'",
 })
 
 const Count = createKeywordToken({
-  name: 'COUNT',
+  name: 'Count',
   pattern: /COUNT/,
   label: "'COUNT'",
 })
 
 const Avg = createKeywordToken({
-  name: 'AVG',
+  name: 'Avg',
   pattern: /AVG/,
   label: "'AVG'",
 })
 
 const Min = createKeywordToken({
-  name: 'MIN',
+  name: 'Min',
   pattern: /MIN/,
   label: "'MIN'",
 })
 
 const Max = createKeywordToken({
-  name: 'MAX',
+  name: 'Max',
   pattern: /MAX/,
   label: "'MAX'",
 })
 
 const Sum = createKeywordToken({
-  name: 'SUM',
+  name: 'Sum',
   pattern: /SUM/,
   label: "'SUM'",
 })
 
 const Group = createKeywordToken({
-  name: 'GROUP',
+  name: 'Group',
   pattern: /GROUP/,
   label: "'GROUP'",
 })
 
 const Having = createKeywordToken({
-  name: 'HAVING',
+  name: 'Having',
   pattern: /HAVING/,
   label: "'HAVING'",
 })
