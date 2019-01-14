@@ -44,14 +44,21 @@ module.exports = `public abstract class AqObj {
         AVG(Something) t, SUM(FieldToSum__c)
     FROM Account
     GROUP BY lookup__c
-    HAVING COUNT(Id) > 10
+    HAVING COUNT(Id) < 10
   ];
 
   public List<Contact> conts = [
     SELECT Id
     FROM Contact
-    WHERE CreatedDate = YESTERDAY OR CreatedDate = TODAY OR CreatedDate = TOMORROW
-    OR CreatedDate = LAST_WEEK OR CreatedDate = THIS_WEEK OR CreatedDate = NEXT_WEEK
+    WHERE CreatedDate = 1999-01-01 OR Field__c.Field__c > 1999-01-01T23:01:01Z
+    OR Field__c.Field__c >= 1999-01-01T23:01:01-08:00
+  ];
+
+  public List<Contact> conts = [
+    SELECT Id
+    FROM Contact
+    WHERE CreatedDate > YESTERDAY OR CreatedDate = TODAY OR CreatedDate = TOMORROW
+    OR CreatedDate >= LAST_WEEK OR CreatedDate = THIS_WEEK OR CreatedDate = NEXT_WEEK
     OR CreatedDate = LAST_MONTH OR CreatedDate = THIS_month OR CreatedDate = next_MONTH
     OR CreatedDate = LAST_YEAR OR CreatedDate = THIS_YEAR OR CreatedDate = NEXT_YEAR
     OR CreatedDate = LAST_90_DAYS OR CreatedDate = NEXT_90_DAYS

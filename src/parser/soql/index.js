@@ -80,12 +80,13 @@ function soqlParser($) {
       { ALT: () => $.CONSUME(tokens.soql.Equals) },
       { ALT: () => $.CONSUME(tokens.soql.Greater) },
       { ALT: () => $.CONSUME(tokens.soql.Less) },
-      { ALT: () => {
+      {
+        ALT: () => {
           $.OPTION(() => $.CONSUME(tokens.soql.Not))
           $.CONSUME(tokens.soql.In)
-        }
+        },
       },
-      { ALT: () => $.CONSUME1(tokens.soql.Like) },
+      { ALT: () => $.CONSUME(tokens.soql.Like) },
     ])
   })
 
@@ -177,6 +178,7 @@ function soqlParser($) {
       { ALT: () => $.SUBRULE($.soqlFunction) },
       { ALT: () => $.SUBRULE($.identifierName) },
     ])
+
     $.SUBRULE($.comparisonOperator)
 
     $.OR1([
@@ -229,6 +231,7 @@ function soqlParser($) {
       { ALT: () => $.CONSUME(tokens.soql.LastFiscalYear) },
       { ALT: () => $.CONSUME(tokens.soql.ThisFiscalYear) },
       { ALT: () => $.CONSUME(tokens.soql.NextFiscalYear) },
+      { ALT: () => $.CONSUME(tokens.soql.DateLiteral) },
     ])
   })
 

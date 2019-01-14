@@ -1,4 +1,4 @@
-const { createKeywordToken } = require('../_shared')
+const { createToken, createKeywordToken, makePattern } = require('../_shared')
 
 const Yesterday = createKeywordToken({
   name: 'Yesterday',
@@ -222,6 +222,12 @@ const NextNFiscalYears = createKeywordToken({
   label: "'NextNFiscalYears'",
 })
 
+const DateLiteral = createToken({
+  name: 'DateLiteral',
+  pattern: makePattern('[0-9]{4}-[0-9]{2}-[0-9]{2}(T[0-9]{2}:[0-9]{2}:[0-9]{2})?Z?([+-][0-9]{2}:[0-9]{2})?'),
+  label: "'DateLiteral'",
+})
+
 module.exports = {
   Yesterday,
   Today,
@@ -260,4 +266,5 @@ module.exports = {
   NextFiscalYear,
   LastNFiscalYears,
   NextNFiscalYears,
+  DateLiteral,
 }
