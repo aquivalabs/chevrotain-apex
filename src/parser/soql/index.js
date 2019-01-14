@@ -44,28 +44,21 @@ function soqlParser($) {
       DEF: () => {
         $.OR([
           { ALT: () => $.SUBRULE($.subquery) },
-          {
-            ALT: () => {
-              let lBrackets = 0
-              $.OPTION(() => {
-                $.SUBRULE($.aggregationFunction)
-                $.CONSUME(tokens.soql.LBrace)
-                lBrackets++
-              })
-              $.SUBRULE($.identifierName)
-              if (lBrackets > 0) {
-                for (let i = 0; i < lBrackets; i++) {
-                  $.CONSUME1(tokens.soql.RBrace)
-                }
-                // alias available for aggregation functions
-                $.OPTION1(() => {
-                  $.CONSUME(tokens.apex.Identifier)
-                })
-              }
-            },
-          },
+          { ALT: () => $.SUBRULE($.aggregationFunction) },
+          { ALT: () => $.SUBRULE($.identifierName) },
         ])
       },
+    })
+  })
+
+  $.RULE('aggregationFunction', () => {
+    $.SUBRULE($.aggregationFunctionName)
+    $.CONSUME(tokens.soql.LBrace)
+    $.SUBRULE($.identifierName)
+    $.CONSUME1(tokens.soql.RBrace)
+    // alias available for aggregation functions
+    $.OPTION(() => {
+      $.CONSUME(tokens.apex.Identifier)
     })
   })
 
@@ -95,7 +88,7 @@ function soqlParser($) {
     ])
   })
 
-  $.RULE('aggregationFunction', () => {
+  $.RULE('aggregationFunctionName', () => {
     $.OR([
       { ALT: () => $.CONSUME(tokens.soql.CountDistinct)},
       { ALT: () => $.CONSUME(tokens.soql.Count)},
