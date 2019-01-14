@@ -23,6 +23,10 @@ function soqlVisitor($) {
     return {}
   }
 
+  $.aggregationFunctionName = function(ctx) {
+    return {}
+  }
+
   $.andOr = function(ctx) {
     return {}
   }
