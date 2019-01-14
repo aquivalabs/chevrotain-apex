@@ -19,6 +19,14 @@ function soqlVisitor($) {
     return {}
   }
 
+  $.aggregationFunction = function(ctx) {
+    return {}
+  }
+
+  $.aggregationFunctionName = function(ctx) {
+    return {}
+  }
+
   $.andOr = function(ctx) {
     return {}
   }
@@ -35,7 +43,27 @@ function soqlVisitor($) {
     return {}
   }
 
+  $.simpleDateLiterals = function(ctx) {
+    return {}
+  }
+
+  $.complexDateLiterals = function(ctx) {
+    return {}
+  }
+
+  $.dateLiterals = function(ctx) {
+    return {}
+  }
+
+  $.soqlFunction = function(ctx) {
+    return {}
+  }
+
   $.orderBy = function(ctx) {
+    return {}
+  }
+
+  $.groupBy = function(ctx) {
     return {}
   }
 
@@ -48,6 +76,14 @@ function soqlVisitor($) {
   }
 
   $.limitClause = function(ctx) {
+    return {}
+  }
+
+  $.groupByClause = function(ctx) {
+    return {}
+  }
+
+  $.havingClause = function(ctx) {
     return {}
   }
 
