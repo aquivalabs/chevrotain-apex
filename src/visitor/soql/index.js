@@ -43,6 +43,22 @@ function soqlVisitor($) {
     return {}
   }
 
+  $.simpleDateLiterals = function(ctx) {
+    return {}
+  }
+
+  $.complexDateLiterals = function(ctx) {
+    return {}
+  }
+
+  $.dateLiterals = function(ctx) {
+    return {}
+  }
+
+  $.soqlFunction = function(ctx) {
+    return {}
+  }
+
   $.orderBy = function(ctx) {
     return {}
   }

@@ -45,6 +45,7 @@ function soqlParser($) {
         $.OR([
           { ALT: () => $.SUBRULE($.subquery) },
           { ALT: () => $.SUBRULE($.aggregationFunction) },
+          { ALT: () => $.SUBRULE($.soqlFunction) },
           { ALT: () => $.SUBRULE($.identifierName) },
         ])
       },
@@ -88,6 +89,13 @@ function soqlParser($) {
     ])
   })
 
+  // aggregationFunctionName
+  // : CountDistinct
+  // | Count
+  // | Avg
+  // | Min
+  // | Max
+  // | Sum
   $.RULE('aggregationFunctionName', () => {
     $.OR([
       { ALT: () => $.CONSUME(tokens.soql.CountDistinct)},
@@ -165,12 +173,16 @@ function soqlParser($) {
   // : identifierName comparisonOperator (literal|colonIdentifierName)
   $.RULE('singleWhereCondition', () => {
     $.OPTION(() => $.CONSUME(tokens.soql.Not))
-    $.SUBRULE($.identifierName)
+    $.OR([
+      { ALT: () => $.SUBRULE($.soqlFunction) },
+      { ALT: () => $.SUBRULE($.identifierName) },
+    ])
     $.SUBRULE($.comparisonOperator)
 
     $.OR1([
       { ALT: () => $.SUBRULE($.subquery) },
       { ALT: () => $.SUBRULE($.literal) },
+      { ALT: () => $.SUBRULE($.dateLiterals) },
       { ALT: () => $.SUBRULE($.colonIdentifierName) },
       {
         ALT: () => {
@@ -180,6 +192,105 @@ function soqlParser($) {
         },
       },
     ])
+
+  })
+
+  // aggregationFunctionName
+  // : Yesterday | Today | Tomorrow
+  // | LastWeek | ThisWeek | NextWeek
+  // | LastMonth | ThisMonth | NextMonth
+  // | LastYear | ThisYear | NextYear
+  // | Last90Days | Next90Days
+  // | LastQuarter | ThisQuarter | NextQuarter
+  // | LastFiscalQuarter | ThisFiscalQuarter | NextFiscalQuarter
+  // | LastFiscalYear | ThisFiscalYear | NextFiscalYear
+  $.RULE('simpleDateLiterals', () => {
+    $.OR([
+      { ALT: () => $.CONSUME(tokens.soql.Yesterday) },
+      { ALT: () => $.CONSUME(tokens.soql.Today) },
+      { ALT: () => $.CONSUME(tokens.soql.Tomorrow) },
+      { ALT: () => $.CONSUME(tokens.soql.LastWeek) },
+      { ALT: () => $.CONSUME(tokens.soql.ThisWeek) },
+      { ALT: () => $.CONSUME(tokens.soql.NextWeek) },
+      { ALT: () => $.CONSUME(tokens.soql.LastMonth) },
+      { ALT: () => $.CONSUME(tokens.soql.ThisMonth) },
+      { ALT: () => $.CONSUME(tokens.soql.NextMonth) },
+      { ALT: () => $.CONSUME(tokens.soql.LastYear) },
+      { ALT: () => $.CONSUME(tokens.soql.ThisYear) },
+      { ALT: () => $.CONSUME(tokens.soql.NextYear) },
+      { ALT: () => $.CONSUME(tokens.soql.Last90Days) },
+      { ALT: () => $.CONSUME(tokens.soql.Next90Days) },
+      { ALT: () => $.CONSUME(tokens.soql.LastQuarter) },
+      { ALT: () => $.CONSUME(tokens.soql.ThisQuarter) },
+      { ALT: () => $.CONSUME(tokens.soql.NextQuarter) },
+      { ALT: () => $.CONSUME(tokens.soql.LastFiscalQuarter) },
+      { ALT: () => $.CONSUME(tokens.soql.ThisFiscalQuarter) },
+      { ALT: () => $.CONSUME(tokens.soql.NextFiscalQuarter) },
+      { ALT: () => $.CONSUME(tokens.soql.LastFiscalYear) },
+      { ALT: () => $.CONSUME(tokens.soql.ThisFiscalYear) },
+      { ALT: () => $.CONSUME(tokens.soql.NextFiscalYear) },
+    ])
+  })
+
+  // aggregationFunctionName
+  // : LastNDays | NextNDays
+  // | LastNWeeks | NextNWeeks
+  // | LastNQuarters | NextNQuarters
+  // | LastNYears | NextNYears
+  // | LastNFiscalQuarters | NextNFiscalQuarters
+  // | LastNFiscalYears | NextNFiscalYears
+  $.RULE('complexDateLiterals', () => {
+    $.OR([
+      { ALT: () => $.CONSUME(tokens.soql.LastNDays) },
+      { ALT: () => $.CONSUME(tokens.soql.NextNDays) },
+      { ALT: () => $.CONSUME(tokens.soql.LastNWeeks) },
+      { ALT: () => $.CONSUME(tokens.soql.NextNWeeks) },
+      { ALT: () => $.CONSUME(tokens.soql.LastNMonth) },
+      { ALT: () => $.CONSUME(tokens.soql.NextNMonths) },
+      { ALT: () => $.CONSUME(tokens.soql.LastNQuarters) },
+      { ALT: () => $.CONSUME(tokens.soql.NextNQuarters) },
+      { ALT: () => $.CONSUME(tokens.soql.LastNYears) },
+      { ALT: () => $.CONSUME(tokens.soql.NextNYears) },
+      { ALT: () => $.CONSUME(tokens.soql.LastNFiscalQuarters) },
+      { ALT: () => $.CONSUME(tokens.soql.NextNFiscalQuarters) },
+      { ALT: () => $.CONSUME(tokens.soql.LastNFiscalYears) },
+      { ALT: () => $.CONSUME(tokens.soql.NextNFiscalYears) },
+    ])
+    $.CONSUME(tokens.apex.Colon)
+    $.CONSUME(tokens.apex.DecimalLiteral)
+  })
+
+  // dateLiterals
+  // : (simpleDateLiterals | complexDateLiterals)
+  $.RULE('dateLiterals', () => {
+    $.OR([
+      { ALT: () => $.SUBRULE($.simpleDateLiterals) },
+      { ALT: () => $.SUBRULE($.complexDateLiterals) },
+    ])
+  })
+
+  $.RULE('soqlFunction', () => {
+    $.OR([
+      { ALT: () => $.CONSUME(tokens.soql.ToLabel) },
+      { ALT: () => $.CONSUME(tokens.soql.CalendarMonth) },
+      { ALT: () => $.CONSUME(tokens.soql.CalendarQuarter) },
+      { ALT: () => $.CONSUME(tokens.soql.CalendarYear) },
+      { ALT: () => $.CONSUME(tokens.soql.DayInMonth) },
+      { ALT: () => $.CONSUME(tokens.soql.DayInWeek) },
+      { ALT: () => $.CONSUME(tokens.soql.DayInYear) },
+      { ALT: () => $.CONSUME(tokens.soql.DayOnly) },
+      { ALT: () => $.CONSUME(tokens.soql.FiscalMonth) },
+      { ALT: () => $.CONSUME(tokens.soql.FiscalQuarter) },
+      { ALT: () => $.CONSUME(tokens.soql.FiscalYear) },
+      { ALT: () => $.CONSUME(tokens.soql.HourInDay) },
+      { ALT: () => $.CONSUME(tokens.soql.WeekInMonth) },
+      { ALT: () => $.CONSUME(tokens.soql.WeekInYear) },
+      { ALT: () => $.CONSUME(tokens.soql.Format) },
+      { ALT: () => $.CONSUME(tokens.soql.ConvertCurrency) },
+    ])
+    $.CONSUME(tokens.soql.LBrace)
+    $.SUBRULE($.identifierName)
+    $.CONSUME(tokens.soql.RBrace)
   })
 
   // orderBy
@@ -233,7 +344,21 @@ function soqlParser($) {
   // : identifierName comparisonOperator (literal|colonIdentifierName)
   $.RULE('havingClause', () => {
     $.CONSUME(tokens.soql.Having)
-    $.SUBRULE($.singleWhereCondition)
+    $.SUBRULE($.aggregationFunction)
+    $.SUBRULE($.comparisonOperator)
+    $.OR1([
+      { ALT: () => $.SUBRULE($.subquery) },
+      { ALT: () => $.SUBRULE($.literal) },
+      { ALT: () => $.SUBRULE($.dateLiterals) },
+      { ALT: () => $.SUBRULE($.colonIdentifierName) },
+      {
+        ALT: () => {
+          $.CONSUME3(tokens.apex.LBrace)
+          $.SUBRULE($.literalList)
+          $.CONSUME3(tokens.apex.RBrace)
+        },
+      },
+    ])
   })
 
   // groupByClause

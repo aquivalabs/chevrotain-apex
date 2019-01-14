@@ -44,7 +44,44 @@ module.exports = `public abstract class AqObj {
         AVG(Something) t, SUM(FieldToSum__c)
     FROM Account
     GROUP BY lookup__c
-    HAVING t > 10
+    HAVING COUNT(Id) > 10
+  ];
+
+  public List<Contact> conts = [
+    SELECT Id
+    FROM Contact
+    WHERE CreatedDate = YESTERDAY OR CreatedDate = TODAY OR CreatedDate = TOMORROW
+    OR CreatedDate = LAST_WEEK OR CreatedDate = THIS_WEEK OR CreatedDate = NEXT_WEEK
+    OR CreatedDate = LAST_MONTH OR CreatedDate = THIS_month OR CreatedDate = next_MONTH
+    OR CreatedDate = LAST_YEAR OR CreatedDate = THIS_YEAR OR CreatedDate = NEXT_YEAR
+    OR CreatedDate = LAST_90_DAYS OR CreatedDate = NEXT_90_DAYS
+    OR CreatedDate = LAST_QUARTER OR CreatedDate = THIS_QUARTER OR CreatedDate = NEXT_QUARTER
+    OR CreatedDate = LAST_FISCAL_QUARTER OR CreatedDate = THIS_FISCAL_QUARTER OR CreatedDate = NEXT_FISCAL_QUARTER
+    OR CreatedDate = LAST_FISCAL_YEAR OR CreatedDate = THIS_FISCAL_YEAR OR CreatedDate = NEXT_FISCAL_YEAR
+  ];
+
+  public List<Contact> conts = [
+    SELECT Id
+    FROM Contact
+    WHERE CreatedDate = LAST_N_DAYS:10 OR CreatedDate = NEXT_N_DAYS:10
+    OR CreatedDate = LAST_N_WEEKS:10 OR CreatedDate = NEXT_N_WEEKS:10
+    OR CreatedDate = LAST_N_MONTHS:10 OR CreatedDate = NEXT_N_MONTHS:10
+    OR CreatedDate = LAST_N_QUARTERS:10 OR CreatedDate = NEXT_N_QUARTERS:10
+    OR CreatedDate = LAST_N_YEARS:10 OR CreatedDate = NEXT_N_YEARS:10
+    OR CreatedDate = LAST_N_FISCAL_QUARTERS:10 OR CreatedDate = NEXT_N_FISCAL_QUARTERS:10
+  ];
+
+  public List<Contact> conts = [
+    SELECT ToLabel(Type), CALENDAR_MONTH(CreatedDate), CALENDAR_QUARTER(CreatedDate), CALENDAR_YEAR(CreatedDate),
+        DAY_IN_MONTH(CreatedDate), DAY_IN_WEEK(CreatedDate), DAY_IN_YEAR(CreatedDate), DAY_ONLY(CreatedDate),
+        FISCAL_MONTH(CreatedDate), FISCAL_QUARTER(CreatedDate), FISCAL_YEAR(CreatedDate),
+        HOUR_IN_DAY(CreatedDate), WEEK_IN_MONTH(CreatedDate), WEEK_IN_YEAR(CreatedDate),
+        FORMAT(CurrencyField__c), convertCurrency(CurrencyField__c)
+    FROM Contact
+    WHERE CALENDAR_MONTH(CreatedDate) = 10 OR CALENDAR_QUARTER(CreatedDate) = 1 OR CALENDAR_YEAR(CreatedDate) = 10
+    OR DAY_IN_MONTH(CreatedDate) = 1 OR DAY_IN_WEEK(CreatedDate) = 1 OR DAY_IN_YEAR(CreatedDate) = 1 OR DAY_ONLY(CreatedDate) = 1
+    OR FISCAL_MONTH(CreatedDate) = 1 OR FISCAL_QUARTER(CreatedDate) = 1 OR FISCAL_YEAR(CreatedDate) = 1
+    OR HOUR_IN_DAY(CreatedDate) = 1 OR WEEK_IN_MONTH(CreatedDate) = 1 OR WEEK_IN_YEAR(CreatedDate) = 1
   ];
 
   public List<sObject> a = [
