@@ -19,6 +19,10 @@ function soqlVisitor($) {
     return {}
   }
 
+  $.aggregationFunction = function(ctx) {
+    return {}
+  }
+
   $.andOr = function(ctx) {
     return {}
   }
@@ -39,6 +43,10 @@ function soqlVisitor($) {
     return {}
   }
 
+  $.groupBy = function(ctx) {
+    return {}
+  }
+
   $.nullsOrder = function(ctx) {
     return {}
   }
@@ -48,6 +56,14 @@ function soqlVisitor($) {
   }
 
   $.limitClause = function(ctx) {
+    return {}
+  }
+
+  $.groupByClause = function(ctx) {
+    return {}
+  }
+
+  $.havingClause = function(ctx) {
     return {}
   }
 
