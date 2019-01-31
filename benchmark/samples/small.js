@@ -32,6 +32,23 @@ module.exports = `public abstract without sharing class AqObj {
   ];
 
   public List<sObject> a = [
+    SELECT lookup__c,
+        Count(Id), Max(CreatedByDate), MIN(Number__c),
+        AVG(Something), SUM(FieldToSum__c)
+    FROM Account
+    GROUP BY lookup__c
+  ];
+
+  public List<sObject> a = [
+    SELECT lookup__c,
+        Count(Id), Max(CreatedByDate), MIN(Number__c),
+        AVG(Something) t, SUM(FieldToSum__c)
+    FROM Account
+    GROUP BY lookup__c
+    HAVING t > 10
+  ];
+
+  public List<sObject> a = [
     sELeCt Id, Name FRoM Account
     whErE id = 1
     limit 232

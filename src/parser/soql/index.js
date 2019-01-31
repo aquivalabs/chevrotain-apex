@@ -7,7 +7,8 @@ function soqlParser($) {
     $.CONSUME(tokens.soql.LSquareSelect)
     $.SUBRULE($.baseSoqlQuery)
     $.OPTION(() => $.SUBRULE($.whereClause))
-    $.OPTION1(() => $.SUBRULE($.orderByClause))
+    $.OPTION1(() => $.SUBRULE($.groupByClause))
+    $.OPTION2(() => $.SUBRULE($.orderByClause))
     $.OPTION8(() => $.SUBRULE($.limitClause))
     $.OPTION9(() => $.SUBRULE($.offsetClause))
     $.CONSUME(tokens.soql.RSquare)
@@ -20,7 +21,8 @@ function soqlParser($) {
     $.CONSUME(tokens.soql.Select)
     $.SUBRULE($.baseSoqlQuery)
     $.OPTION(() => $.SUBRULE($.whereClause))
-    $.OPTION1(() => $.SUBRULE($.orderByClause))
+    $.OPTION1(() => $.SUBRULE($.groupByClause))
+    $.OPTION2(() => $.SUBRULE($.orderByClause))
     $.OPTION8(() => $.SUBRULE($.limitClause))
     $.OPTION9(() => $.SUBRULE($.offsetClause))
     $.CONSUME(tokens.soql.RBrace)
@@ -42,9 +44,21 @@ function soqlParser($) {
       DEF: () => {
         $.OR([
           { ALT: () => $.SUBRULE($.subquery) },
+          { ALT: () => $.SUBRULE($.aggregationFunction) },
           { ALT: () => $.SUBRULE($.identifierName) },
         ])
       },
+    })
+  })
+
+  $.RULE('aggregationFunction', () => {
+    $.SUBRULE($.aggregationFunctionName)
+    $.CONSUME(tokens.soql.LBrace)
+    $.SUBRULE($.identifierName)
+    $.CONSUME1(tokens.soql.RBrace)
+    // alias available for aggregation functions
+    $.OPTION(() => {
+      $.CONSUME(tokens.apex.Identifier)
     })
   })
 
@@ -71,6 +85,17 @@ function soqlParser($) {
         }
       },
       { ALT: () => $.CONSUME1(tokens.soql.Like) },
+    ])
+  })
+
+  $.RULE('aggregationFunctionName', () => {
+    $.OR([
+      { ALT: () => $.CONSUME(tokens.soql.CountDistinct)},
+      { ALT: () => $.CONSUME(tokens.soql.Count)},
+      { ALT: () => $.CONSUME(tokens.soql.Avg)},
+      { ALT: () => $.CONSUME(tokens.soql.Min)},
+      { ALT: () => $.CONSUME(tokens.soql.Max)},
+      { ALT: () => $.CONSUME(tokens.soql.Sum)},
     ])
   })
 
@@ -164,6 +189,13 @@ function soqlParser($) {
     $.CONSUME(tokens.soql.By)
   })
 
+  // groupBy
+  // : GROUP BY
+  $.RULE('groupBy', () => {
+    $.CONSUME(tokens.soql.Group)
+    $.CONSUME(tokens.soql.By)
+  })
+
   // nullsOrder
   // : NULLS (FIRST|LAST)
   $.RULE('nullsOrder', () => {
@@ -195,6 +227,23 @@ function soqlParser($) {
   $.RULE('limitClause', () => {
     $.CONSUME(tokens.soql.Limit)
     $.SUBRULE($.integerLiteral)
+  })
+
+  // havingClause
+  // : identifierName comparisonOperator (literal|colonIdentifierName)
+  $.RULE('havingClause', () => {
+    $.CONSUME(tokens.soql.Having)
+    $.SUBRULE($.singleWhereCondition)
+  })
+
+  // groupByClause
+  // : identifierName comparisonOperator (literal|colonIdentifierName)
+  $.RULE('groupByClause', () => {
+    $.SUBRULE($.groupBy)
+    $.SUBRULE($.listOfFields)
+    $.OPTION(() => {
+      $.SUBRULE($.havingClause)
+    })
   })
 
   // offsetClause
